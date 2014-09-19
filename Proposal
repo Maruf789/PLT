@@ -1,0 +1,39 @@
+Proposal:
+
+Motivation:
+
+Language Features:
+
+System functions and reserved words:
+sum up rows/columns
+add/drop a row/column
+rename rows and columns
+access an element in a matrix
+
+Built-in Types:
+Integer
+Double
+String (everything is a string)
+
+Operators:
++ (Addition)
+- (Subtraction)
+
+Console/File Output (print matrix to console / a file)
+
+Own persistence memory
+
+Programming Features:
+
+1. Declaration 
+
+2. Manipulating Operations 
+
+
+Library Support:
+
+Example Code:
+
+
+
+
