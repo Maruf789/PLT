@@ -6,6 +6,7 @@ Calculating expenses is one of the most important daily tasks. For example, summ
 We designed it for  recording and calculating daily expenses on various commodities, as well as estimates the savings. Besides calculating one’s daily expense, It can allocate the bills to members of the matrix, so that every member in one matrix get a clear thought of how much he/she owes others.
 
 Language Features:
+
 1.  Built-in types, with a few examples:
 integer (123, -5)
 double (1.23)
@@ -13,6 +14,7 @@ string (‘This’, ‘a’)
 boolean (true/false)
 matrix (composed of basic data types)
 vector (Matrix with only one column or row)
+
 2. Operators: 
 + (Addition) 
 - (Subtraction)
@@ -21,19 +23,29 @@ vector (Matrix with only one column or row)
 = (equal) 
 <> (unequal)
 : (assignment)
+
 3. Units (‘kg’, ‘lb’, ‘l’, ‘qt’) are well-defined, combined, and auto converted in matrix for computing (e.g. adds 1kg with 1 lb equals to 1.4 kg)
+
 4. Console/File Output (print matrix to console / a file)
+
 5. Proper indentation (Consistency required)
+
 6. Every statement end in a semicolon (;)
+
 7. No OOP support: no class, namespace  
+
 8. Function call by value
+
 9. Naming conventions of variables: only letters, case-sensitive.
+
 10. Strong static types: static type-checking
+
 11. Matrix Operations:
 Sum up rows/columns 
 Add/drop a row/column
 Rename rows and columns
 Access an element in a matrix by name or index
+
 Keywords: 
 int  (integer)
 double 
@@ -46,9 +58,9 @@ if ... then ... else … fi (branch)
 disp (print)
 
 Programming Features:
-1. Comments
-# This is a single-line comment. No multi-line comment support 
-This is not comment but # From here to end is comment 
+1. Comments:
+\# This is a single-line comment. No multi-line comment support 
+This is not comment but /# From here to end is comment 
 
 2. Declaration
 int uninit;		# declare an integer without initialization
@@ -129,11 +141,13 @@ mat split_bill : mat b
 			accum  result(idx) r('Price'); # accumulate the price
 		fi # end if
 	rof # end of for-loop
- Here we got:
+Here we got:
 bill :
-John	Tom
+	John	Tom
 Debit	7.30	5.10
+
 # sum up price of every one
+
 mat result1: sumcol result 
 #	John	Tom	sum
 #Debit	7.30	5.10	12.40
