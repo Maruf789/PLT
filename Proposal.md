@@ -60,7 +60,7 @@ disp (print)
 Programming Features:
 1. Comments:
 
-\# This is a single-line comment. No multi-line comment support 
+\# This is a single-line comment. No multi-line comment support
 This is not comment but /# From here to end is comment 
 
 2. Declaration
@@ -97,10 +97,11 @@ Example Code:
 \# create an empty matrix "budget"
 mat budget ; 
 \# John bought 1lb food with $3.30
-\# Add one row "John" to budget, 
+\# Add one row "John" to budget,
 \# column "Food" = 2lb, column "Price" = 3.3
 addrow budget 'John' ['Food': 2lb, 'Price': 3.3] ;
 \# Similarly, one more
+
 addrow budget 'Tom' ['Paper': 500, 'Price': 5.10] ;
 disp budget ; # export budget 
 \# Here, we should get :
@@ -108,20 +109,27 @@ budget:
  	Food	Price	Paper
 John	2lb	3.3	0	
 Tom	0	5.10	500
+
 \# John bought 1kg of food for 4$
-addrow budget John [‘Food’: 1kg, ‘Price’: 4]  ;
+addrow budget John [‘Food’: 1kg, ‘Price’: 4];
+
 \#display budget matrix
 disp budget ;
+
 \# Here, we should get :
 budget:
 	Food	Price	Paper
 John	2lb	3.3	0	
 Tom	0	5.10	500
 John	1kg	4	0	
+
 \# sum up!
+
 \#sum_row : sums up the columns and add a new row with all the results
 mat sbudget : sumrow budget ;
+
 disp sbudget ;
+
 sbudget:
 	Food	Paper	Price
 John	2lb	0	3.3	
@@ -130,7 +138,9 @@ John	1kg	0	4
 sum	1.9kg	500	12.40
 
 \# note: "a.func" is equivalent to "func a"
+
 \# No "class" or "name-space" support 
+
 \# define function ‘split_bill’ that takes an argument as matrix
 mat split_bill : mat b
 	mat result ;  # to store result
@@ -150,23 +160,29 @@ Debit	7.30	5.10
 \# sum up price of every one
 
 mat result1: sumcol result 
-\#	John	Tom	sum
-\#Debit	7.30	5.10	12.40
+
+\#		John	Tom	sum
+\# Debit	7.30	5.10	12.40
 \# AA the bill 
+
 addrow result ‘SplitExp’ [result1(Debit, sum) / result.width ] # add a row, filled with the same									#value
-disp result1
+disp result1;
 		John	Tom
 Debit		7.30	5.10
 SplitExp	6.20	6.20
+
 mat result: diffrow  result
-disp result
+disp result;
  		John	Tom
 Debit		7.30	5.10
 SplitExp	6.20	6.20
 diff		1.10	-1.10
+
 result(-1, :)  rowname Budget
+
 def result
 mat bill : split_bill buget
+
 \# … See the definition of split_bill
 
 
