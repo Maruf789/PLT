@@ -59,6 +59,7 @@ disp (print)
 
 Programming Features:
 1. Comments:
+
 \# This is a single-line comment. No multi-line comment support 
 This is not comment but /# From here to end is comment 
 
@@ -66,7 +67,7 @@ This is not comment but /# From here to end is comment
 int uninit;		# declare an integer without initialization
 int i: 2; 		# declare an Integer variable a and initialize as 2
 double d: 2.50; 	# declare an floating-point  number 2.50
-string s: “this string”;  # declare a string s and initialize it
+string s: “this string”;# declare a string s and initialize it
 bool a: true;		# declare a boolean
 mat m: [1, 2; 4, 5]; 	# declare a matrix: “;” starts a new row, “,” splits elements in
  			same row
@@ -86,39 +87,39 @@ rof			#end of for
 
 int foo_bar: int  x	# define a function “foo_bar”, with one int argument x, return a int
 def x + 5 	# foo_bar x  will returns x+5 
-# ’def’ also indicates the end of function
+\# ’def’ also indicates the end of function
 int c: foo_bar 3	# call function foo_bar, yield 8
 
 Library Support:
 
 Example Code:
-# Matrix must be explicitly declared
-# create an empty matrix "budget"
+\# Matrix must be explicitly declared
+\# create an empty matrix "budget"
 mat budget ; 
-# John bought 1lb food with $3.30
-# Add one row "John" to budget, 
-# column "Food" = 2lb, column "Price" = 3.3
+\# John bought 1lb food with $3.30
+\# Add one row "John" to budget, 
+\# column "Food" = 2lb, column "Price" = 3.3
 addrow budget 'John' ['Food': 2lb, 'Price': 3.3] ;
-# Similarly, one more
+\# Similarly, one more
 addrow budget 'Tom' ['Paper': 500, 'Price': 5.10] ;
 disp budget ; # export budget 
-# Here, we should get :
+\# Here, we should get :
 budget:
  	Food	Price	Paper
 John	2lb	3.3	0	
 Tom	0	5.10	500
-# John bought 1kg of food for 4$
+\# John bought 1kg of food for 4$
 addrow budget John [‘Food’: 1kg, ‘Price’: 4]  ;
-#display budget matrix
+\#display budget matrix
 disp budget ;
-# Here, we should get :
+\# Here, we should get :
 budget:
 	Food	Price	Paper
 John	2lb	3.3	0	
 Tom	0	5.10	500
 John	1kg	4	0	
-# sum up!
-#sum_row : sums up the columns and add a new row with all the results
+\# sum up!
+\#sum_row : sums up the columns and add a new row with all the results
 mat sbudget : sumrow budget ;
 disp sbudget ;
 sbudget:
@@ -128,9 +129,9 @@ Tom	0	500	5.10
 John	1kg	0	4	
 sum	1.9kg	500	12.40
 
-# note: "a.func" is equivalent to "func a"
-# No "class" or "name-space" support 
-# define function ‘split_bill’ that takes an argument as matrix
+\# note: "a.func" is equivalent to "func a"
+\# No "class" or "name-space" support 
+\# define function ‘split_bill’ that takes an argument as matrix
 mat split_bill : mat b
 	mat result ;  # to store result
 	for r: in b.rows  # scan every row 
@@ -146,12 +147,12 @@ bill :
 	John	Tom
 Debit	7.30	5.10
 
-# sum up price of every one
+\# sum up price of every one
 
 mat result1: sumcol result 
-#	John	Tom	sum
-#Debit	7.30	5.10	12.40
-# AA the bill 
+\#	John	Tom	sum
+\#Debit	7.30	5.10	12.40
+\# AA the bill 
 addrow result ‘SplitExp’ [result1(Debit, sum) / result.width ] # add a row, filled with the same									#value
 disp result1
 		John	Tom
@@ -166,7 +167,7 @@ diff		1.10	-1.10
 result(-1, :)  rowname Budget
 def result
 mat bill : split_bill buget
-# … See the definition of split_bill
+\# … See the definition of split_bill
 
 
 
