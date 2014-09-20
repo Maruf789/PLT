@@ -1,38 +1,145 @@
 Proposal:
+BuckCal is an expressive, concise, and code-friendly Matrix Manipulation language that calculates daily expenses on various units & commodities and estimates the savings using matrix operations. It allocates the bills to each member of the matrices.
 
-Motivation:
+Motivation:  
+Calculating expenses is one of the most important daily tasks. For example, summarizing daily/ weekly expenses or keeping track of the money we owe others. There are other popular softwares such as MATLAB and Microsoft Excel that can process numeric data. What differentiates our language from those above is that it can deal with different units of currency and goods. Our project aims at developing a new, easy-using and clear-presenting language to calculate the money we spend. 
 
 Language Features:
 
-System functions and reserved words:
-sum up rows/columns
-add/drop a row/column
-rename rows and columns
-access an element in a matrix
-
 Built-in Types:
-Integer
-Double
-String (everything is a string)
+Integer (123, -5)
+Double (1.23)
+String (‘This’ a string. So does ‘a’)
+Unit (like ‘kg’, ‘lb’, ‘L’, ‘qt.’)
+Boolean (true/false)
+Matrix (composed of basic data types)
+Vector (Matrix with only one column or row)
 
-Operators:
-+ (Addition)
-- (Subtraction)
+Operators: + (Addition) - (Subtraction)
+ > (greater than) < (smaller than) = (equal) <> (unequal)
+: (assignment)
 
 Console/File Output (print matrix to console / a file)
+Indentations Matters (Consistency required)
+Semicolon for every statement
+No OOP support
+Function Call by Value
+Naming Conventions of Variables: Only Letters, Case sensitive.
+Strong static types
 
-Own persistence memory
+Keywords: 
+int  (for integer)
+double 
+string 
+bool (for boolean)
+def  (to declare a function)
+for … in … (for loop)
+if (branch)
+disp (to print existing variable)
+
+Matrix Operations:
+Sum up rows/columns 
+Add/drop a row/column
+Rename rows and columns
+Access an element in a matrix
 
 Programming Features:
 
-1. Declaration 
+1. Comments
+# This is a single-line comment. No multi-line comment support
+This is not comment but # From here to end is comment 
 
-2. Manipulating Operations 
+2. Declaration:
+integer i: 2 		# declare an Integer variable a and initialize as 2
+double d: 2.50 	# declare an floating-point  number d = 2.50
+string s: “this string” 	# declare a string variable
+bool a: true
+ 
+
+3. Basic Expressions:
+
+
 
 
 Library Support:
 
 Example Code:
+(Description): Even as students, while staying in sharing accommodation, there are many situations such as buying groceries, paying the bills and rent, etc. where the whole expenditure needs to be divided equally between all the members.
+
+# Matrix must be explicitly declared
+# create an empty matrix "budget"
+mat budget ; 
+# John bought 1lb food with $3.30
+# Add one row "John" to budget, 
+# column "Food" = 2lb, column "Price" = 3.3
+addrow budget 'John' ['Food': 2lb, 'Price': 3.3] ;
+# Similarly, one more
+addrow budget 'Tom' ['Paper': 500, 'Price': 5.10] ;
+disp budget ; # export budget 
+# Here, we should get :
+budget:
+ 	Food	Price	Paper
+John	2lb	3.3	0	
+Tom	0	5.10	500
+# John bought 1kg of food for 4$
+addrow budget John [‘Food’: 1kg, ‘Price’: 4]  ;
+#display budget matrix
+disp budget ;
+# Here, we should get :
+budget:
+	Food	Price	Paper
+John	2lb	3.3	0	
+Tom	0	5.10	500
+John	1kg	4	0	
+# sum up!
+#sum_row : sums up the columns and add a new row with all the results
+mat sbudget : sumrow budget
+disp sbudget ;
+sbudget:
+	Food	Paper	Price
+John	2lb	0	3.3	
+Tom	0	500	5.10
+John	1kg	0	4	
+sum	1.9kg	500	12.40
+
+# note: "a.func" is equivalent to "func a"
+# No "class" or "name-space" support 
+# define function ‘split_bill’ that takes an argument as matrix
+def split_bill (mat b):
+	mat result ;  # to store result
+	for r: b.rows do # scan every row 
+		idx: locate r.name result.cols.names # whether name known
+		if idx = null do # new name ?
+			addcol result r.name ['Debit': r('Price')] # add a column
+		else # known name
+			accum  result(idx) r('Price'); # accumulate the price
+		fi # end if
+	rof # end for
+fed # end def
+# Here we got:
+disp result;
+John	Tom
+Debit	7.30	5.10
+	
+
+# sum up price of every one
+mat result1: sumcol result 
+#	John	Tom	sum
+#Debit	7.30	5.10	12.40
+# AA the bill 
+addrow result ‘SplitExp’ [result1(Debit, sum) / result.width ] # add a row, filled with the same value
+#		John	Tom
+#Debit		7.30	5.10
+#SplitExp	6.20	6.20
+mat result: diffrow  result
+ #		John	Tom
+#Debit		7.30	5.10
+#SplitExp	6.20	6.20
+#diff		1.10	-1.10
+result(-1, :)  rowname Budget
+return result
+split_bill budget
+# … See the definition of split_bill
 
 
 
