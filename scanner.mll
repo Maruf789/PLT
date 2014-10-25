@@ -1,7 +1,6 @@
-{ (*open Parser*) }
 
-let LETTER = ['A'-'Z']
-let letter = ['a'-'z']
+let upper = ['A'-'Z']
+let lower = ['a'-'z']
 let digit = ['0'-'9']
 
 rule token = parse
@@ -55,10 +54,10 @@ rule token = parse
 | "false"  { BOOL_LITERAL(false) }
 | "mat"    { MAT }
 | "void"   { VOID }
-| letter(letter|digit|'_')* as lxm { ID(lxm) }
+| lower(lower|digit|'_')* as lxm { ID(lxm) }
 | digit+ as lxm { INT_LITERAL(int_of_string lxm) }
 | digit+'.'digit+ as lxm { 
-            DOUBLE_LITERAL(double_of_string lxm) }
+            DOUBLE_LITERAL(float_of_string lxm) }
 | '\''      { let buffer = Buffer.create 16 in
               STRING_LITERAL(string_lit lexbuf) }
 | ""
