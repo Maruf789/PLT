@@ -1,4 +1,4 @@
-{ open Parser }
+{ (*open Parser*) }
 
 let LETTER = ['A'-'Z']
 let letter = ['a'-'z']
@@ -9,10 +9,10 @@ rule token = parse
 | "#"      { comment lexbuf }           (* Comments *)
 | '('      { LPAREN }
 | ')'      { RPAREN }
-| '['     { LSBRACK }
-| ']'     { RSBRACK }
-| '{'     { LBRACE }
-| '}'     { RBRACE }
+| '['      { LSBRACK }
+| ']'      { RSBRACK }
+| '{'      { LBRACE }
+| '}'      { RBRACE }
 | ';'      { SEMI }
 | ','      { COMMA }
 | '+'      { PLUS }
@@ -59,8 +59,8 @@ rule token = parse
 | digit+ as lxm { INT_LITERAL(int_of_string lxm) }
 | digit+'.'digit+ as lxm { 
             DOUBLE_LITERAL(double_of_string lxm) }
-| '\''      { let buffer = [] in
-              STRING(string_lit lexbuf) }
+| '\''      { let buffer = Buffer.create 16 in
+              STRING_LITERAL(string_lit lexbuf) }
 | ""
 | eof       { EOF }
 | _ as char { raise (Failure
@@ -71,9 +71,8 @@ and comment = parse
 | _    { comment lexbuf }
 
 and string_lit = parse
-  '\''     { String.concat "" (List.rev buffer) }
+  '\''     { Buffer.contents buffer }
 | eof      { raise End_of_file }
-| _ as c   { let buffer = c::buffer; 
-             string_lit lexbuf }
+| _ as c   { Buffer.add_char buffer c; string_lit lexbuf }
 
 
