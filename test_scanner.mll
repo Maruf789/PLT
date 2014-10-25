@@ -1,3 +1,5 @@
+{ type token = LPAREN | RPAREN | LSBRACK | RSBRACK | LBRACE | RBRACE | SEMI |  COMMA | PLUS | MINUS | TIMES | DIVIDE | ASSIGN | EQ | NEQ | LT | LEQ | GT | GEQ | IF | THEN | ELSE | ELIF | FI | FOR | IN | DO | ROF | RETURN | BREAK | CONTINUE | ELSE | WHILE | RETURN | NOT | AND | OR | DEF | FED | DISP | INT | DOUBLE | STRING | BOOL | MAT | VOID | EOF | BOOL_LITERAL of bool | ID of string | INT_LITERAL of int | DOUBLE_LITERAL of float | STRING_LITERAL of string }
+
 { (*open Parser*) }
 
 let upper = ['A'-'Z']
@@ -55,7 +57,7 @@ rule token = parse
 | "false"  { BOOL_LITERAL(false) }
 | "mat"    { MAT }
 | "void"   { VOID }
-| lower(lower|digit|'_')* as lxm { ID(lxm) }
+| (lower|digit|'_')* as lxm { ID(lxm) }
 | digit+ as lxm { INT_LITERAL(int_of_string lxm) }
 | digit+'.'digit+ as lxm { 
             DOUBLE_LITERAL(double_of_string lxm) }
@@ -76,3 +78,9 @@ and string_lit = parse
 | _ as c   { Buffer.add_char buffer c; string_lit lexbuf }
 
 
+{
+  let lexbuf = Lexing.from_channel stdin in 
+    match token lexbuf with
+      EOF -> ()
+    | _ -> print_string "Token"
+}

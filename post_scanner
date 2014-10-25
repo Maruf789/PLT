@@ -1,0 +1,6 @@
+{
+  let lexbuf = Lexing.from_channel stdin in 
+    match token lexbuf with
+      EOF -> ()
+    | _ -> print_string "Token"
+}
