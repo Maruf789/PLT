@@ -59,8 +59,15 @@ rule token = parse
               STRING_LITERAL(string_lit buffer lexbuf) }
 | ""
 | eof       { EOF }
-| _ as char { raise (Failure
-             ("illegal character " ^ Char.escaped char)) }
+| _ as c    { let p = Lexing.lexeme_start_p lexbuf in
+              let msg = Printf.sprintf 
+                   "illegal character %s, in %s line %d,%d" 
+                   (Char.escaped c)
+                   p.Lexing.pos_fname
+                   p.Lexing.pos_lnum
+                   (p.Lexing.pos_cnum - p.Lexing.pos_bol + 1)
+              in
+              raise (Failure msg)}
 
 and comment = parse
   "\n" { token lexbuf }
