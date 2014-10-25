@@ -5,8 +5,8 @@
       match token lexbuf with
           EOF -> l
         | _ -> next ("Token " :: l) 
-    in next [;]
+    in next ["First";]
   in
-  List.iter print_newline wordlist
+  List.iter print_endline wordlist
 }
 

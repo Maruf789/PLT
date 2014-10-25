@@ -71,5 +71,3 @@ and string_lit buffer = parse
   '\''     { Buffer.contents buffer }
 | eof      { raise End_of_file }
 | _ as c   { Buffer.add_char buffer c; string_lit buffer lexbuf }
-
-
