@@ -1,6 +1,6 @@
 # function definition
 void : hello() def
-    disp “hello”;
+    disp 'hello';
 fed
 # top level code 
 hello();
@@ -25,5 +25,5 @@ for x in v do
         b : b + x/2.0;
     fi
 orf
-string endstr : “End” ;
+string endstr : 'End' ;
 disp endstr ;
