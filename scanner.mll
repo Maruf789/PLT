@@ -27,6 +27,7 @@ rule token = parse
 | ">="     { GEQ }
 | "if"     { IF }
 | "then"   { THEN }
+| "else"   { ELSE }
 | "elif"   { ELIF }
 | "fi"     { FI}
 | "for"    { FOR }
@@ -36,8 +37,6 @@ rule token = parse
 | "return" { RETURN }
 | "break"  { BREAK }
 | "continue" { CONTINUE }
-| "else"   { ELSE }
-| "while"  { WHILE }
 | "not"    { NOT }
 | "and"    { AND }
 | "or"     { OR }
