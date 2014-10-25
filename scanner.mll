@@ -67,7 +67,7 @@ and comment = parse
   "\n" { token lexbuf }
 | _    { comment lexbuf }
 
-and string_lit = parse
+and string_lit buffer = parse
   '\''     { Buffer.contents buffer }
 | eof      { raise End_of_file }
 | _ as c   { Buffer.add_char buffer c; string_lit buffer lexbuf }
