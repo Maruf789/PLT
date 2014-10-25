@@ -1,0 +1,24 @@
+# sum up rows! not using sum_row deliberately.
+mat : sum_up_rows(mat M) def
+    int x;
+    mat s: range(1, cols(M)) * 0;
+    for x in range(1, (rows M)) do
+        s: s+ M[x, 0];
+    orf
+    return s;
+fed
+# initialize a mat
+mat budget: init_mat_col({‘Food’, ‘Price’});
+colunit(budget[0, 1], {‘lb’});
+# add one row with naming
+budget: addrows(budget, {1+1, 3.3}, {‘John’});
+# add one column and naming
+budget: colcat({0}, budget);
+colname(budget[0, 1], {‘Paper’});
+# add one row with naming
+budget: addrows(budget, {250*2, 0, 5.10}, {‘Tom’});
+# summing
+subdget: sum_up_rows(budget);
+# display
+disp budget;
+
