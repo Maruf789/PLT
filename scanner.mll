@@ -59,8 +59,8 @@ rule token = parse
 | digit+ as lxm { INT_LITERAL(int_of_string lxm) }
 | digit+'.'digit+ as lxm { 
             DOUBLE_LITERAL(double_of_string lxm) }
-| '\''      { let buffer = [] in
-              STRING(string_lit lexbuf) }
+| '\''      { let buffer = Buffer.create 1 in
+       				STRING (stringl buffer lexbuf)}
 | ""
 | eof       { EOF }
 | _ as char { raise (Failure
@@ -70,10 +70,12 @@ and comment = parse
   "\n" { token lexbuf }
 | _    { comment lexbuf }
 
-and string_lit = parse
-  '\''     { String.concat "" (List.rev buffer) }
-| eof      { raise End_of_file }
-| _ as c   { let buffer = c::buffer; 
-             string_lit lexbuf }
-
+and stringl buffer = parse
+ | '\'' { Buffer.contents buffer }
+ | "\\t" { Buffer.add_char buffer '\t'; stringl buffer lexbuf }
+ | "\\n" { Buffer.add_char buffer '\n'; stringl buffer lexbuf }
+ | '\\' '"' { Buffer.add_char buffer '"'; stringl buffer lexbuf }
+ | '\\' '\\' { Buffer.add_char buffer '\\'; stringl buffer lexbuf }
+ | eof { raise End_of_file }
+ | _ as char { Buffer.add_char buffer char; stringl buffer lexbuf }
 
