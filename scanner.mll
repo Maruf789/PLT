@@ -41,6 +41,9 @@ rule token = parse
 | "return" { RETURN }
 | "break"  { BREAK }
 | "continue" { CONTINUE }
+| "not"    { NOT }
+| "and"    { AND }
+| "or"     { OR }
 | "def"    { DEF }
 | "fed"    { FED }
 | "disp"   { DISP }

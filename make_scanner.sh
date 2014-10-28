@@ -5,8 +5,5 @@ cat scanner.mll >> test_scanner.mll
 cat post_scanner >> test_scanner.mll
 
 ocamllex test_scanner.mll
-ocamlc -o scanner test_scanner.ml
-
-./scanner < sample1.bc
-
-./scanner < sample2.bc
+ocamlc -o test_scanner test_scanner.ml
+./test_scanner < $1

@@ -1,0 +1,10 @@
+File structure:
+scanner.mll : OCamllex scanner.
+prev_scanner : helper file for testing
+post_scanner : helper file for testing
+make_scanner.sh : main script to build scanner and test.
+sample[x].bc : sample program fragments
+
+Scanner Test Routine:
+$ make_scanner.sh sample1.bc
+
