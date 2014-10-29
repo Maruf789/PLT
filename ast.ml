@@ -74,4 +74,3 @@ let incr_lineno lexbuf =
     pos_lnum = pos.pos_lnum + 1;
     pos_bol = pos.pos_cnum;
   }
-
