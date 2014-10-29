@@ -1,12 +1,14 @@
 {
-  let lexbuf = Lexing.from_channel stdin in 
-  let wordlist =
-    let rec next l =
-      match token lexbuf with
-          EOF -> l
-        | _ -> next ("Token " :: l) 
-    in next ["First";]
-  in
-  List.iter print_endline wordlist
+ let lexbuf = Lexing.from_channel stdin in 
+  let msg =
+    let cnt =
+      let rec count l =
+        match token lexbuf with
+            EOF -> l
+          | _ -> count (l+1)
+      in count 0
+    in (string_of_int cnt) ^ " tokens"
+  in 
+  print_endline msg
 }
 

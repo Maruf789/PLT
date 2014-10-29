@@ -1,11 +1,11 @@
-
 let upper = ['A'-'Z']
 let lower = ['a'-'z']
 let digit = ['0'-'9']
 
 rule token = parse
-  [' ' '\t' '\r' '\n'] { token lexbuf } (* Whitespace *)
-| "#"      { comment lexbuf }           (* Comments *)
+  [' ' '\t' '\r'] { token lexbuf } (* Whitespace *)
+| '\n'     { (*incr_lineno lexbuf;*) token lexbuf } (* Newline *)
+| '#'      { comment lexbuf }      (* Comments *)
 | '('      { LPAREN }
 | ')'      { RPAREN }
 | '['      { LSBRACK }
@@ -25,11 +25,14 @@ rule token = parse
 | "<="     { LEQ }
 | ">"      { GT }
 | ">="     { GEQ }
+| "not"    { NOT }
+| "and"    { AND }
+| "or"     { OR }
 | "if"     { IF }
 | "then"   { THEN }
 | "else"   { ELSE }
 | "elif"   { ELIF }
-| "fi"     { FI}
+| "fi"     { FI }
 | "for"    { FOR }
 | "in"     { IN }
 | "do"     { DO }
@@ -37,9 +40,6 @@ rule token = parse
 | "return" { RETURN }
 | "break"  { BREAK }
 | "continue" { CONTINUE }
-| "not"    { NOT }
-| "and"    { AND }
-| "or"     { OR }
 | "def"    { DEF }
 | "fed"    { FED }
 | "disp"   { DISP }
@@ -49,31 +49,37 @@ rule token = parse
 | "bool"   { BOOL }
 | "true"   { BOOL_LITERAL(true) }
 | "false"  { BOOL_LITERAL(false) }
-| "mat"    { MAT }
-| "void"   { VOID }
+| "mat"           { MAT("") }
+| "int mat"       { MAT("int") }
+| "double mat"    { MAT("double") }
+| "string mat"    { MAT("string") }
 | lower(lower|digit|'_')* as lxm { ID(lxm) }
 | digit+ as lxm { INT_LITERAL(int_of_string lxm) }
-| digit+'.'digit+ as lxm { 
+| digit+'.'digit* as lxm { 
             DOUBLE_LITERAL(float_of_string lxm) }
-| '\''      { let buffer = Buffer.create 16 in
+| '\''      { let buffer = [] in
               STRING_LITERAL(string_lit buffer lexbuf) }
-| ""
 | eof       { EOF }
-| _ as c    { let p = Lexing.lexeme_start_p lexbuf in
-              let msg = Printf.sprintf 
-                   "illegal character %s, in %s line %d,%d" 
+| _ as c    { let p = lexeme_start_p lexbuf in
+              let msg = Printf.sprintf
+                   "illegal character %s, in %s line %d,%d"
                    (Char.escaped c)
-                   p.Lexing.pos_fname
-                   p.Lexing.pos_lnum
-                   (p.Lexing.pos_cnum - p.Lexing.pos_bol + 1)
+                   p.pos_fname
+                   p.pos_lnum
+                   (p.pos_cnum - p.pos_bol + 1)
               in
-              raise (Failure msg)}
+              raise (Failure msg) }
 
 and comment = parse
-  "\n" { token lexbuf }
+  '\n' { token lexbuf }
 | _    { comment lexbuf }
 
-and string_lit buffer = parse
-  '\''     { Buffer.contents buffer }
+and string_lit buf = parse
+  '\''     { String.concat "" (List.rev buf) }
 | eof      { raise End_of_file }
-| _ as c   { Buffer.add_char buffer c; string_lit buffer lexbuf }
+| "\\n"    { string_lit ("\\n"::buf) lexbuf }
+| "\\t"    { string_lit ("\\t"::buf) lexbuf }
+| "\\'"    { string_lit ("\\'"::buf) lexbuf }
+| '\\'     { string_lit ("\\\\"::buf) lexbuf }
+| _ as c   { string_lit ((Char.escaped c)::buf) lexbuf }
+
