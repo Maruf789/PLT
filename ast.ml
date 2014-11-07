@@ -1,6 +1,6 @@
 (* legal operations *)
-type binop =  Plus | Minus | Times | Divide | Eq | Neq | Lt | Leq | Gt | Geq | And | Or
-
+type binop =  Plus | Minus | Times | Divide 
+            | Eq | Neq | Lt | Leq | Gt | Geq | And | Or
 type unaop = Not | Neg
 
 (* variable definition *)
@@ -9,48 +9,38 @@ type var = {
     vtype : int;
   }
 
-(* function definition *)
-type func = {
-    fname : string;
-    args : var list;
-    locals : var list;
-    body : stmt list;
-    return : int;
-  }
-
 (* containers for the occasion that several type can work *)
-type matelem_container = Int | Double | String | Bool
-type matsub_container = Int | Double | String | Mat
-type return_container = Void | Int | Double
+type matelem_container = Int | Double | String
+(* type matsub_container = Int | Double | String | Mat *)
+(* type return_container = Void | Int | Double *)
 
 (* expression *)
-type expr =
+type lvalue =
+   Id of string
+ | MatSub of expr * expr * expr
+and expr =
    Bool of bool
  | Int of int
- | Double of double
+ | Double of float
  | String of string
- | Mat of mat_literal
- | Id of string
- | MatSub of matsub_container
- | Binop of expr
- | Assign
+ | Mat of matelem_container list list
+ | Lvalue of lvalue
+ | Binop of expr * expr
+ | Assign of lvalue * expr
  | Unaop of expr
- | ID LPAREN def_call_arg_list RPAREN { Call($1, $3) }
-
-（* variable declaration or definition *）
-type var_dec_def =
-   VarNoInit of var
- | VarInit of var * expr
-
-
+ | Call of string * expr list
 
 (* statement *)
-type stmt =
+type cond_stmts = {
+    cond : expr ;
+    stmts : stmt list;
+}
+and stmt =
    Expr of expr
  | Return of expr
- | If of (expr, stmt_list) * (expr, stmt_list) list * (expr, stmt_list)
- | CntFor of string * list list * stmt_list
- | CndFor of expr * stmt_list
+ | If of cond_stmts * cond_stmts list * stmt list
+ | CntFor of string * expr * stmt list
+ | CndFor of cond_stmts
  | Disp of expr
  | Continue
  | Break
@@ -60,9 +50,17 @@ type var_dec_def =
    VarNoInit of var
  | VarInit of var * expr
 
-(* program is function definition plus variable definition and statements *)
-type program = func_def list * var_def list * stmt list
+(* function definition *)
+type func = {
+    return : int;
+    fname : string;
+    args : var list;
+    locals : var list;
+    body : stmt list;
+  }
 
+(* program is function definition plus variable definition and statements *)
+type program = func list * var_dec_def list * stmt list
 
 (* Location update *)
 open Lexing
@@ -72,5 +70,4 @@ let incr_lineno lexbuf =
     pos_lnum = pos.pos_lnum + 1;
     pos_bol = pos.pos_cnum;
   }
-
 

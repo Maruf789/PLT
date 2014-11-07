@@ -1,8 +1,8 @@
 #! /bin/bash
 
-## test scanner independently
+## test scanner with parser opened
 
-cat prev_scanner > test_scanner.mll
+cat prev_scanner_p > test_scanner.mll
 cat scanner.mll >> test_scanner.mll
 cat post_scanner >> test_scanner.mll
 
