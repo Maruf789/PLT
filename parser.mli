@@ -40,12 +40,11 @@ type token =
   | DOUBLE
   | STRING
   | BOOL
-  | MAT
-  | VOID
+  | MAT of (int)
   | ID of (string)
   | BOOL_LITERAL of (bool)
   | INT_LITERAL of (int)
-  | DOUBLE_LITERAL of (double)
+  | DOUBLE_LITERAL of (float)
   | STRING_LITERAL of (string)
   | EOF
 

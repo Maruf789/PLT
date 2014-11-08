@@ -1,7 +1,6 @@
-{
-open Parser
-open Lexing
+{ type token = LPAREN | RPAREN | LSBRACK | RSBRACK | LBRACE | RBRACE | SEMI | COMMA | PLUS | MINUS | TIMES | DIVIDE | ASSIGN | EQ | NEQ | LT | LEQ | GT | GEQ | IF | THEN | ELIF | FI | FOR | IN | DO | ROF | RETURN | BREAK | CONTINUE | ELSE | NOT | AND | OR | DEF | FED | DISP | INT | DOUBLE | STRING | BOOL | MAT of string | EOF | BOOL_LITERAL of bool | ID of string | INT_LITERAL of int | DOUBLE_LITERAL of float | STRING_LITERAL of string
 
+open Lexing
 let incr_lineno lexbuf =
   let pos = lexbuf.lex_curr_p in
   lexbuf.lex_curr_p <- { pos with
@@ -9,6 +8,7 @@ let incr_lineno lexbuf =
     pos_bol = pos.pos_cnum;
   }
 }
+(* Open Lexing *)
 
 let upper = ['A'-'Z']
 let lower = ['a'-'z']
@@ -16,8 +16,8 @@ let digit = ['0'-'9']
 
 rule token = parse
   [' ' '\t' '\r'] { token lexbuf } (* Whitespace *)
-| '\n'     { incr_lineno lexbuf; token lexbuf } (* Newline *)
-| "#"      { comment lexbuf }      (* Comments *)
+| '\n'     { incr_lineno lexbuf; token lexbuf }
+| '#'      { comment lexbuf }      (* Comments *)
 | '('      { LPAREN }
 | ')'      { RPAREN }
 | '['      { LSBRACK }
@@ -35,7 +35,7 @@ rule token = parse
 | "!="     { NEQ }
 | '<'      { LT }
 | "<="     { LEQ }
-| ">"      { GT }
+| '>'      { GT }
 | ">="     { GEQ }
 | "not"    { NOT }
 | "and"    { AND }
@@ -52,9 +52,6 @@ rule token = parse
 | "return" { RETURN }
 | "break"  { BREAK }
 | "continue" { CONTINUE }
-| "not"    { NOT }
-| "and"    { AND }
-| "or"     { OR }
 | "def"    { DEF }
 | "fed"    { FED }
 | "disp"   { DISP }
@@ -64,15 +61,14 @@ rule token = parse
 | "bool"   { BOOL }
 | "true"   { BOOL_LITERAL(true) }
 | "false"  { BOOL_LITERAL(false) }
-| "mat"           { MAT("") }
-| "int mat"       { MAT("int") }
-| "double mat"    { MAT("double") }
-| "string mat"    { MAT("string") }
+| "int mat"       { MAT(1) }
+| "double mat"    { MAT(2) }
+| "string mat"    { MAT(3) }
 | lower(lower|digit|'_')* as lxm { ID(lxm) }
 | digit+ as lxm { INT_LITERAL(int_of_string lxm) }
 | digit+'.'digit* as lxm { 
             DOUBLE_LITERAL(float_of_string lxm) }
-| '\''      { let buffer = Buffer.create 16 in
+| '\''      { let buffer = [] in
               STRING_LITERAL(string_lit buffer lexbuf) }
 | eof       { EOF }
 | _ as c    { let p = lexeme_start_p lexbuf in
@@ -87,16 +83,17 @@ rule token = parse
 
 and comment = parse
   '\n' { token lexbuf }
+| eof  { EOF }
 | _    { comment lexbuf }
 
-and string_lit buffer = parse
-  '\''     { Buffer.contents buffer }
+and string_lit buf = parse
+  '\''     { String.concat "" (List.rev buf) }
 | eof      { raise End_of_file }
-| "\\n"    { Buffer.add_char buffer '\n'; string_lit buffer lexbuf }
-| "\\t"    { Buffer.add_char buffer '\t'; string_lit buffer lexbuf }
-| "\\'"    { Buffer.add_char buffer '\''; string_lit buffer lexbuf }
-| '\\'     { Buffer.add_char buffer '\\'; string_lit buffer lexbuf }
-| _ as c   { Buffer.add_char buffer c; string_lit buffer lexbuf }
+| "\\n"    { string_lit ("\\n"::buf) lexbuf }
+| "\\t"    { string_lit ("\\t"::buf) lexbuf }
+| "\\'"    { string_lit ("\\'"::buf) lexbuf }
+| "\\\\"   { string_lit ("\\\\"::buf) lexbuf }
+| _ as c   { string_lit ((Char.escaped c)::buf) lexbuf }
 
 {
   let lexbuf = Lexing.from_channel stdin in 
