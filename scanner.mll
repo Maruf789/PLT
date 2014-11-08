@@ -1,12 +1,10 @@
-(* Open Lexing *)
-
 let upper = ['A'-'Z']
 let lower = ['a'-'z']
 let digit = ['0'-'9']
 
 rule token = parse
   [' ' '\t' '\r'] { token lexbuf } (* Whitespace *)
-| '\n'     { incr_lineno lexbuf; token lexbuf }
+| '\n'     { (*incr_lineno lexbuf;*) token lexbuf } (* Newline *)
 | '#'      { comment lexbuf }      (* Comments *)
 | '('      { LPAREN }
 | ')'      { RPAREN }

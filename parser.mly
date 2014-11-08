@@ -28,37 +28,33 @@
 
 %%
 
-/* ---data type related--- */
+/* --- data type --- */
 
-/* data type representation */
 dtype:
-/*| VOID                { 0 }*/
   | INT                 { 1 }
   | DOUBLE              { 2 }
   | STRING              { 3 }
   | BOOL                { 4 }
   | MAT                 { 10+$1 }
 
-
 /* variable declaration or definition */
 var_dec_def:
-    dtype ID SEMI                     { VarNoInit({ vname = $2; vtype = $1; }) } /* not initialized*/
-  | dtype ID ASSIGN expr SEMI         { VarInit({ vname = $2; vtype = $1; }, $4) }
+    dtype ID SEMI                { VarNoInit({ vname = $2; vtype = $1; }) } 
+  | dtype ID ASSIGN expr SEMI    { VarInit({ vname = $2; vtype = $1; }, $4) }
 
 
 /* variable declaration or definition list */
 var_dec_def_list:
-                                  { [] } /* empty */
+    /* empty */                   { [] } 
   | var_dec_def_list var_dec_def  { $1 @ [$2] }
 
 
 /* --- arguments and function related --- */
 
-
 /* argument list in function declaration/definition */
 arg_def_list :
-    dtype ID     { [{ vname = $2; vtype = $1; }] }
-  | dtype        { [{ vname = "_"; vtype = $1; }] }
+    dtype ID                      { [{ vname = $2; vtype = $1; }] }
+  | dtype                         { [{ vname = "_"; vtype = $1; }] }
   | arg_def_list COMMA dtype ID   { $1 @ [{ vname = $4; vtype = $3; }] }
   | arg_def_list COMMA dtype      { $1 @ [{ vname = "_"; vtype = $3; }] }
 
@@ -66,7 +62,7 @@ arg_def_list :
 /* a function definition */
 func_def:
     DEF dtype ID LPAREN arg_def_list RPAREN DO var_dec_def_list stmt_list FED {
-        { return = $2; fname = $3; args = $5; locals = $8; body = $9; }
+       { return = $2; fname = $3; args = $5; locals = $8; body = $9; }
       }
   | DEF ID LPAREN arg_def_list RPAREN DO var_dec_def_list stmt_list FED {
         { return = 0; fname = $2; args = $4; locals = $7; body = $8; } 
@@ -83,13 +79,13 @@ func_def_list:
 
 /* represent a series of elif */
 elif_list:
-                                       { [] } /* nothing */
-  | elif_list ELIF expr THEN stmt_list { $1 @ [{cond=$3; stmts=$5}] }
+    /* nothing */                        { [] } 
+  | elif_list ELIF expr THEN stmt_list   { $1 @ [{cond=$3; stmts=$5}] }
 
 
 /* represent the optional else statement */
 else_stmt:
-                      { [] } /* nothing */
+    /* nothing */     { [] } 
   | ELSE stmt_list    { $2 }
 
 
@@ -100,12 +96,10 @@ mat_literal:
   | LBRACE RBRACE               { [[]] }
   | LBRACE mat_rows RBRACE      { $2 }
 
-
 /* rows of matrix */
 mat_rows:
   | mat_row                { [$1] } /* first row */
   | mat_rows SEMI mat_row  { $1 @ [$3] }
-
 
 /* elements in a matrix row */
 mat_row:
@@ -143,41 +137,35 @@ expr:
 
 /* argument list in function calling */
 arg_call_list:
-                              { [] } /* type and ID */
+    /* nothing */             { [] } 
   | arg_call_list COMMA expr  { $1 @ [ $3 ] }
 
 /* --- program related --- */ 
 
 /* a list of statements */
 stmt_list:
-                   { [] } /* nothing */
-  | stmt_list stmt { $1 @ [$2] }
+    /* nothing */    { [] } 
+  | stmt_list stmt   { $1 @ [$2] }
 
 /* a statement */
 stmt:
     expr SEMI                                      { Expr($1) }
   | RETURN expr SEMI                               { Return($2) }
-  | IF expr THEN stmt_list elif_list else_stmt FI  { If({cond=$2; stmts=$4}, $5, $6) }
-  | FOR ID IN expr DO stmt_list ROF                { CntFor($2, $4, $6) } /* counting loop */
-  | FOR expr DO stmt_list ROF                      { CndFor({cond=$2; stmts=$4}) } /* conditional loop */
+  | IF expr THEN stmt_list elif_list else_stmt FI  { If(
+                                                       {cond = $2; stmts = $4}, 
+                                                       $5, $6) }
+  | FOR ID IN expr DO stmt_list ROF                { CntFor($2, $4, $6) } 
+  | FOR expr DO stmt_list ROF                      { CndFor(
+                                                     {cond = $2; stmts = $4}) }
   | DISP expr SEMI                                 { Disp($2) }
   | CONTINUE SEMI                                  { Continue }
   | BREAK SEMI                                     { Break }
 
-/* With this, no reduce/shift conflict. But 4 rules never reduced 
 
-program:
-                       { {pfuns = []; pvars = []; pstms = [];} }
- | program func_declare { {pfuns = $1.pfuns @ [$2]; pvars = $1.pvars; pstms = $1.pstms;} }
- | program func_def    { {pfuns = $1.pfuns @ [$2]; pvars = $1.pvars; pstms = $1.pstms;} }
- | program var_dec_def { {pfuns = $1.pfuns; pvars = $1.pvars @ [$2]; pstms = $1.pstms;} }
- | program stmt        { {pfuns = $1.pfuns; pvars = $1.pvars; pstms = $1.pstms @ [$2];} }
-*/
-
-/* This cause shift/reduce conflict in var_dec_def_list */
+/* a source file */
 program:
     func_def_list var_dec_def_list stmt_list  {
-        {pfuns = $1; pvars = $2; pstms = $3;}
+       {pfuns = $1; pvars = $2; pstms = $3;}
       }
   | var_dec_def_list stmt_list  {
         {pfuns = []; pvars = $1; pstms = $2;}
