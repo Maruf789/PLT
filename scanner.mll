@@ -1,10 +1,23 @@
+{ 
+  open Parser 
+  open Lexing
+  
+  (* increase line no *)
+  let incr_lineno lexbuf =
+  let pos = lexbuf.lex_curr_p in
+  lexbuf.lex_curr_p <- { pos with
+    pos_lnum = pos.pos_lnum + 1;
+    pos_bol = pos.pos_cnum;
+  }
+}
+
 let upper = ['A'-'Z']
 let lower = ['a'-'z']
 let digit = ['0'-'9']
 
 rule token = parse
   [' ' '\t' '\r'] { token lexbuf } (* Whitespace *)
-| '\n'     { (*incr_lineno lexbuf;*) token lexbuf } (* Newline *)
+| '\n'     { incr_lineno lexbuf; token lexbuf } (* Newline *)
 | '#'      { comment lexbuf }      (* Comments *)
 | '('      { LPAREN }
 | ')'      { RPAREN }

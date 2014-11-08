@@ -17,29 +17,17 @@ type matelem_container = Int | Double | String
 (* expression *)
 type lvalue =
    Id of string
-<<<<<<< HEAD
- | MatSub of expr * expr * expr
-=======
  | MatSub of string * expr * expr
->>>>>>> 087b2ac40f6004ddad664b9461c95a7b1fe4e3ba
 and expr =
    Bool of bool
  | Int of int
  | Double of float
  | String of string
-<<<<<<< HEAD
- | Mat of matelem_container list list
- | Lvalue of lvalue
- | Binop of expr * expr
- | Assign of lvalue * expr
- | Unaop of expr
-=======
  | Mat of expr list list
  | Lvalue of lvalue
  | Binop of expr * binop * expr
  | Assign of lvalue * expr
  | Unaop of unaop * expr
->>>>>>> 087b2ac40f6004ddad664b9461c95a7b1fe4e3ba
  | Call of string * expr list
 
 (* statement *)
@@ -67,24 +55,16 @@ type func = {
     return : int;
     fname : string;
     args : var list;
-<<<<<<< HEAD
-    locals : var list;
-=======
     locals : var_dec_def list;
->>>>>>> 087b2ac40f6004ddad664b9461c95a7b1fe4e3ba
     body : stmt list;
   }
 
 (* program is function definition plus variable definition and statements *)
-<<<<<<< HEAD
-type program = func list * var_dec_def list * stmt list
-=======
 type program = {
     pfuns : func list;
     pvars : var_dec_def list;
     pstms : stmt list;
   }
->>>>>>> 087b2ac40f6004ddad664b9461c95a7b1fe4e3ba
 
 (* Location update *)
 open Lexing
@@ -94,7 +74,3 @@ let incr_lineno lexbuf =
     pos_lnum = pos.pos_lnum + 1;
     pos_bol = pos.pos_cnum;
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> 087b2ac40f6004ddad664b9461c95a7b1fe4e3ba
