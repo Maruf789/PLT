@@ -83,13 +83,14 @@ rule token = parse
               raise (Failure msg) }
 
 and comment = parse
-  '\n' { token lexbuf }
+  '\n' { incr_lineno lexbuf; token lexbuf }
 | eof  { EOF }
 | _    { comment lexbuf }
 
 and string_lit buf = parse
   '\''     { String.concat "" (List.rev buf) }
 | eof      { raise End_of_file }
+| '\n'     { raise End_of_file }
 | "\\n"    { string_lit ("\\n"::buf) lexbuf }
 | "\\t"    { string_lit ("\\t"::buf) lexbuf }
 | "\\'"    { string_lit ("\\'"::buf) lexbuf }
