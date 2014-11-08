@@ -4,4 +4,4 @@ test.sh : test script
 *.bc : source files for test
 
 Test Routine:
-$ Make test
+$ make test
