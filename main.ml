@@ -1,10 +1,11 @@
 open Ast
+open Translate
 
 let _ = 
   let lexbuf = Lexing.from_channel stdin in
   try
-    let expr = Parser.program Scanner.token lexbuf in
-    ignore expr; print_endline "Good"
+    let prog = Parser.program Scanner.token lexbuf in
+      compile prog
   with _ ->
     let p = lexbuf.Lexing.lex_curr_p in
     let tok = Lexing.lexeme lexbuf in
