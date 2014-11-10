@@ -1,7 +1,0 @@
-File structure:
-*.ml scanner.mll parser.mly : source file
-test.sh : test script
-*.bc : source files for test
-
-Test Routine:
-$ make test

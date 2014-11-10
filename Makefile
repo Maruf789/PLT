@@ -1,28 +1,11 @@
-OBJS = ast.cmo parser.cmo scanner.cmo translate.cmo main.cmo
-MAIN = main
+MAKE = make
 
-build : $(MAIN)
-
-$(MAIN) : $(OBJS)
-	ocamlc -o $@ $(OBJS)
-
-scanner.ml : scanner.mll
-	ocamllex scanner.mll
-
-parser.ml parser.mli : parser.mly
-	ocamlyacc parser.mly
-	ocamlc -w A -c parser.mli
-
-%.cmi : %.mli
-	ocamlc -w A -c $<
-
-%.cmo : %.ml
-	ocamlc -w A -c $<
-
+main:
+	cd src && $(MAKE)
 .PHONY : test clean
-test : build
-	./test.sh main
+test : main
+	cd scripts && ./test.sh ../src/main
 
 clean :
-	-rm -f $(MAIN) parser.ml parser.mli scanner.ml testall.log \
-	*.cmo *.cmi *.out *.diff
+	cd src && $(MAKE) clean
+

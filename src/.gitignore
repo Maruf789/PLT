@@ -1,0 +1,9 @@
+*.cmo
+*.cmi
+config
+*~
+*.output
+main
+parser.ml
+parser.mli
+scanner.ml
