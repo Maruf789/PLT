@@ -3,10 +3,12 @@ PLT
 A new matrix manipulation language and a compiler for it using OCaml
 
 = Build Routine =
+
 $ cd PLT
 $ make
 
 = Test Routine =
+
 $ make test
 
 = Folder Structure =
