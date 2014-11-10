@@ -135,12 +135,13 @@ expr:
   | ID ASSIGN expr                     { Assign(Id($1), $3) }
   | NOT expr                           { Unaop(Not, $2) }
   | MINUS expr %prec NEG               { Unaop(Neg, $2) }
+  | ID LPAREN RPAREN                   { Call($1, []) }
   | ID LPAREN arg_call_list RPAREN     { Call($1, $3) }
   | LPAREN expr RPAREN                 { $2 }
 
 /* argument list in function calling */
 arg_call_list:
-    /* nothing */             { [] } 
+    expr         { [$1] } 
   | arg_call_list COMMA expr  { $1 @ [ $3 ] }
 
 /* --- program related --- */ 
@@ -152,7 +153,8 @@ stmt_list:
 
 /* a statement */
 stmt:
-    expr SEMI                                      { Expr($1) }
+    SEMI                                           { Empty }
+  | expr SEMI                                      { Expr($1) }
   | RETURN expr SEMI                               { Return($2) }
   | IF expr THEN stmt_list elif_list else_stmt FI  { If(
                                                        {cond = $2; stmts = $4}, 

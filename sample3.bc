@@ -1,5 +1,5 @@
 # function definition
-def @h() do
+def h() do
 	disp 'hello';
 fed
 
@@ -14,13 +14,13 @@ string endstr : 'End' ;
 # top level code 
 hello();
 for i do
-	if i <= 5 do
+	if i <= 5 then
 		v : colcat(v, {i});
 		i : i + 1;
 	else
 		break;
 	fi
-orf
+rof
 for x in v do
 	if x <= 2 then
 		b : b + x*x;
@@ -29,5 +29,5 @@ for x in v do
 	else
 		b : b + x/2.0;
 	fi
-orf
+rof
 disp endstr;

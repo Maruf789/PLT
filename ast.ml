@@ -37,6 +37,7 @@ type cond_stmts = {
 }
 and stmt =
    Expr of expr
+ | Empty
  | Return of expr
  | If of cond_stmts * cond_stmts list * stmt list
  | CntFor of string * expr * stmt list
