@@ -21,7 +21,7 @@ let trans_lval = function (* translate left value to string *)
 let rec trans_expr = function (* translate expr to string *)
     Int x -> string_of_int x
   | Double x -> string_of_float x
-  | String x -> x
+  | String x -> ("\'" ^ x ^ "\'")
   | Bool x -> string_of_bool x
   | Lvalue y -> trans_lval y
   | Assign (l, e) -> ((trans_lval l) ^ "<-" ^ (trans_expr e)) 
@@ -44,7 +44,7 @@ let rec trans_stmts = function
                 | Return e -> ("return(" ^ (trans_expr e) ^ ")")
                 | Continue -> "continue"
                 | Break -> "break"
-								| If (_, _, _)|CntFor (_, _, _)|CndFor _ -> raise Bad_type                
+		| If (_, _, _)|CntFor (_, _, _)|CndFor _ -> raise Bad_type
               ) :: (trans_stmts tl)
 
 let compile prg =
@@ -58,3 +58,4 @@ let compile prg =
       trans_stmts stms
   in
     List.iter (printf "%s\n") (var_lines @ stm_lines)
+

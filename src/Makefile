@@ -19,10 +19,7 @@ parser.ml parser.mli : parser.mly
 %.cmo : %.ml
 	ocamlc -w A -c $<
 
-.PHONY : test clean
-test : build
-	./test.sh main
-
+.PHONY : clean
 clean :
 	-rm -f $(MAIN) parser.ml parser.mli scanner.ml testall.log \
 	*.cmo *.cmi *.out *.diff *~

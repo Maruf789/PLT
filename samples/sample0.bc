@@ -1,2 +1,7 @@
 int i : 0;
+string s : 'Hello World';
+
+# display int
 disp i;
+# display string
+disp s;
