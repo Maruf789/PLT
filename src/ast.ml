@@ -10,7 +10,7 @@ type var = {
   }
 
 (* containers for the occasion that several type can work *)
-type matelem_container = Int | Double | String
+(* type matelem_container = Int | Double | String *)
 (* type matsub_container = Int | Double | String | Mat *)
 (* type return_container = Void | Int | Double *)
 

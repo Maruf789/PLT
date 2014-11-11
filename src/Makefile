@@ -1,5 +1,5 @@
 OBJS = ast.cmo parser.cmo scanner.cmo translate.cmo main.cmo
-MAIN = main
+MAIN = main.bin
 
 build : $(MAIN)
 
@@ -25,4 +25,4 @@ test : build
 
 clean :
 	-rm -f $(MAIN) parser.ml parser.mli scanner.ml testall.log \
-	*.cmo *.cmi *.out *.diff
+	*.cmo *.cmi *.out *.diff *~

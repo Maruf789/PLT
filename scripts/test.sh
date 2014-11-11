@@ -1,12 +1,9 @@
 #! /bin/bash
 
-## echo ocaml debug message
-#export OCAMLRUNPARAM='p'
+SAMPLES_DIR=../samples
 
-$1 < ../samples/sample0.bc
-$1 < ../samples/sample1.bc
+$1 $SAMPLES_DIR/sample0.bc sample0.r && Rscript sample0.r
+$1 $SAMPLES_DIR/sample1.bc sample1.r && Rscript sample1.r
 
-$1 < ../samples/sample2.bc
-$1 < ../samples/sample3.bc
-
-#export OCAMLRUNPARAM=''
+$1 $SAMPLES_DIR/sample2.bc sample2.r && Rscript sample2.r
+$1 $SAMPLES_DIR/sample3.bc sample3.r && Rscript sample3.r
