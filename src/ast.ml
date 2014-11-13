@@ -1,8 +1,3 @@
-(* legal operations *)
-type binop =  Plus | Minus | Times | Divide 
-            | Eq | Neq | Lt | Leq | Gt | Geq | And | Or
-type unaop = Not | Neg
-
 (* variable definition *)
 type var = {
     vname : string;
@@ -13,6 +8,11 @@ type var = {
 (* type matelem_container = Int | Double | String *)
 (* type matsub_container = Int | Double | String | Mat *)
 (* type return_container = Void | Int | Double *)
+
+(* operatiors *)
+type binop =  Plus | Minus | Times | Divide 
+            | Eq | Neq | Lt | Leq | Gt | Geq | And | Or
+type unaop = Not | Neg
 
 (* expression *)
 type lvalue =
@@ -30,6 +30,11 @@ and expr =
  | Unaop of unaop * expr
  | Call of string * expr list
 
+(* variable declaration *)
+type var_dec =
+   VarNoInit of var
+ | VarInit of var * expr
+
 (* statement *)
 type cond_stmts = {
     cond : expr ;
@@ -46,24 +51,19 @@ and stmt =
  | Continue
  | Break
 
-(* an variable declaration or definition *)
-type var_dec_def =
-   VarNoInit of var
- | VarInit of var * expr
-
 (* function definition *)
-type func = {
+type func_def = {
     return : int;
     fname : string;
     args : var list;
-    locals : var_dec_def list;
+    locals : var_dec list;
     body : stmt list;
   }
 
 (* program is function definition plus variable definition and statements *)
 type program = {
-    pfuns : func list;
-    pvars : var_dec_def list;
+    pfuns : func_def list;
+    pvars : var_dec list;
     pstms : stmt list;
   }
 
