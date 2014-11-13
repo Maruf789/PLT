@@ -16,16 +16,19 @@ let var_init_val = function (* generate initial value *)
   | 13 -> "matrix()"
   | _ -> raise Bad_type
 
+
 let trans_lval ftbl vtbl = function (* translate left value to string *)
-    Id x -> x
+    Id x -> (find_var vtbl x), x
   | MatSub (_, _, _) -> raise Bad_type
 let rec trans_expr ftbl vtbl = function (* translate expr to string *)
-    Int x -> string_of_int x
-  | Double x -> string_of_float x
-  | String x -> ("\'" ^ x ^ "\'")
-  | Bool x -> string_of_bool x
+    Int x -> 1, string_of_int x
+  | Double x -> 2, string_of_float x
+  | String x -> 3, ("\'" ^ x ^ "\'")
+  | Bool x -> 4, string_of_bool x
   | Lvalue y -> trans_lval ftbl vtbl y
-  | Assign (l, e) -> ((trans_lval ftbl vtbl l) ^ "<-" ^ (trans_expr ftbl vtbl e))
+  | Assign (l, e) -> let rt, rv = trans_expr ftbl vtbl e in
+                     let lt, lv = trans_lval ftbl vtbl l in
+                     rt, (lv ^ "<-" ^ rv)
   | (Mat _|Binop (_, _, _)|Unaop (_, _)|Call (_, _)) -> raise Bad_type
 
 (* translate variable definition list *)
@@ -82,12 +85,12 @@ let rec trans_fundefs ftbl = function
                  ftbl, a@b)
 
 let compile prg =
-  let func_table = [] in (* function table, init as empty *)
+  let func_table = [] in (* init function table, should be built-in functions *)
   let func_table, func_lines =
     let funs = prg.pfuns in
       trans_fundefs func_table funs
   in
-  let var_table = [] in (* variable table, init as empty *)
+  let var_table = [] in (* init variable table as empty *)
   let var_table, var_lines =
     let vars = prg.pvars in
       trans_vardecs func_table var_table vars

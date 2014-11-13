@@ -4,10 +4,10 @@ open Ast
 (* variable table *)
 (* type var_table = var list *)
 
-(* find a @name in @var_table *)
+(* find the type of a @name in @var_table *)
 let find_var var_table name = 
-  List.find (fun v -> v.vname = name) var_table
-
+  let v = List.find (fun v -> v.vname = name) var_table in 
+    v.vtype
 
 (* function signature *)
 type func = {
