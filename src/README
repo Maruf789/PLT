@@ -1,0 +1,14 @@
+Source code
+=============
+scanner.mll - lexical analyser
+parser.mly - parser
+ast.ml - AST types
+sast.ml - SAST types
+scheck.ml - AST -> SAST conversion
+translate.ml - SAST -> target code
+
+
+Matrix Library
+==============
+Armadillo:
+sudo apt-get install libarmadillo-dev

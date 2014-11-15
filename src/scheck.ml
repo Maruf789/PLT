@@ -54,7 +54,7 @@ let rec check_fundefs ftbl = function
 
 (* check the whole program
    return a sprogram *)
-let compile prg =
+let check prg =
   let func_table = [] in (* init function table, should be built-in functions *)
   let func_table, func_lines =
     let funs = prg.pfuns in

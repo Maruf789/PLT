@@ -4,7 +4,7 @@ let _ =
   let lexbuf = Lexing.from_channel stdin in
   try
     let prog = Parser.program Scanner.token lexbuf in
-    let sprog = Scheck.compile prog in
+    let sprog = Scheck.check prog in
     Translate.compile sprog
   with
     Scheck.Bad_type x -> print_endline ("Error: bad type " ^ x)
