@@ -1,4 +1,5 @@
-OBJS = ast.cmo parser.cmo scanner.cmo runtime.cmo translate.cmo main.cmo
+OBJS = op.cmo ast.cmo parser.cmo scanner.cmo \
+       sast.cmo scheck.cmo translate.cmo main.cmo
 MAIN = main.bin
 
 build : $(MAIN)

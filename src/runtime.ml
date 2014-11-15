@@ -9,11 +9,7 @@ let find_var var_table name =
   let v = List.find (fun v -> v.vname = name) var_table in 
     v.vtype
 
-(* function signature *)
-type func = {
-  fnname : string;
-  fnargs : int list
-}
+
 
 (* function table *)
 (* type func_table = func list *)

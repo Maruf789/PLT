@@ -1,29 +1,32 @@
+(* Abstract Syntax Tree *)
+open Op
+
+(* data type *)
+type dtype = Dvoid | Dint | Ddouble | Dstring | Dbool
+           | Dintmat | Ddoublemat | Dstringmat
+
 (* variable definition *)
-type var = {
-  vname : string;
-  vtype : int;
-}
+type var = { vtype: dtype; vname: string }
+(* type var = Vint of string | Vdouble of string 
+         | Vstring of string | Vbool of string 
+         | Vintmat of string | Vdoublemat of string | Vstringmat of string *)
 
 (* containers for the occasion that several type can work *)
 (* type matelem_container = Int | Double | String *)
 (* type matsub_container = Int | Double | String | Mat *)
 (* type return_container = Void | Int | Double *)
 
-(* operatiors *)
-type binop =  Plus | Minus | Times | Divide 
-           | Eq | Neq | Lt | Leq | Gt | Geq | And | Or
-type unaop = Not | Neg
 
 (* expression *)
 type lvalue =
     Id of string
   | MatSub of string * expr * expr
 and expr =
-    Bool of bool
-  | Int of int
-  | Double of float
-  | String of string
-  | Mat of expr list list
+    Boolval of bool
+  | Intval of int
+  | Doubleval of float
+  | Stringval of string
+  | Matval of expr list list
   | Lvalue of lvalue
   | Binop of expr * binop * expr
   | Assign of lvalue * expr
@@ -53,7 +56,7 @@ and stmt =
 
 (* function definition *)
 type func_def = {
-  return : int;
+  return : dtype;
   fname : string;
   args : var list;
   locals : var_dec list;
@@ -67,11 +70,3 @@ type program = {
   pstms : stmt list;
 }
 
-(* Location update *)
-open Lexing
-let incr_lineno lexbuf =
-  let pos = lexbuf.lex_curr_p in
-  lexbuf.lex_curr_p <- { pos with
-                         pos_lnum = pos.pos_lnum + 1;
-                         pos_bol = pos.pos_cnum;
-                       }
