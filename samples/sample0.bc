@@ -1,8 +1,2 @@
-int i : 1;
-string s : 'Hello World';
-
 # display int
-disp i;
-if i then # display string
-	disp s;
-fi
+disp 'Hello World';

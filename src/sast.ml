@@ -27,8 +27,8 @@ type svar_def = t * string * sexpression (* type, name, init expr *)
 
 (* statement *)
 type scond_stmts = {
-  cond : sexpression;
-  stmts : sstmt list
+  scond : sexpression;
+  sstmts : sstmt list
 }
 and sstmt =
     SEmpty

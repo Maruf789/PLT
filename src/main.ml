@@ -1,13 +1,14 @@
-module T = Translate
 open Printf
 
 let _ = 
   let lexbuf = Lexing.from_channel stdin in
   try
     let prog = Parser.program Scanner.token lexbuf in
-    T.compile prog
+    let sprog = Scheck.compile prog in
+    Translate.compile sprog
   with
-    T.Bad_type -> print_endline "Error: bad type"
+    Scheck.Bad_type x -> print_endline ("Error: bad type " ^ x)
+  | Translate.Not_implemented -> print_endline "Error: not implemented"
   | _ ->
     let p = lexbuf.Lexing.lex_curr_p in
     let tok = Lexing.lexeme lexbuf in
