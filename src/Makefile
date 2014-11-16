@@ -1,4 +1,4 @@
-OBJS = op.cmo ast.cmo parser.cmo scanner.cmo \
+OBJS = ast.cmo parser.cmo scanner.cmo \
        sast.cmo scheck.cmo translate.cmo main.cmo
 MAIN = main.bin
 

@@ -1,5 +1,4 @@
-%{ 
-  open Op
+%{
   open Ast
 %}
 
@@ -33,19 +32,19 @@
 
 /* --- data type --- */
 
-dtyp:
-  | INT                 { Dint }
-  | DOUBLE              { Ddouble }
-  | STRING              { Dstring }
-  | BOOL                { Dbool }
-  | INTMAT              { Dintmat }
-  | DOUBLEMAT           { Ddoublemat }
-  | STRINGMAT           { Dstringmat }
+dt:
+  | INT                 { Int }
+  | DOUBLE              { Double }
+  | STRING              { String }
+  | BOOL                { Bool }
+  | INTMAT              { IntMat }
+  | DOUBLEMAT           { DoubleMat }
+  | STRINGMAT           { StringMat }
 
 /* variable declaration or definition */
 var_dec_def:
-    dtyp ID SEMI                { VarNoInit({ vname = $2; vtype = $1; }) } 
-  | dtyp ID ASSIGN expr SEMI    { VarInit({ vname = $2; vtype = $1; }, $4) }
+    dt ID SEMI                { VarNoInit({ vname = $2; vtype = $1; }) } 
+  | dt ID ASSIGN expr SEMI    { VarInit({ vname = $2; vtype = $1; }, $4) }
 
 
 /* variable declaration or definition list */
@@ -58,22 +57,22 @@ var_dec_def_list:
 
 /* argument list in function declaration/definition */
 arg_def_list_1 :
-  | dtyp ID                      { [{ vname = $2; vtype = $1; }] }
-  | dtyp                         { [{ vname = "_"; vtype = $1; }] }
-  | arg_def_list COMMA dtyp ID   { $1 @ [{ vname = $4; vtype = $3; }] }
-  | arg_def_list COMMA dtyp      { $1 @ [{ vname = "_"; vtype = $3; }] }
+  | dt ID                      { [{ vname = $2; vtype = $1; }] }
+  | dt                         { [{ vname = "_"; vtype = $1; }] }
+  | arg_def_list COMMA dt ID   { $1 @ [{ vname = $4; vtype = $3; }] }
+  | arg_def_list COMMA dt      { $1 @ [{ vname = "_"; vtype = $3; }] }
 
-arg_def_list :
+arg_def_list:
     /* empty */    { [] }
   | arg_def_list_1 { $1 }
 
 /* a function definition */
 func_def:
-    DEF dtyp ID LPAREN arg_def_list RPAREN DO var_dec_def_list stmt_list FED {
+    DEF dt ID LPAREN arg_def_list RPAREN DO var_dec_def_list stmt_list FED {
        { return = $2; fname = $3; args = $5; locals = $8; body = $9; }
       }
   | DEF ID LPAREN arg_def_list RPAREN DO var_dec_def_list stmt_list FED {
-        { return = Dvoid; fname = $2; args = $4; locals = $7; body = $8; } 
+        { return = Void; fname = $2; args = $4; locals = $7; body = $8; } 
       }
 
 
@@ -180,5 +179,4 @@ program:
   | var_dec_def_list stmt_list  {
         {pfuns = []; pvars = $1; pstms = $2;}
       }
-
 

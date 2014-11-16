@@ -2,18 +2,19 @@
    Input: SAST, 
    Output: target code string list *)
 
+open Ast
 open Sast
 (* open Printf *)
 
 exception Not_implemented
 
 (* translate expr to string *)
-let rec trans_expr = function 
+let rec trans_expr exp = match exp with
     String, SStringval x -> ("\'" ^ x ^ "\'")
   | _, _ -> raise Not_implemented
 
 (* translate variable definition list *)
-let rec trans_vardecs = function
+let rec trans_vardecs vars = match vars with
     [] -> []
   | hd::tl ->
       let a = [""] in
@@ -23,17 +24,17 @@ let rec trans_vardecs = function
 let gen_disp es = ("print(" ^ es ^ ")")
 
 (* translate statement list *)
-let rec trans_elifs = function (* translate a list of elif *)
+let rec trans_elifs elifs = match elifs with (* translate a list of elif *)
     [] -> []
   | hd::tl -> [""] @ (trans_elifs tl)
-and trans_stmts = function 
+and trans_stmts stmts = match stmts with
     [] -> []
   | hd::tl -> ( match hd with
                   SDisp e -> (let es = trans_expr e in [gen_disp es])
                 | _ -> raise Not_implemented
               ) @ (trans_stmts tl)
 
-let rec trans_fundefs = function
+let rec trans_fundefs fundefs = match fundefs with
     [] -> []
   | hd::tl -> (let a = [] in
                let b = trans_fundefs tl in 

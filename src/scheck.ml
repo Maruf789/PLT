@@ -7,14 +7,14 @@ exception Bad_type of string
 
 (* variable default value, 
  return a sexpression *)
-let svar_init_sexpr = function
+let svar_init_sexpr var = match var with
     Int -> Int, SIntval 0
   | Void -> raise (Failure "Cannot define a void variable")
   | _ -> raise (Bad_type "Not implemented")
 
 (* check expr, 
 return a sexpression *)
-let rec check_expr ftbl vtbl = function
+let rec check_expr ftbl vtbl exp = match exp with
     Intval x -> Int, SIntval x
   | Doubleval x -> Double, SDoubleval x
   | Stringval x -> String, SStringval x
@@ -25,18 +25,18 @@ let rec check_expr ftbl vtbl = function
 (* check variable definition list,
   while building variable table
   return a svar list and svar_def list *)
-let rec check_vardecs ftbl vtbl = function
+let rec check_vardecs ftbl vtbl vardecs = match vardecs with
     [] -> vtbl, []
   | hd::tl -> check_vardecs ftbl vtbl tl
 
 (* check statement list 
    return a stmt list *)
-let rec check_elifs ftbl vtbl = function (* translate a list of elif *)
+let rec check_elifs ftbl vtbl elifs = match elifs with(* translate a list of elif *)
     [] -> []
   | hd::tl -> [SExpr (check_expr ftbl vtbl hd.cond)]
               @ (check_stmts ftbl vtbl hd.stmts)
               @ (check_elifs ftbl vtbl tl)
-and check_stmts ftbl vtbl = function 
+and check_stmts ftbl vtbl stmts = match stmts with
     [] -> []
   | hd::tl -> [ match hd with
                   Disp e -> SDisp (check_expr ftbl vtbl e)
@@ -46,7 +46,7 @@ and check_stmts ftbl vtbl = function
 (* check function definition list
    while buiding function table
    return a funsg list and sfun_def list *)
-let rec check_fundefs ftbl = function
+let rec check_fundefs ftbl funsgs = match funsgs with
     [] -> ftbl, []
   | hd::tl -> (let ftbl, a = ftbl, [] in
                let ftbl, b = check_fundefs ftbl tl in 

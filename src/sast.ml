@@ -1,55 +1,52 @@
 (* Semantic checked Abstract Syntax Tree - Safe Abstract Syntax Tree *)
-open Op
-
-(* data type *)
-type t = Void | Int | Double | String | Bool | IntMat | DoubleMat | StringMat
+open Ast
 
 (* variable *)
-type svar = { svtype: t; svname: string }
+type svar = { svtype: dtype; svname: string }
 
 (* expression with type *)
-type expr_val =
+type sexpr_val =
     SId of string
-  | SMatSub of string * sexpression * sexpression
+  | SMatSub of string * sexpr * sexpr
   | SBoolval of bool
   | SIntval of int
   | SDoubleval of float
   | SStringval of string
-  | SMatval of sexpression list list
-  | SBinop of sexpression * binop * sexpression
-  | SAssign of sexpression * sexpression
-  | SUnaop of unaop * sexpression
-  | SCall of string * sexpression list
-and sexpression = t * expr_val
+  | SMatval of sexpr list list
+  | SBinop of sexpr * binop * sexpr
+  | SAssign of sexpr * sexpr
+  | SUnaop of unaop * sexpr
+  | SCall of string * sexpr list
+and sexpr = dtype * sexpr_val
 
 (* variable definition *)
-type svar_def = t * string * sexpression (* type, name, init expr *)
+type svar_def = dtype * string * sexpr (* type, name, init expr *)
 
 (* statement *)
 type scond_stmts = {
-  scond : sexpression;
+  scond : sexpr;
   sstmts : sstmt list
 }
 and sstmt =
     SEmpty
-  | SExpr of sexpression
-  | SReturn of sexpression
+  | SExpr of sexpr
+  | SReturn of sexpr
   | SIf of scond_stmts * scond_stmts list * sstmt list
-  | SCntFor of string * sexpression * sstmt list
+  | SCntFor of string * sexpr * sstmt list
   | SCndFor of scond_stmts
-  | SDisp of sexpression
+  | SDisp of sexpr
   | SContinue
   | SBreak
 
 (* function signature *)
 type funsg = {
   fsname : string;
-  fsargs : t list
+  fsargs : dtype list
 }
 
 (* function definition *)
 type sfun_def = {
-  sreturn : t;
+  sreturn : dtype;
   sfname : string;
   sargs : svar list;
   slocals : svar_def list;

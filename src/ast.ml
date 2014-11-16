@@ -1,9 +1,13 @@
 (* Abstract Syntax Tree *)
-open Op
+
+(* operators *)
+type binop =  Plus | Minus | Times | Divide 
+           | Eq | Neq | Lt | Leq | Gt | Geq | And | Or
+
+type unaop = Not | Neg
 
 (* data type *)
-type dtype = Dvoid | Dint | Ddouble | Dstring | Dbool
-           | Dintmat | Ddoublemat | Dstringmat
+type dtype = Void | Int | Double | String | Bool | IntMat | DoubleMat | StringMat
 
 (* variable definition *)
 type var = { vtype: dtype; vname: string }
