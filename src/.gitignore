@@ -3,7 +3,8 @@
 config
 *~
 *.output
-main*
+main
+main.bin
 parser.ml
 parser.mli
 scanner.ml
