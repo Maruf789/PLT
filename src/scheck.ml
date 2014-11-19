@@ -5,6 +5,35 @@ open Sast
 
 exception Bad_type of string
 
+(* variable table *)
+(* type var_table = var list *)
+
+(* find the type of a @name in @var_table *)
+let find_var var_table name =
+  let v =
+    try List.find (fun v -> v.vname = name) var_table
+    with Not_found -> raise (Failure ("Variable " ^ name ^ " not defined"))
+  in 
+    v.vtype
+
+(* function table *)
+(* type func_table = funsg list *)
+
+(* generate signature of a function *)
+let sig_func fn =
+  { fsname = fn.fname;
+    fsargs = (List.fold_left (fun a b -> a@[b.vtype]) [] fn.args)
+  }
+
+(* find a function signature(@fnsg) in @func_table *)
+let find_func func_table fnsg =
+  let func_eq f1 f2 =
+    f1.fsname = f2.fsname &&
+    try List.for_all2 (=) f1.fsargs f2.fsargs
+    with Invalid_argument _ -> false
+  in
+  List.find (func_eq fnsg) func_table
+
 (* variable default value, 
  return a sexpression *)
 let svar_init_sexpr var = match var with
@@ -14,11 +43,18 @@ let svar_init_sexpr var = match var with
 
 (* check expr, 
 return a sexpression *)
-let rec check_expr ftbl vtbl exp = match exp with
+let rec check_lvalue ftbl vtbl lv = match lv with
+    Id x -> (find_var vtbl x), (SId x)
+  | MatSub(x, e1, e2) -> (find_var vtbl x),
+                      (SMatSub (x,
+                               (check_expr ftbl vtbl e1),
+                               (check_expr ftbl vtbl e2)))
+and check_expr ftbl vtbl exp = match exp with
     Intval x -> Int, SIntval x
   | Doubleval x -> Double, SDoubleval x
   | Stringval x -> String, SStringval x
   | Boolval x -> Bool, SBoolval x
+  | Lvalue lv -> check_lvalue ftbl vtbl lv
   | _ -> raise (Bad_type "Not implemented")
 
 
