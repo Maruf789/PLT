@@ -18,6 +18,7 @@ let find_var var_table name =
 (* function table *)
 (* type func_table = sfun_def list *)
 
+(* FIXME: Maybe Ast.func_def -> Sast.sfun_def is needed *)
 (* generate Sast.funsg of a Ast.func_def *)
 let sig_func fn = {
   fsname = fn.fname;
