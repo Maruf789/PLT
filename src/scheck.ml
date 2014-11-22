@@ -2,8 +2,7 @@
    Input AST, output SAST *)
 open Ast
 open Sast
-
-exception Bad_type of string
+open Scheck_expr
 
 (* variable table *)
 (* type var_table = var list *)
@@ -32,38 +31,48 @@ let find_func func_table fnsg =
     try List.for_all2 (=) f1.fsargs f2.fsargs
     with Invalid_argument _ -> false
   in
-  List.find (func_eq fnsg) func_table
+    List.find (func_eq fnsg) func_table
 
 (* variable default value, 
- return a sexpression *)
+   return a sexpression *)
 let svar_init_sexpr var = match var with
     Int -> Int, SIntval 0
   | Void -> raise (Failure "Cannot define a void variable")
   | _ -> raise (Bad_type "Not implemented")
 
 (* check expr, 
-return a sexpression *)
+   return a sexpression *)
 let rec check_lvalue ftbl vtbl lv = match lv with
     Id x -> (find_var vtbl x), (SId x)
   | MatSub(x, e1, e2) -> (find_var vtbl x),
-                      (SMatSub (x,
-                               (check_expr ftbl vtbl e1),
-                               (check_expr ftbl vtbl e2)))
+                         (SMatSub (x,
+                                   (check_expr ftbl vtbl e1),
+                                   (check_expr ftbl vtbl e2)))
+and check_matval ftbl vtbl matx =
+  let check_exp_list exp_list_list = 
+    List.map (List.map (check_expr ftbl vtbl)) exp_list_list
+  in
+  check_matval_s (check_exp_list matx)
 and check_expr ftbl vtbl exp = match exp with
     Intval x -> Int, SIntval x
   | Doubleval x -> Double, SDoubleval x
   | Stringval x -> String, SStringval x
   | Boolval x -> Bool, SBoolval x
+  | Matval matx -> check_matval ftbl vtbl matx
   | Lvalue lv -> check_lvalue ftbl vtbl lv
+  | Binop(e1, bop, e2) -> check_binop bop
+                            (check_expr ftbl vtbl e1) 
+                            (check_expr ftbl vtbl e2)
+  | Unaop(uop, x) -> check_uniop uop (check_expr ftbl vtbl x)
   | _ -> raise (Bad_type "Not implemented")
 
 
 (* check variable definition list,
-  while building variable table
-  return a svar list and svar_def list *)
+   while building variable table
+   return a svar list and svar_def list *)
 let rec check_vardecs ftbl vtbl vardecs = match vardecs with
     [] -> vtbl, []
-  | hd::tl -> check_vardecs ftbl vtbl tl
+  | hd::tl -> ignore(hd); (check_vardecs ftbl vtbl tl)
 
 (* check statement list 
    return a stmt list *)

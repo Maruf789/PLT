@@ -8,7 +8,7 @@ let _ =
         let sprog = Scheck.check prog in
         Translate.compile sprog
       with  
-        Scheck.Bad_type x -> print_endline ("Error: bad type " ^ x)
+        Sast.Bad_type x -> print_endline ("Error: bad type " ^ x)
       | Translate.Not_implemented -> print_endline "Error: not implemented"
       | _ ->
         let p = lexbuf.Lexing.lex_curr_p in
