@@ -16,22 +16,30 @@ let find_var var_table name =
     v.vtype
 
 (* function table *)
-(* type func_table = funsg list *)
+(* type func_table = sfun_def list *)
 
-(* generate signature of a function *)
-let sig_func fn =
-  { fsname = fn.fname;
-    fsargs = (List.fold_left (fun a b -> a@[b.vtype]) [] fn.args)
-  }
+(* generate Sast.funsg of a Ast.func_def *)
+let sig_func fn = {
+  fsname = fn.fname;
+  fsargs = List.map (fun v -> v.vtype) fn.args
+}
+
+(* generate Sast.funsg of Sast.sfun_def *)
+let sig_sfunc sfn = {
+  fsname = sfn.sfname;
+  fsargs = List.map (fun v -> v.svtype) sfn.sargs
+}
 
 (* find a function signature(@fnsg) in @func_table *)
 let find_func func_table fnsg =
-  let func_eq f1 f2 =
-    f1.fsname = f2.fsname &&
-    try List.for_all2 (=) f1.fsargs f2.fsargs
-    with Invalid_argument _ -> false
+  let func_eq f1 fd =
+    let f2 = sig_sfunc fd in
+      f1.fsname = f2.fsname &&
+      try List.for_all2 (=) f1.fsargs f2.fsargs
+      with Invalid_argument _ -> false
   in
-    List.find (func_eq fnsg) func_table
+    try List.find (func_eq fnsg) func_table
+    with Not_found -> raise (Failure ("Function " ^ fnsg.fsname ^ " not defined"))
 
 (* variable default value, 
    return a sexpression *)
@@ -49,10 +57,15 @@ let rec check_lvalue ftbl vtbl lv = match lv with
                                    (check_expr ftbl vtbl e1),
                                    (check_expr ftbl vtbl e2)))
 and check_matval ftbl vtbl matx =
-  let check_exp_list exp_list_list = 
+  let check_exp_list exp_list_list =
     List.map (List.map (check_expr ftbl vtbl)) exp_list_list
   in
-  check_matval_s (check_exp_list matx)
+    check_matval_s (check_exp_list matx)
+and check_call ftbl vtbl fn exp_list =
+  let sexp_list = List.map (check_expr ftbl vtbl) exp_list in
+  let typ_list = List.map (fst) sexp_list in
+  let fnsg = find_func ftbl {fsname=fn; fsargs=typ_list} in
+    fnsg.sreturn, SCall(fn, sexp_list)
 and check_expr ftbl vtbl exp = match exp with
     Intval x -> Int, SIntval x
   | Doubleval x -> Double, SDoubleval x
@@ -61,10 +74,12 @@ and check_expr ftbl vtbl exp = match exp with
   | Matval matx -> check_matval ftbl vtbl matx
   | Lvalue lv -> check_lvalue ftbl vtbl lv
   | Binop(e1, bop, e2) -> check_binop bop
-                            (check_expr ftbl vtbl e1) 
+                            (check_expr ftbl vtbl e1)
                             (check_expr ftbl vtbl e2)
   | Unaop(uop, x) -> check_uniop uop (check_expr ftbl vtbl x)
-  | _ -> raise (Bad_type "Not implemented")
+  | Assign(lv, x) -> check_assign (check_lvalue ftbl vtbl lv) 
+                       (check_expr ftbl vtbl x)
+  | Call(fn, xl) -> check_call ftbl vtbl fn xl
 
 
 (* check variable definition list,

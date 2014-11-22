@@ -16,7 +16,7 @@ type sexpr_val =
   | SStringval of string
   | SMatval of sexpr list list
   | SBinop of sexpr * binop * sexpr
-  | SAssign of sexpr * sexpr
+  | SAssign of sexpr_val * sexpr_val
   | SUnaop of unaop * sexpr_val
   | SCall of string * sexpr list
 and sexpr = dtype * sexpr_val
