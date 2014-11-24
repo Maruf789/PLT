@@ -2,6 +2,8 @@
 open Parser 
 open Lexing
 
+exception Scanner_error of string
+
 (* increase line no *)
 let incr_lineno lexbuf =
   let pos = lexbuf.lex_curr_p in
@@ -80,20 +82,20 @@ rule token = parse
                         p.pos_lnum
                         (p.pos_cnum - p.pos_bol + 1)
                     in
-                    raise (Failure msg) }
+                    raise (Scanner_error msg) }
 
 and comment = parse
     '\n' { incr_lineno lexbuf; token lexbuf }
-            | eof  { EOF }
-            | _    { comment lexbuf }
+  | eof  { EOF }
+  | _    { comment lexbuf }
 
 and string_lit buf = parse
     '\''     { String.concat "" (List.rev buf) }
-                   | eof      { raise End_of_file }
-                   | '\n'     { raise End_of_file }
-                   | "\\n"    { string_lit ("\\n"::buf) lexbuf }
-                   | "\\t"    { string_lit ("\\t"::buf) lexbuf }
-                   | "\\'"    { string_lit ("\\'"::buf) lexbuf }
-                   | "\\\\"   { string_lit ("\\\\"::buf) lexbuf }
-                   | _ as c   { string_lit ((Char.escaped c)::buf) lexbuf }
+  | eof      { raise (Scanner_error "Unexpected End-of-File") }
+  | '\n'     { raise (Scanner_error "Unexpected End-of-Line") }
+  | "\\n"    { string_lit ("\\n"::buf) lexbuf }
+  | "\\t"    { string_lit ("\\t"::buf) lexbuf }
+  | "\\'"    { string_lit ("\\'"::buf) lexbuf }
+  | "\\\\"   { string_lit ("\\\\"::buf) lexbuf }
+  | _ as c   { string_lit ((Char.escaped c)::buf) lexbuf }
 
