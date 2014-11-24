@@ -1,12 +1,12 @@
 MAKE = make
 
-main: clean
+main:
 	cd src && $(MAKE)
 
 .PHONY : test clean
-test :
+test : main
 	cd scripts && ./test.sh ../src/main.bin
 
 clean :
 	cd src && $(MAKE) clean
-	cd scripts && rm -f *.r 
+	cd scripts && rm -f *.r *_out
