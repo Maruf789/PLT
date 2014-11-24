@@ -1,4 +1,2 @@
 # function definition
-def hello() do
-	disp 'hello';
-fed
+	disp 'hello world';
