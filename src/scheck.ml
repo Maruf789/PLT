@@ -18,29 +18,26 @@ let find_var var_table name =
 (* function table *)
 (* type func_table = sfun_def list *)
 
-(* FIXME: Maybe Ast.func_def -> Sast.sfun_def is needed *)
-(* generate Sast.funsg of a Ast.func_def *)
-let sig_func fn = {
-  fsname = fn.fname;
-  fsargs = List.map (fun v -> v.vtype) fn.args
-}
-
 (* generate Sast.funsg of Sast.sfun_def *)
 let sig_sfunc sfn = {
   fsname = sfn.sfname;
-  fsargs = List.map (fun v -> v.svtype) sfn.sargs
+  fsargs = List.map (fun v -> v.vtype) sfn.sargs
 }
 
-(* find a function signature(@fnsg) in @func_table *)
+(* find a function signature in function table
+   arguments: @fnsg - function signature to be found
+              @func_table - function table
+   return: (true, sfun_def) on found, (false, _) on not_found *)
 let find_func func_table fnsg =
+  let dummy = {sreturn=Void; sfname="_"; sargs=[]; slocals=[]; sbody=[]} in
   let func_eq f1 fd =
     let f2 = sig_sfunc fd in
       f1.fsname = f2.fsname &&
       try List.for_all2 (=) f1.fsargs f2.fsargs
       with Invalid_argument _ -> false
   in
-    try List.find (func_eq fnsg) func_table
-    with Not_found -> raise (Failure ("Function " ^ fnsg.fsname ^ " not defined"))
+    try true, (List.find (func_eq fnsg) func_table)
+    with Not_found -> false, dummy
 
 (* variable default value, 
    return a sexpression *)
@@ -65,8 +62,9 @@ and check_matval ftbl vtbl matx =
 and check_call ftbl vtbl fn exp_list =
   let sexp_list = List.map (check_expr ftbl vtbl) exp_list in
   let typ_list = List.map (fst) sexp_list in
-  let fnsg = find_func ftbl {fsname=fn; fsargs=typ_list} in
-    fnsg.sreturn, SCall(fn, sexp_list)
+  let found, fnsg = find_func ftbl {fsname=fn; fsargs=typ_list} in
+    if found then fnsg.sreturn, SCall(fn, sexp_list)
+    else raise (Failure ("Function " ^ fn ^ " not defined"))
 and check_expr ftbl vtbl exp = match exp with
     Intval x -> Int, SIntval x
   | Doubleval x -> Double, SDoubleval x
@@ -104,20 +102,45 @@ and check_stmts ftbl vtbl stmts = match stmts with
                 | _ -> raise (Bad_type "Not implemented")
               ] @ (check_stmts ftbl vtbl tl)
 
+
+(* check_fundef
+     check function definition
+   arguments: Sast.sfun_def list, Ast.func_def
+   return: Sast.sfun_def list *)
+let check_fundef ftbl new_func_def =
+  let sig_func fn = {
+    fsname = fn.fname;
+    fsargs = List.map (fun v -> v.vtype) fn.args
+  } in
+  let new_fnsg = sig_func new_func_def in (* signature *)
+  let new_sret = new_func_def.return in (* return type *)
+  let new_sname = new_func_def.fname in (* name *)
+  let new_sargs = new_func_def.args in (* arguments *)
+  (* check local variables & build variable table *)
+  let vtbl, new_lvars = check_vardecs ftbl [] new_func_def.locals in
+  (* check statements *)
+  let new_fstmts = check_stmts ftbl vtbl new_func_def.body in
+  let new_sfun_def = { sreturn = new_sret;
+                       sfname = new_sname;
+                       sargs = new_sargs;
+                       slocals = new_lvars;
+                       sbody = new_fstmts } in
+  let found, fbody = find_func ftbl new_fnsg in
+    if not found then ftbl@[new_sfun_def]
+    else raise (Failure ("Function " ^ new_sname ^ " already defined"))
 (* check function definition list
-   while buiding function table
-   return a funsg list and sfun_def list *)
+   input: func_def list
+   return: sfun_def list *)
 let rec check_fundefs ftbl funsgs = match funsgs with
-    [] -> ftbl, []
-  | hd::tl -> (let ftbl, a = ftbl, [] in
-               let ftbl, b = check_fundefs ftbl tl in 
-                 ftbl, a@b)
+    [] -> ftbl
+  | hd::tl -> (let new_ftbl = check_fundef ftbl hd in
+                 check_fundefs new_ftbl tl)
 
 (* check the whole program
    return a sprogram *)
 let check prg =
   let func_table = [] in (* init function table, should be built-in functions *)
-  let func_table, func_lines =
+  let func_lines =
     let funs = prg.pfuns in
       check_fundefs func_table funs
   in

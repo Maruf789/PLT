@@ -4,7 +4,7 @@ open Ast
 exception Bad_type of string
 
 (* variable *)
-type svar = { svtype: dtype; svname: string }
+(* type svar = { svtype: dtype; svname: string } *)
 
 (* expression with type *)
 type sexpr_val =
@@ -50,7 +50,7 @@ type funsg = {
 type sfun_def = {
   sreturn : dtype;
   sfname : string;
-  sargs : svar list;
+  sargs : var list;
   slocals : svar_def list;
   sbody : sstmt list
 }

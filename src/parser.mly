@@ -78,7 +78,7 @@ func_def:
 
 /* a list of function definitions */
 func_def_list:
-  | func_def                { [$1] } /* nothing */
+    func_def                { [$1] } /* nothing */
   | func_def_list func_def  { $1 @ [$2] }
 
 
