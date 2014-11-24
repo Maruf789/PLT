@@ -22,8 +22,8 @@ let main lex_buf =
       Scanner.Scanner_error x -> perror "Scanner error" x
     | Parsing.Parse_error -> perror "Parser error" (loc_err lex_buf)
     | Sast.Bad_type x -> perror "Sast error" x
-		| Translate.Not_implemented -> perror "Translate error" (loc_err lex_buf)
-		| _ -> perror "Unkown error" (loc_err lex_buf)
+    | Translate.Not_implemented -> perror "Translate error" (loc_err lex_buf)
+    | _ -> perror "Unkown error" (loc_err lex_buf)
 
 (* Shell interface *)
 let _ =
