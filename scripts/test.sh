@@ -7,4 +7,4 @@ IDEAOUTPUT_DIR=./test_ideaoutputs
 $1 $SAMPLES_DIR/sample0.bc sample0.c > $OUTPUT_DIR/sample0out.txt
 $1 $SAMPLES_DIR/sample1.bc sample1.c > $OUTPUT_DIR/sample1out.txt
 $1 $SAMPLES_DIR/sample2.bc sample2.c > $OUTPUT_DIR/sample2out.txt
-$1 $SAMPLES_DIR/sample3.bc sample0.c > $OUTPUT_DIR/sample3out.txt
+$1 $SAMPLES_DIR/sample3.bc sample3.c > $OUTPUT_DIR/sample3out.txt

@@ -4,6 +4,7 @@ config
 *~
 *.output
 main
+main.bin
 parser.ml
 parser.mli
 scanner.ml

@@ -1,6 +1,8 @@
 (* Semantic checked Abstract Syntax Tree - Safe Abstract Syntax Tree *)
 open Ast
 
+exception Bad_type of string
+
 (* variable *)
 type svar = { svtype: dtype; svname: string }
 
@@ -14,8 +16,8 @@ type sexpr_val =
   | SStringval of string
   | SMatval of sexpr list list
   | SBinop of sexpr * binop * sexpr
-  | SAssign of sexpr * sexpr
-  | SUnaop of unaop * sexpr
+  | SAssign of sexpr_val * sexpr_val
+  | SUnaop of unaop * sexpr_val
   | SCall of string * sexpr list
 and sexpr = dtype * sexpr_val
 

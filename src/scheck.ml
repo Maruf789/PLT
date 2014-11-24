@@ -2,32 +2,93 @@
    Input AST, output SAST *)
 open Ast
 open Sast
+open Scheck_expr
 
-exception Bad_type of string
+(* variable table *)
+(* type var_table = var list *)
+
+(* find the type of a @name in @var_table *)
+let find_var var_table name =
+  let v =
+    try List.find (fun v -> v.vname = name) var_table
+    with Not_found -> raise (Failure ("Variable " ^ name ^ " not defined"))
+  in 
+    v.vtype
+
+(* function table *)
+(* type func_table = sfun_def list *)
+
+(* FIXME: Maybe Ast.func_def -> Sast.sfun_def is needed *)
+(* generate Sast.funsg of a Ast.func_def *)
+let sig_func fn = {
+  fsname = fn.fname;
+  fsargs = List.map (fun v -> v.vtype) fn.args
+}
+
+(* generate Sast.funsg of Sast.sfun_def *)
+let sig_sfunc sfn = {
+  fsname = sfn.sfname;
+  fsargs = List.map (fun v -> v.svtype) sfn.sargs
+}
+
+(* find a function signature(@fnsg) in @func_table *)
+let find_func func_table fnsg =
+  let func_eq f1 fd =
+    let f2 = sig_sfunc fd in
+      f1.fsname = f2.fsname &&
+      try List.for_all2 (=) f1.fsargs f2.fsargs
+      with Invalid_argument _ -> false
+  in
+    try List.find (func_eq fnsg) func_table
+    with Not_found -> raise (Failure ("Function " ^ fnsg.fsname ^ " not defined"))
 
 (* variable default value, 
- return a sexpression *)
+   return a sexpression *)
 let svar_init_sexpr var = match var with
     Int -> Int, SIntval 0
   | Void -> raise (Failure "Cannot define a void variable")
   | _ -> raise (Bad_type "Not implemented")
 
 (* check expr, 
-return a sexpression *)
-let rec check_expr ftbl vtbl exp = match exp with
+   return a sexpression *)
+let rec check_lvalue ftbl vtbl lv = match lv with
+    Id x -> (find_var vtbl x), (SId x)
+  | MatSub(x, e1, e2) -> (find_var vtbl x),
+                         (SMatSub (x,
+                                   (check_expr ftbl vtbl e1),
+                                   (check_expr ftbl vtbl e2)))
+and check_matval ftbl vtbl matx =
+  let check_exp_list exp_list_list =
+    List.map (List.map (check_expr ftbl vtbl)) exp_list_list
+  in
+    check_matval_s (check_exp_list matx)
+and check_call ftbl vtbl fn exp_list =
+  let sexp_list = List.map (check_expr ftbl vtbl) exp_list in
+  let typ_list = List.map (fst) sexp_list in
+  let fnsg = find_func ftbl {fsname=fn; fsargs=typ_list} in
+    fnsg.sreturn, SCall(fn, sexp_list)
+and check_expr ftbl vtbl exp = match exp with
     Intval x -> Int, SIntval x
   | Doubleval x -> Double, SDoubleval x
   | Stringval x -> String, SStringval x
   | Boolval x -> Bool, SBoolval x
-  | _ -> raise (Bad_type "Not implemented")
+  | Matval matx -> check_matval ftbl vtbl matx
+  | Lvalue lv -> check_lvalue ftbl vtbl lv
+  | Binop(e1, bop, e2) -> check_binop bop
+                            (check_expr ftbl vtbl e1)
+                            (check_expr ftbl vtbl e2)
+  | Unaop(uop, x) -> check_uniop uop (check_expr ftbl vtbl x)
+  | Assign(lv, x) -> check_assign (check_lvalue ftbl vtbl lv) 
+                       (check_expr ftbl vtbl x)
+  | Call(fn, xl) -> check_call ftbl vtbl fn xl
 
 
 (* check variable definition list,
-  while building variable table
-  return a svar list and svar_def list *)
+   while building variable table
+   return a svar list and svar_def list *)
 let rec check_vardecs ftbl vtbl vardecs = match vardecs with
     [] -> vtbl, []
-  | hd::tl -> check_vardecs ftbl vtbl tl
+  | hd::tl -> ignore(hd); (check_vardecs ftbl vtbl tl)
 
 (* check statement list 
    return a stmt list *)
