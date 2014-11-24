@@ -9,4 +9,5 @@ test : main
 
 clean :
 	cd src && $(MAKE) clean
-	cd scripts && rm -f *.r *_out
+	cd scripts && rm -f *.r 
+	cd scripts/test_outputs && rm -f *_out

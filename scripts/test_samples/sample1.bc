@@ -1,0 +1,4 @@
+# function definition
+def hello() do
+	disp 'hello';
+fed

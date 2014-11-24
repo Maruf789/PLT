@@ -1,0 +1,8 @@
+# top variable declaration
+int a : 5;
+int i : 0;
+int x : 0;
+int mat v ;
+double b : 0.0;
+string endstr : 'End' ;
+disp endstr;
