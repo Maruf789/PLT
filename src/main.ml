@@ -10,7 +10,7 @@ let loc_err lex_buf =
 		  sprintf "token %s, line %d,%d" tok line cnum
 
 let perror head err_msg =
-  print_endline (head ^ ": " ^ err_msg)
+  eprintf "%s: %s" head err_msg
 
 (* main function *)
 let main lex_buf =

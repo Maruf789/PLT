@@ -11,7 +11,7 @@ open Scheck_expr
 let find_var var_table name =
   let v =
     try List.find (fun v -> v.vname = name) var_table
-    with Not_found -> raise (Failure ("Variable " ^ name ^ " not defined"))
+    with Not_found -> raise (Bad_type ("Variable " ^ name ^ " not defined"))
   in 
     v.vtype
 
@@ -40,13 +40,13 @@ let find_func func_table fnsg =
       with Invalid_argument _ -> false
   in
     try List.find (func_eq fnsg) func_table
-    with Not_found -> raise (Failure ("Function " ^ fnsg.fsname ^ " not defined"))
+    with Not_found -> raise (Bad_type ("Function " ^ fnsg.fsname ^ " not defined"))
 
 (* variable default value, 
    return a sexpression *)
 let svar_init_sexpr var = match var with
     Int -> Int, SIntval 0
-  | Void -> raise (Failure "Cannot define a void variable")
+  | Void -> raise (Bad_type "Cannot define a void variable")
   | _ -> raise (Bad_type "Not implemented")
 
 (* check expr, 
