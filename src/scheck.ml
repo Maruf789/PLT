@@ -43,7 +43,13 @@ let find_func func_table fnsg =
    return a sexpression *)
 let svar_init_sexpr var = match var with
     Int -> Int, SIntval 0
-  | Void -> raise (Failure "Cannot define a void variable")
+  | Double -> Double, SDoubleval 0.0
+  | Bool -> Bool, SBoolval false
+  | String -> String, SStringval ""
+  | IntMat -> Int, SMatval [[]]
+  | DoubleMat -> Double, SMatval [[]]
+  | StringMat -> String, SMatval [[]]
+  | Void -> raise (Failure "Error: cannot define a void variable")
   | _ -> raise (Bad_type "Not implemented")
 
 (* check expr, 
