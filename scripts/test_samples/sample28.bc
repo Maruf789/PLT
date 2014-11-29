@@ -1,0 +1,9 @@
+#test function call
+def int returnint (int a) do
+		return a;
+fed
+
+def int callreturn (int b) do
+		disp b + '\n';
+		disp returnint(b);
+fed

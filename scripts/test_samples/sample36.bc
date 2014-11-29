@@ -1,0 +1,3 @@
+#test other unit operations
+int mat mx;
+mx: rowcat(mx1,mx2);

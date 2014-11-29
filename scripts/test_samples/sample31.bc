@@ -1,0 +1,8 @@
+#test matrix definition
+int mat ax : {1,2,3;4,5,6;7,8,9};
+string mat sx : {'ab','cd';'ef','gh'};
+double mat ax;
+init_mat_col(ax, {'a','b','c'});
+string mat sx;
+init_mat_col(sx, 5, 3);
+int mat cx: {'ab','cd';'ef','gh'};
