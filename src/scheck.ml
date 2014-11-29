@@ -11,10 +11,13 @@ open Printf
 (* find the type of a @name in @var_table
    return: (true, dtype) on found, (false, _) on not_found *)
 let find_var var_table name =
+  (*let _ = ignore(List.iter (fun (_,n,_) -> printf "%s " n) var_table) in
+  let _ = printf "find: %s \n" name in*)
   try
     let t, _, _ = List.find (fun (_,b,_) -> b = name) var_table in
     true, t
   with Not_found -> false, Void
+
 
 (* function table *)
 (* type func_table = sfun_def list *)
@@ -56,6 +59,11 @@ let svar_init_sexpr var = match var with
   | DoubleMat -> DoubleMat, SMatval [[]]
   | StringMat -> StringMat, SMatval [[]]
   | Void -> raise (Bad_type "cannot define a void variable")
+
+(* convert var list to svar_def list *)
+let var2def_list vl =
+  let var2def v = v.vtype, v.vname, (svar_init_sexpr v.vtype) in
+  List.map var2def vl
 
 (* check expr, 
    return a sexpression *)
@@ -107,7 +115,6 @@ let rec check_vardecs ftbl vtbl vardecs = match vardecs with
       | VarInit (v, e) -> v, (check_expr ftbl vtbl e))
     in
     let new_type, new_name = new_v.vtype, new_v.vname in
-    let _ = printf "vtbl %d: %s \n" (List.length vtbl) new_name in
     let _ =
       let f, _ = find_var vtbl new_name in
       if not f then () else raise (Bad_type (new_v.vname ^ " defined twice"))
@@ -170,13 +177,15 @@ let check_fundef ftbl new_func_def =
   let new_sname = new_func_def.fname in (* name *)
   let new_sargs = new_func_def.args in (* arguments *)
   (* check local variables & build variable table *)
-  let vtbl = check_vardecs ftbl [] new_func_def.locals in
+  let arg_def = var2def_list new_sargs in
+  let new_local = check_vardecs ftbl arg_def new_func_def.locals in
+  let vtbl = new_local in
   (* check statements *)
   let new_fstmts = check_stmts ftbl vtbl new_func_def.body in
   let new_sfun_def = { sreturn = new_sret;
                        sfname = new_sname;
                        sargs = new_sargs;
-                       slocals = vtbl;
+                       slocals = new_local;
                        sbody = new_fstmts } in
   let found, fbody = find_func ftbl new_fnsg in
   if not found then ftbl@[new_sfun_def]
