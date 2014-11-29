@@ -3,6 +3,7 @@
 open Ast
 open Sast
 open Scheck_expr
+open Lib
 open Printf
 
 (* variable table *)
@@ -208,7 +209,7 @@ let rec check_fundefs ftbl funsgs = match funsgs with
    return a sprogram *)
 let check prg =
   let func_table =
-    let func_table_0 = [] in (* init function table, should be built-in functions *)
+    let func_table_0 = lib_funs in (* init function table, should be built-in functions *)
     check_fundefs func_table_0 prg.pfuns
   in
   let var_table =

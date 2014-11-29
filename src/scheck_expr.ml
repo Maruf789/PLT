@@ -1,6 +1,18 @@
 (* sub-routines called in shcek_expr in scheck.ml *)
 open Ast
 open Sast
+open Printf
+
+let pt t = match t with
+      Int -> "Int"
+    | Double -> "Double"
+    | String -> "String"
+    | Bool -> "Bool"
+    | IntMat -> "IntMat"
+    | DoubleMat -> "DoubleMat"
+    | StringMat -> "StringMat"
+    | Void -> "Void"
+
 
 let check_uniop uop sexp = match uop with
     Not -> (match sexp with
@@ -174,6 +186,7 @@ let check_assign sexp1 sexp2 =
   (* scalar assignment *)
     Int, Int -> Int, ret0
   | Double, Int -> Double, ret0
+  | Double, Double -> Double, ret0
   | Int, Double -> Double, ret0
   | String, String -> String, ret0
   | Bool, Bool -> Bool, ret0
@@ -189,5 +202,5 @@ let check_assign sexp1 sexp2 =
   | Int, DoubleMat -> Int, ret0
   | Double, DoubleMat -> Double, ret0
   | String, StringMat -> String, ret0
-  | _, _ -> raise (Bad_type "\":\" operand types Invalid")
+  | x, y -> raise (Bad_type (sprintf "%s : %s operand types invalid" (pt x) (pt y)))
 
