@@ -1,0 +1,5 @@
+#test operations
+string a: 'haha';
+string b: 'hehe';
+slice(a, range(1,3));
+int c: -3+4;
