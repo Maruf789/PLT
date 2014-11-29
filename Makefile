@@ -1,6 +1,6 @@
 MAKE = make
 
-main: clean
+build : clean
 	cd src && $(MAKE)
 
 .PHONY : test clean

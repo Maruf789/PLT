@@ -3,6 +3,8 @@ OBJS = ast.cmo parser.cmo scanner.cmo \
        translate.cmo main.cmo
 MAIN = main.bin
 
+OCFLAG = -w A
+
 build : $(MAIN)
 
 $(MAIN) : $(OBJS)
@@ -13,13 +15,13 @@ scanner.ml : scanner.mll
 
 parser.ml parser.mli : parser.mly
 	ocamlyacc parser.mly
-	ocamlc -w A -c parser.mli
+	ocamlc $(OCFLAG) -c parser.mli
 
 %.cmi : %.mli
-	ocamlc -w A -c $<
+	ocamlc $(OCFLAG) -c $<
 
 %.cmo : %.ml
-	ocamlc -w A -c $<
+	ocamlc $(OCFLAG) -c $<
 
 .PHONY : clean
 clean :

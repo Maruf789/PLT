@@ -17,10 +17,10 @@ let _ =
         let cnum = p.Lexing.pos_cnum - p.Lexing.pos_bol + 1 
                    - String.length tok in
         let msg = sprintf 
-          "Error: token %s, line %d,%d" 
-          tok line cnum in
+            "Error: token %s, line %d,%d" 
+            tok line cnum in
         print_endline msg
-    with
-      Sys_error msg -> print_endline("Error: " ^ msg)
+      with
+        Sys_error msg -> print_endline("Error: " ^ msg)
   else
     print_endline "Usage: main.bin <input file>"
