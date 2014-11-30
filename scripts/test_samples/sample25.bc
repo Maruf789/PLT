@@ -1,0 +1,6 @@
+#test function declaration
+helper(int x);
+helper(int);
+mat range(int, int);
+mat range(int x, int y);
+int cols(mat);

@@ -1,4 +1,3 @@
 # declare top variable(mat)
-double mat budget;
-double mat subdget;
-disp budget;
+int mat budget;
+disp double budget;

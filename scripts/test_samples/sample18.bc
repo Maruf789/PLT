@@ -1,0 +1,5 @@
+#test counting loop
+int b: 0;
+int r;
+for r in {1;2;3;4} do
+		b: b + 1;

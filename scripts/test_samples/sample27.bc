@@ -1,0 +1,4 @@
+#test function overloading
+int cols(int mat a);
+int cols(double mat a);
+int cols(string mat a);
