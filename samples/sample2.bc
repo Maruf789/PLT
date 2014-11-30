@@ -19,7 +19,7 @@ colunit(budget[0, 1], {'lb'});
 # add one row with naming
 budget: addrows(budget, {1+1, 3.3}, {'John'});
 # add one column and naming
-budget: colcat({0}, budget);
+budget: colcat({0.0}, budget);
 colname(budget[0, 1], {'Paper'});
 # add one row with naming
 budget: addrows(budget, {250*2, 0, 5.10}, {'Tom'});

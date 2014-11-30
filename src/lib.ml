@@ -115,11 +115,11 @@ let lib_funs = [
     slocals=[]; sbody=[SEmpty]
   };
   { sreturn=DoubleMat; sfname="addrows";
-    sargs=[ {vtype=Double; vname="mx"}; {vtype=DoubleMat; vname="dr"}; {vtype=StringMat; vname="drn"}; ];
+    sargs=[ {vtype=DoubleMat; vname="mx"}; {vtype=DoubleMat; vname="dr"}; {vtype=StringMat; vname="drn"}; ];
     slocals=[]; sbody=[SEmpty]
   };
-  { sreturn=String; sfname="addrows";
-    sargs=[ {vtype=String; vname="mx"}; {vtype=StringMat; vname="dr"}; {vtype=StringMat; vname="drn"}; ];
+  { sreturn=StringMat; sfname="addrows";
+    sargs=[ {vtype=StringMat; vname="mx"}; {vtype=StringMat; vname="dr"}; {vtype=StringMat; vname="drn"}; ];
     slocals=[]; sbody=[SEmpty]
   };
   { sreturn=String; sfname="string_of_int";
