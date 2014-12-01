@@ -1,4 +1,4 @@
 #test function overloading
-int cols(int mat a);
-int cols(double mat a);
-int cols(string mat a);
+def int cols(int mat a);
+def int cols(double mat a);
+def int cols(string mat a);

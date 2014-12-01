@@ -1,3 +1,4 @@
 #test matrix accessing
-#ax[1,2]: {4};
+ax[1,2]: {4};
+ax[1,0]: range(1, (cols a));
 ax[1,0]: range(1, (cols A));
