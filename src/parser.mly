@@ -67,7 +67,7 @@ arg_def_list:
     /* empty */    { [] }
   | arg_def_list_1 { $1 }
 
-/* a function definition */
+/* a function declaration/definition */
 func_def:
     DEF dt ID LPAREN arg_def_list RPAREN DO var_dec_def_list stmt_list FED {
        { return = $2; fname = $3; args = $5; locals = $8; body = $9; }
@@ -75,7 +75,12 @@ func_def:
   | DEF ID LPAREN arg_def_list RPAREN DO var_dec_def_list stmt_list FED {
         { return = Void; fname = $2; args = $4; locals = $7; body = $8; } 
       }
-
+  | DEF dt ID LPAREN arg_def_list RPAREN SEMI {
+        { return = $2; fname = $3; args = $5; locals = []; body = []; } 
+      }
+  | DEF ID LPAREN arg_def_list RPAREN SEMI {
+        { return = Void; fname = $2; args = $4; locals = []; body = []; } 
+      }
 
 /* a list of function definitions */
 func_def_list:
@@ -115,6 +120,10 @@ mat_row:
   | mat_row COMMA expr  { $1 @ [$3]  }
 
 
+left_value:
+    ID                                 { Id($1) }
+  | ID LSBRACK expr COMMA expr RSBRACK /* matrix select */
+                                       { MatSub($1, $3, $5) }
 /* an expression */
 expr:
     BOOL_LITERAL                       { Boolval($1) }
@@ -122,9 +131,7 @@ expr:
   | DOUBLE_LITERAL                     { Doubleval($1) }
   | STRING_LITERAL                     { Stringval($1) }
   | mat_literal                        { Matval($1) }
-  | ID                                 { Lvalue(Id($1)) }
-  | ID LSBRACK expr COMMA expr RSBRACK /* matrix select */
-                                       { Lvalue(MatSub($1, $3, $5)) }
+  | left_value                         { Lvalue($1) }
   | expr PLUS   expr                   { Binop($1, Plus,  $3) }
   | expr MINUS  expr                   { Binop($1, Minus,  $3) }
   | expr TIMES  expr                   { Binop($1, Times, $3) }
@@ -137,7 +144,7 @@ expr:
   | expr GEQ    expr                   { Binop($1, Geq,  $3) }
   | expr AND    expr                   { Binop($1, And,  $3) }
   | expr OR     expr                   { Binop($1, Or,   $3) }
-  | ID ASSIGN expr                     { Assign(Id($1), $3) }
+  | left_value ASSIGN expr             { Assign($1, $3) }
   | NOT expr                           { Unaop(Not, $2) }
   | MINUS expr %prec NEG               { Unaop(Neg, $2) }
   | ID LPAREN RPAREN                   { Call($1, []) }
