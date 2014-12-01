@@ -1,1 +1,1 @@
-Sast error: Not implemented
+Translate error

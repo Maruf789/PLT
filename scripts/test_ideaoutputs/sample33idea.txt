@@ -1,1 +1,1 @@
-Scanner error: illegal character A, in  line 4,25
+Parser error: token a, line 3,25
