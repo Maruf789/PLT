@@ -26,4 +26,4 @@ parser.ml parser.mli : parser.mly
 .PHONY : clean
 clean :
 	-rm -f $(MAIN) parser.ml parser.mli scanner.ml testall.log \
-	*.cmo *.cmi *.out *.diff *~
+	*.cmo *.cmi *.output *.diff *~
