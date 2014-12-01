@@ -1,2 +1,4 @@
 # display int
+int i : 0;
+disp i;
 disp 'Hello World';

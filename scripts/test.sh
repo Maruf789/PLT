@@ -1,10 +1,7 @@
 #! /bin/bash
 
-SAMPLES_DIR=./test_samples
-OUTPUT_DIR=./test_outputs
-IDEAL_DIR=./test_ideaoutputs
+SAMPLES_DIR=../samples
 NU=/dev/null
-DIF="diff -b -B"
 
 for (( i=0; i<3; i++ ))
 do

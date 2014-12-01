@@ -3,25 +3,17 @@ open Ast
 open Sast
 open Printf
 
-let pt t = match t with
-      Int -> "Int"
-    | Double -> "Double"
-    | String -> "String"
-    | Bool -> "Bool"
-    | IntMat -> "IntMat"
-    | DoubleMat -> "DoubleMat"
-    | StringMat -> "StringMat"
-    | Void -> "Void"
 
-
-let check_uniop uop sexp = match uop with
-    Not -> (match sexp with
-        Bool, exp -> Bool, SUnaop(Not, exp)
-      | _, _ -> raise (Bad_type "\"not\" bad operand type"))
-  | Neg -> (match sexp with
-        Int, exp -> Int, SUnaop(Neg, exp)
-      | Double, exp -> Double, SUnaop(Neg, exp)
-      | _, _ -> raise (Bad_type "unary negitive: bad operand type"))
+let check_uniop uop sexp =
+  let ret = SUnaop(Not, sexp) in
+  match uop with
+      Not -> (match sexp with
+          Bool, _ -> Bool, ret
+        | _, _ -> raise (Bad_type "\"not\" bad operand type"))
+    | Neg -> (match sexp with
+          Int, _ -> Int, ret
+        | Double, _ -> Double, ret
+        | _, _ -> raise (Bad_type "unary negitive: bad operand type"))
 
 
 let check_binop bop sexp1 sexp2 =
@@ -179,9 +171,9 @@ let check_matval_s sexp_list_list =
 
 
 let check_assign sexp1 sexp2 =
-  let t1, ev1 = sexp1 in
-  let t2, ev2 = sexp2 in
-  let ret0 = SAssign(ev1, ev2) in
+  let t1, _ = sexp1 in
+  let t2, _ = sexp2 in
+  let ret0 = SAssign(sexp1, sexp2) in
   match t1, t2 with
   (* scalar assignment *)
     Int, Int -> Int, ret0
