@@ -22,8 +22,8 @@ let rec trans_expr exp = match exp with
   | _, SStringval x -> (" \"" ^ x ^ "\" ")
   | _, SBoolval x -> if x then " true " else " false "
   | _, SId x -> (" \"" ^ x ^ "\" ")
-  | _, SBinop (e1, b, e2) -> (sprintf " (%s %s %s ) " (trans_expr e1) (trans_bop b e1) (trans_expr e2))
-  | _, SAssign (e1, e2) -> 
+  | _, SBinop (e1, b, e2) -> (sprintf " (%s %s %s ) " (trans_expr e1) (trans_bop b) (trans_expr e2))
+  | _, SAssign (e1, e2) -> "=" 
   | _, _ -> raise Not_implemented
 
 (* translate variable definition list *)

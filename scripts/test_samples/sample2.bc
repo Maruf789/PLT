@@ -1,0 +1,3 @@
+# top variable declaration
+string int endstr : 'End' ;
+disp endstr;

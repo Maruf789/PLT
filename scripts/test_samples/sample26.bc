@@ -1,0 +1,16 @@
+#test function definition
+def int helper(int x) do
+	disp 'help';
+fed
+
+def helper(int x) do
+	disp 'help';
+fed
+
+#def helper(int x)
+#	disp 'help';
+#fed
+
+def helper(int y);
+def int helper(int x) do
+	disp 'help';
