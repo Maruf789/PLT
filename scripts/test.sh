@@ -7,7 +7,7 @@ NU=/dev/null
 #DIF="git diff -b"
 DIF="diff -b -B"
 
-for (( i =  0; i <= 37; i++))
+for (( i =  0; i <= 42; i++))
 do
 	$1 $SAMPLES_DIR/sample${i}.bc sample${i}.c > $NU \
 	 2> 		$OUTPUT_DIR/sample${i}out.txt 
