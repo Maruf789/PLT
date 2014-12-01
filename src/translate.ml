@@ -4,13 +4,26 @@
 
 open Ast
 open Sast
-(* open Printf *)
+open Printf
 
 exception Not_implemented
 
+let trans_uop op = match op with Neg -> "-" | Not -> "!"
+
+let trans_bop op = match op with
+    Plus -> "+" | Minus -> "-" | Times -> "*" | Divide -> "/"
+  | Eq -> "==" | Neq -> "!=" | Lt -> "<" | Leq -> "<="
+  | Gt -> ">" | Geq -> ">=" | And -> "&&" | Or -> "||"
+
 (* translate expr to string *)
 let rec trans_expr exp = match exp with
-    String, SStringval x -> ("\'" ^ x ^ "\'")
+    _, SIntval x -> (sprintf " %d " x)
+  | _, SDoubleval x -> (sprintf "%f" x)
+  | _, SStringval x -> (" \"" ^ x ^ "\" ")
+  | _, SBoolval x -> if x then " true " else " false "
+  | _, SId x -> (" \"" ^ x ^ "\" ")
+  | _, SBinop (e1, b, e2) -> (sprintf " (%s %s %s ) " (trans_expr e1) (trans_bop b e1) (trans_expr e2))
+  | _, SAssign (e1, e2) -> 
   | _, _ -> raise Not_implemented
 
 (* translate variable definition list *)
