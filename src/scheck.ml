@@ -189,7 +189,7 @@ let check_fundef ftbl new_func_def =
                        slocals = new_local;
                        sbody = new_fstmts } in
   let found, fbody = find_func ftbl new_fnsg in
-  if not found then (ignore(printf "new func: %s" new_sname);ftbl@[new_sfun_def])
+  if not found then ftbl@[new_sfun_def]
   else (
     if fbody.sbody = [] then (list_rep fbody new_sfun_def ftbl)
     else raise (Bad_type ("Function " ^ new_sname ^ " already defined"))
