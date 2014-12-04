@@ -25,13 +25,13 @@ let rec trans_expr exp = match exp with
   | _, SBinop (e1, b, e2) -> (sprintf " ( %s %s %s ) " (trans_expr e1) (trans_bop b) (trans_expr e2))
   | _, SAssign (e1, e2) -> (sprintf "( %s = %s )" (trans_expr e1) (trans_expr e2))
   | _, SUnaop (u, e) -> (sprintf "( %s %s )" (trans_uop u) (trans_expr e))
-  | _, SCall (s, el) -> (sprintf "( %s( %s ) )" s (trans_expr_list ", " el))
+  | _, SCall (s, el) -> (sprintf "( %s( %s ) )" s (trans_arg_list "," el))
   | _, SMatSub (s, e1, e2) -> raise (Not_now "Matsub not implemented")
   | _, SMatval ell -> raise (Not_now "Matval not implemented")
-and trans_expr_list sc el = match el with
+and trans_arg_list sc el = match el with
     [] -> ""
   | [e] -> trans_expr e
-  | e1::e2::tl ->  sprintf "%s%s %s" (trans_expr e1) sc (trans_expr_list sc (e2::tl))
+  | e1::e2::tl ->  sprintf "%s %s %s" (trans_expr e1) sc (trans_arg_list sc (e2::tl))
 
 (* translate variable definition list *)
 let rec trans_vardecs vars = match vars with
@@ -62,11 +62,17 @@ and trans_stmts stmts = match stmts with
       | SBreak -> ["break;"]
     ) @ (trans_stmts tl)
 
+let rec trans_args sc args = match args with
+    [] -> ""
+  | [a] -> sprintf "%s %s" (pt a.vtype) (a.vname)
+  | a::b::tl -> (sprintf "%s %s%s " (pt a.vtype) a.vname sc) ^ (trans_args sc tl)
 let rec trans_fundefs fundefs = match fundefs with
     [] -> []
-  | hd::tl -> (let a = [] in
-               let b = trans_fundefs tl in 
-               a@b)
+  | hd::tl -> (if hd.sbody=[] then 
+               ([sprintf "%s %s(%s) {" (pt hd.sreturn) hd.sfname (trans_args "," hd.sargs)]
+               @(trans_vardecs hd.slocals)@(trans_stmts hd.sbody))
+               else ([sprintf "%s %s(%s) ;" (pt hd.sreturn) hd.sfname (trans_args "," hd.sargs)])
+              )@(trans_fundefs tl)
 
 let compile prg =
   let head_lines = 
@@ -84,5 +90,5 @@ let compile prg =
     let stms = prg.spstms in
     trans_stmts stms
   in
-  List.iter print_endline (head_lines @ func_lines @ var_lines @ stm_lines)
+  List.iter print_endline (head_lines @ func_lines @ ["void main() {"] @ var_lines @ stm_lines @["}"])
 

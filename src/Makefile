@@ -5,7 +5,7 @@ MAIN = main.bin
 
 OCFLAG = -w A
 
-build : $(MAIN)
+build : clean $(MAIN)
 
 $(MAIN) : $(OBJS)
 	ocamlc -o $@ $(OBJS)
