@@ -45,16 +45,16 @@ let gen_disp es = ("cout << " ^ es ^ " << endl;")
 (* translate statement list *)
 let rec trans_elifs elifs = match elifs with (* translate a list of elif *)
     [] -> []
-  | hd::tl -> [""] @ (trans_elifs tl)
+  | hd::tl -> (trans_condstmts "elif" hd) @ (trans_elifs tl)
 and trans_condstmts sc cs =
-  [sprintf "%s (%s) { " sc (trans_expr cs.scond)] @ []
+  [sprintf "%s (%s) { " sc (trans_expr cs.scond)] @ (trans_stmts cs.sstmts)
 and trans_stmts stmts = match stmts with
     [] -> []
   | hd::tl -> ( match hd with
         SEmpty -> [";"]
       | SExpr e -> [(trans_expr e) ^ " ;"]
       | SReturn e -> [sprintf "return %s ;" (trans_expr e)]
-      | SIf (cs, csl, sl) -> [trans_condstmts "if" cs] @ (trans_elifs csl) @ (trans_stmts sl)
+      | SIf (cs, csl, sl) -> (trans_condstmts "if" cs) @ (trans_elifs csl) @ (trans_stmts sl)
       | SCntFor (_, _, _) -> raise (Not_now "CntFor not implemented")
       | SCndFor _ -> raise (Not_now "CndFor not implemented")
       | SDisp e -> (let es = trans_expr e in [gen_disp es])
