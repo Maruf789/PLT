@@ -8,6 +8,17 @@ open Printf
 
 exception Not_now of string
 
+(* Translate dtype to C++ types *)
+let tpt t = match t with
+      Int -> "int"
+    | Double -> "double"
+    | String -> "string"
+    | Bool -> "bool"
+    | IntMat -> "int_mat"
+    | DoubleMat -> "double_mat"
+    | StringMat -> "string_mat"
+    | Void -> "void"
+
 let trans_uop op = match op with Neg -> "-" | Not -> "!"
 
 let trans_bop op = match op with
@@ -37,7 +48,7 @@ and trans_arg_list sc el = match el with
 let rec trans_vardecs vars = match vars with
     [] -> []
   | (t, s, e)::tl ->
-    (sprintf "%s %s = %s;" (pt t) s (trans_expr e)) :: (trans_vardecs tl)
+    (sprintf "%s %s = %s;" (tpt t) s (trans_expr e)) :: (trans_vardecs tl)
 
 
 let gen_disp es = ("cout << " ^ es ^ " << endl;")
@@ -62,21 +73,23 @@ and trans_stmts stmts = match stmts with
       | SBreak -> ["break;"]
     ) @ (trans_stmts tl)
 
+
 let rec trans_args sc args = match args with
     [] -> ""
-  | [a] -> sprintf "%s %s" (pt a.vtype) (a.vname)
-  | a::b::tl -> (sprintf "%s %s%s " (pt a.vtype) a.vname sc) ^ (trans_args sc tl)
+  | [a] -> sprintf "%s %s" (tpt a.vtype) (a.vname)
+  | a::b::tl -> (sprintf "%s %s%s " (tpt a.vtype) a.vname sc) ^ (trans_args sc (b::tl))
 let rec trans_fundefs fundefs = match fundefs with
     [] -> []
   | hd::tl -> (if hd.sbody=[] then 
-               ([sprintf "%s %s(%s) {" (pt hd.sreturn) hd.sfname (trans_args "," hd.sargs)]
+               ([sprintf "%s %s(%s) {" (tpt hd.sreturn) hd.sfname (trans_args "," hd.sargs)]
                @(trans_vardecs hd.slocals)@(trans_stmts hd.sbody))
-               else ([sprintf "%s %s(%s) ;" (pt hd.sreturn) hd.sfname (trans_args "," hd.sargs)])
+               else ([sprintf "%s %s(%s) ;" (tpt hd.sreturn) hd.sfname (trans_args "," hd.sargs)])
               )@(trans_fundefs tl)
+
 
 let compile prg =
   let head_lines = 
-    ["#include <types.h>"]
+    ["#include \"buckcal_types.h\""]
   in
   let func_lines =
     let funs = prg.spfuns in
@@ -90,5 +103,5 @@ let compile prg =
     let stms = prg.spstms in
     trans_stmts stms
   in
-  List.iter print_endline (head_lines @ func_lines @ ["void main() {"] @ var_lines @ stm_lines @["}"])
+  List.iter print_endline (head_lines @ func_lines @ ["int main() {"] @ var_lines @ stm_lines @["return 0;"; "}"])
 

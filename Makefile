@@ -9,5 +9,5 @@ test : build
 
 clean :
 	-cd src && $(MAKE) clean
-	-cd scripts && rm -f *.r 
+	-cd scripts && $(MAKE) clean 
 	-cd scripts/test_outputs && rm -f *out.txt
