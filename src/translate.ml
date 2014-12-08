@@ -38,7 +38,7 @@ let rec trans_expr exp = match exp with
   | _, SUnaop (u, e) -> (sprintf "( %s %s )" (trans_uop u) (trans_expr e))
   | _, SCall (s, el) -> (sprintf "( %s( %s ) )" s (trans_arg_list "," el))
   | _, SMatSub (s, e1, e2) -> raise (Not_now "Matsub not implemented")
-  | _, SMatval ell -> raise (Not_now "Matval not implemented")
+  | _, SMatval (ell, nc, nr) -> raise (Not_now "Matval not implemented")
 and trans_arg_list sc el = match el with
     [] -> ""
   | [e] -> trans_expr e

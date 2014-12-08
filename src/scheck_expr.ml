@@ -138,12 +138,15 @@ let check_binop bop sexp1 sexp2 =
 
 let check_matval_s sexp_list_list =
   let size_check tll =
-    let helpr a b = match a, b with
-        (-1), y -> y
-      | x, y -> (if x = y then y
-                 else raise (Bad_type "Mat rows must have same length"))
-    in
-    List.fold_left helpr (-1) (List.map (List.length) tll)
+    let ncol_list = List.map (List.length) tll in (* ncol of each row *)
+    let num_col = (* get number of columns while checking *)
+      let helpr a b = match a, b with
+          (-1), y -> y
+        | x, y -> (if x = y then y
+                   else raise (Bad_type "Mat rows must have same length"))
+      in List.fold_left helpr (-1) ncol_list in
+    let num_row = List.length ncol_list in
+    (num_col, num_row)
   in
   let type_check tll =
     (*let mat_elem_type = [Int; Double; String] in*)
@@ -160,14 +163,14 @@ let check_matval_s sexp_list_list =
   in
   let typ_ll = List.map (List.map fst) sexp_list_list in
   (* FIXME: Maybe we should also return size of the matrix? *)
-  let _ = size_check typ_ll in
+  let ncol, nrow = size_check typ_ll in
   let rt = (match (type_check typ_ll) with
         Int -> IntMat
       | Double -> DoubleMat
       | String -> StringMat
       | _ -> raise (Bad_type "Mat can only contain int, double or string")
     ) in
-  rt, (SMatval sexp_list_list)
+  rt, (SMatval (sexp_list_list, ncol, nrow))
 
 
 let check_assign sexp1 sexp2 =
