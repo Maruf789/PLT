@@ -1,11 +1,13 @@
 #! /bin/bash
 
-SAMPLES_DIR=./test_samples
-OUTPUT_DIR=./test_outputs
-IDEAL_DIR=./test_ideaoutputs
+SAMPLES_DIR=../samples
 NU=/dev/null
+
 #DIF="git diff -b"
 DIF="diff -b -B"
+
+## copy C++ header here
+cp ../src/buckcal_types.h .
 
 for (( i =  0; i <= 42; i++))
 do
@@ -15,4 +17,5 @@ do
 	if [ $? -eq 1 ]; then
 		echo "sample${i}.bc error"
 	fi
+	#$1 $SAMPLES_DIR/sample${i}.bc > sample${i}.cpp && g++ sample${i}.cpp -o sample${i}.bin
 done

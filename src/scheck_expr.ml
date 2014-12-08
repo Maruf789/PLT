@@ -3,25 +3,17 @@ open Ast
 open Sast
 open Printf
 
-let pt t = match t with
-      Int -> "Int"
-    | Double -> "Double"
-    | String -> "String"
-    | Bool -> "Bool"
-    | IntMat -> "IntMat"
-    | DoubleMat -> "DoubleMat"
-    | StringMat -> "StringMat"
-    | Void -> "Void"
 
-
-let check_uniop uop sexp = match uop with
-    Not -> (match sexp with
-        Bool, exp -> Bool, SUnaop(Not, exp)
-      | _, _ -> raise (Bad_type "\"not\" bad operand type"))
-  | Neg -> (match sexp with
-        Int, exp -> Int, SUnaop(Neg, exp)
-      | Double, exp -> Double, SUnaop(Neg, exp)
-      | _, _ -> raise (Bad_type "unary negitive: bad operand type"))
+let check_uniop uop sexp =
+  let ret = SUnaop(Not, sexp) in
+  match uop with
+      Not -> (match sexp with
+          Bool, _ -> Bool, ret
+        | _, _ -> raise (Bad_type "\"not\" bad operand type"))
+    | Neg -> (match sexp with
+          Int, _ -> Int, ret
+        | Double, _ -> Double, ret
+        | _, _ -> raise (Bad_type "unary negitive: bad operand type"))
 
 
 let check_binop bop sexp1 sexp2 =
@@ -146,12 +138,15 @@ let check_binop bop sexp1 sexp2 =
 
 let check_matval_s sexp_list_list =
   let size_check tll =
-    let helpr a b = match a, b with
-        (-1), y -> y
-      | x, y -> (if x = y then y
-                 else raise (Bad_type "Mat rows must have same length"))
-    in
-    List.fold_left helpr (-1) (List.map (List.length) tll)
+    let ncol_list = List.map (List.length) tll in (* ncol of each row *)
+    let num_col = (* get number of columns while checking *)
+      let helpr a b = match a, b with
+          (-1), y -> y
+        | x, y -> (if x = y then y
+                   else raise (Bad_type "Mat rows must have same length"))
+      in List.fold_left helpr (-1) ncol_list in
+    let num_row = List.length ncol_list in
+    (num_col, num_row)
   in
   let type_check tll =
     (*let mat_elem_type = [Int; Double; String] in*)
@@ -168,20 +163,20 @@ let check_matval_s sexp_list_list =
   in
   let typ_ll = List.map (List.map fst) sexp_list_list in
   (* FIXME: Maybe we should also return size of the matrix? *)
-  let _ = size_check typ_ll in
+  let ncol, nrow = size_check typ_ll in
   let rt = (match (type_check typ_ll) with
         Int -> IntMat
       | Double -> DoubleMat
       | String -> StringMat
       | _ -> raise (Bad_type "Mat can only contain int, double or string")
     ) in
-  rt, (SMatval sexp_list_list)
+  rt, (SMatval (sexp_list_list, ncol, nrow))
 
 
 let check_assign sexp1 sexp2 =
-  let t1, ev1 = sexp1 in
-  let t2, ev2 = sexp2 in
-  let ret0 = SAssign(ev1, ev2) in
+  let t1, _ = sexp1 in
+  let t2, _ = sexp2 in
+  let ret0 = SAssign(sexp1, sexp2) in
   match t1, t2 with
   (* scalar assignment *)
     Int, Int -> Int, ret0

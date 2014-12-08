@@ -14,10 +14,10 @@ type sexpr_val =
   | SIntval of int
   | SDoubleval of float
   | SStringval of string
-  | SMatval of sexpr list list
+  | SMatval of sexpr list list * int * int (* values, nrow, ncol *)
   | SBinop of sexpr * binop * sexpr
-  | SAssign of sexpr_val * sexpr_val
-  | SUnaop of unaop * sexpr_val
+  | SAssign of sexpr * sexpr
+  | SUnaop of unaop * sexpr
   | SCall of string * sexpr list
 and sexpr = dtype * sexpr_val
 

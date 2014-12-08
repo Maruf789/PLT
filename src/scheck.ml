@@ -55,9 +55,9 @@ let svar_init_sexpr var = match var with
   | Double -> Double, SDoubleval 0.0
   | Bool -> Bool, SBoolval false
   | String -> String, SStringval ""
-  | IntMat -> IntMat, SMatval [[]]
-  | DoubleMat -> DoubleMat, SMatval [[]]
-  | StringMat -> StringMat, SMatval [[]]
+  | IntMat -> IntMat, SMatval ([[]], 0, 0)
+  | DoubleMat -> DoubleMat, SMatval ([[]], 0, 0)
+  | StringMat -> StringMat, SMatval ([[]], 0, 0)
   | Void -> raise (Bad_type "cannot define a void variable")
 
 (* convert var list to svar_def list *)
