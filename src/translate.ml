@@ -89,7 +89,8 @@ let rec trans_fundefs fundefs = match fundefs with
 
 let compile prg =
   let head_lines = 
-    ["#include \"buckcal_types.h\""]
+    ["#include \"buckcal_types.h\""; "int_mat GT_int_mat;"; 
+     "string_mat GT_string_mat;"; "double_mat GT_double_mat;"] 
   in
   let func_lines =
     let funs = prg.spfuns in
@@ -103,5 +104,9 @@ let compile prg =
     let stms = prg.spstms in
     trans_stmts stms
   in
-  List.iter print_endline (head_lines @ func_lines @ ["int main() {"] @ var_lines @ stm_lines @["return 0;"; "}"])
+  let all = head_lines @ func_lines
+            @ ["int main() {"] @ var_lines @ stm_lines
+            @["return 0;"; "}"] 
+  in
+  List.iter print_endline all
 

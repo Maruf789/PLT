@@ -13,7 +13,7 @@ string endstr : 'End' ;
 
 # top level code 
 hello();
-for i do
+for i > -1 do
 	if i <= 5 then
 		v : colcat(v, {i});
 		i : i + 1;

@@ -1,4 +1,3 @@
-# display int
-int i : 0;
-disp i;
-disp 'Hello World';
+bool a;
+a: (1 = 2)and true;
+#disp a;
