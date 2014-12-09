@@ -17,7 +17,7 @@ struct int_mat {
   int c; // number of columns
   int r; // number of rows
   _int_mat m; // int vector
-  int_mat(double *a = NULL, int r = 0, int c = 0);
+  int_mat(int *a = NULL, int r = 0, int c = 0);
 };
 
 struct double_mat {

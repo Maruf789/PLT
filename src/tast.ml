@@ -1,6 +1,5 @@
 (* target language AST *)
 open Ast
-open Sast
 
 (* target data type *)
 type itype = Ivoid | Iint | Idouble | Istring | Ibool

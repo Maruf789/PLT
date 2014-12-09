@@ -1,9 +1,9 @@
 (* Code Generation
-   Input: SAST, 
+   Input: TAST, 
    Output: target code string list *)
 
 open Ast
-open Sast
+open Tast
 open Printf
 
 (* exception Not_now of string *)
