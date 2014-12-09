@@ -1,13 +1,15 @@
 # display int
 def double caculate(double a,double b) do
 double c:a+b;
+disp a + b;
 fed
 
 def int caculate(int a,int b) do
 int c:a+b;
+disp a;
 fed
 
-def int caculate(int a,int b) do
-int c:a+b;
-fed
+#def int caculate(int a,int b) do
+#int c:a+b;
+#fed
 

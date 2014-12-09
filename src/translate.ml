@@ -89,8 +89,9 @@ let rec trans_fundefs fundefs = match fundefs with
 
 let compile prg =
   let head_lines = 
-    ["#include \"buckcal_types.h\""; "int_mat GT_int_mat;"; 
-     "string_mat GT_string_mat;"; "double_mat GT_double_mat;"] 
+    (*["#include \"buckcal_types.h\""; "int_mat GT_int_mat;"; 
+     "string_mat GT_string_mat;"; "double_mat GT_double_mat;"]*)
+   ["#include \"buckcal_types.h\""]
   in
   let func_lines =
     let funs = prg.spfuns in
