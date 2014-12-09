@@ -14,7 +14,7 @@ DIF="diff -b -B"
 cp ../src/buckcal_types.h $CFILE_DIR
 
 # compare <outputfile> <idealoutputfile>
-for (( i =  0; i <= 30; i++))
+for (( i =  27; i <= 27; i++))
 do
 	$1 $SAMPLES_DIR/sample${i}.bc sample${i}.c > $NU \
 	 2> 		$OUTPUT_DIR/sample${i}out.txt 
