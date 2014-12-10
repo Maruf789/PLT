@@ -19,6 +19,12 @@ let find_var var_table name =
     true, t
   with Not_found -> false, Void
 
+(* general type equality - int = double *)
+let eq_t t1 t2 = match t1, t2 with
+    Int, Double | Double, Int | IntMat, DoubleMat | DoubleMat, IntMat -> true
+  | x, y -> if x == y then true else false
+
+
 (* function table *)
 (* type func_table = sfun_def list *)
 
@@ -51,7 +57,7 @@ let find_func func_table fnsg =
   let func_eq f1 fd =
     let f2 = sig_sfunc fd in
     f1.fsname = f2.fsname &&
-    try List.for_all2 (=) f1.fsargs f2.fsargs
+    try List.for_all2 eq_t f1.fsargs f2.fsargs
     with Invalid_argument _ -> false
   in
   try true, (List.find (func_eq fnsg) func_table)
@@ -129,7 +135,7 @@ let rec check_vardecs ftbl vtbl vardecs = match vardecs with
       if not f then () else raise (Bad_type (new_v.vname ^ " defined twice"))
     in
     let new_type =
-      if (=) new_type (fst init_e) then new_type
+      if eq_t new_type (fst init_e) then new_type
       else raise (Bad_type "variable and expression type mismatch")
     in
     [(new_type, new_name, init_e)] )
@@ -163,7 +169,7 @@ and check_stmts ftbl vtbl stmts = match stmts with
             | StringMat -> String
             | _ -> raise (Bad_type "must be loop in a mat")
           in
-          if (=) et_t st then SCntFor (s, (et, e), sss)
+          if eq_t et_t st then SCntFor (s, (et, e), sss)
           else raise (Bad_type "loop variable type mismatch") )
       | CndFor cs -> SCndFor (List.hd (check_condstmts ftbl vtbl [cs]))
       | Disp e -> SDisp (check_expr ftbl vtbl e)
