@@ -6,18 +6,18 @@ open Ast
 open Tast
 open Printf
 
-(* exception Not_now of string *)
+exception Not_done of string
 
 (* Translate dtype to C++ types *)
 let tpt t = match t with
-      Iint | Iint_array -> "int"
-    | Idouble | Idouble_array -> "double"
-    | Istring | Istring_array -> "string"
-    | Ibool -> "bool"
-    | Iint_mat -> "int_mat"
-    | Idouble_mat -> "double_mat"
-    | Istring_mat -> "string_mat"
-    | Ivoid -> "void"
+    Iint | Iint_array -> "int"
+  | Idouble | Idouble_array -> "double"
+  | Istring | Istring_array -> "string"
+  | Ibool -> "bool"
+  | Iint_mat -> "int_mat"
+  | Idouble_mat -> "double_mat"
+  | Istring_mat -> "string_mat"
+  | Ivoid -> "void"
 
 let gen_uop op = match op with Neg -> "-" | Not -> "!"
 
@@ -40,7 +40,7 @@ let rec gen_expr exp = match exp with
   | IUnaop (u, e) -> (sprintf "( %s %s )" (gen_uop u) (gen_expr e))
   | ICall (s, el) -> (sprintf "( %s( %s ) )" s (gen_arg_list "," el))
   | IArray el->  (sprintf "{%s}" (gen_arg_list "," el) )
-  | IMatSub (_, _, _) -> raise (Failure "IArray not implemented")
+  | IMatSub (_, _, _) -> raise (Not_done "IArray not implemented")
 and gen_arg_list sc el = match el with
     [] -> ""
   | [e] -> gen_expr e
@@ -53,7 +53,7 @@ let rec gen_vardecs vars = match vars with
 and gen_vardec var =
   let t, s, e = var in match t with
     Iint_array | Idouble_array | Istring_array ->
-      sprintf "%s %s[] = %s;" (tpt t) s (gen_expr e)
+    sprintf "%s %s[] = %s;" (tpt t) s (gen_expr e)
   | t -> sprintf "%s %s = %s;" (tpt t) s (gen_expr e)
 
 let gen_disp es = ("cout << " ^ es ^ " << endl;")
@@ -84,8 +84,8 @@ let rec gen_args sc args = match args with
 let rec gen_fundefs fundefs = match fundefs with
     [] -> []
   | hd::tl -> (if hd.ibody != [] then
-               ([sprintf "%s %s(%s) {" (tpt hd.ireturn) hd.ifname (gen_args "," hd.iargs)]
-               @(gen_stmts hd.ibody)@ ["}"])
+                 ([sprintf "%s %s(%s) {" (tpt hd.ireturn) hd.ifname (gen_args "," hd.iargs)]
+                  @(gen_stmts hd.ibody)@ ["}"])
                else ([sprintf "%s %s(%s) ;" (tpt hd.ireturn) hd.ifname (gen_args "," hd.iargs)])
               )@(gen_fundefs tl)
 
