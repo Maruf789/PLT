@@ -89,25 +89,21 @@ let rec trans_stmts tid stmts = match stmts with
       | SExpr e -> let isl, ie = trans_expr [] e in isl@[IExpr ie]
       | SReturn e -> let isl, ie = trans_expr [] e in isl@[IReturn ie]
       | SIf (cs, csl, sl) ->
-        let part1 = let isl0, ie, is = trans_condstmt tid [] cs in
+        let part1 =
+          let isl0, ie, is = trans_condstmt tid [] cs in
           (isl0 @ [IIfHead ie] @ is)
         in
-        let rec helper condstmtlist = match condstmtlist with 
-            [] -> []
-          | hd::tl -> ((let isl2, ie2, is2 = trans_condstmt tid [] hd in
-                        (isl2 @ [IElseIf ie2] @ is2)) @ (helper tl))
-        in
-        let part2 = helper csl
-        in
-        let part3 = (let is3 = trans_stmts tid sl in
-                     (is3 @ [IElse] @ is3))
+        let part2 = trans_condstmts tid csl in
+        let part3 =
+          (let is3 = trans_stmts tid sl in
+           (is3 @ [IElse] @ is3))
         in
         (part1 @ part2 @ part3 @ [IBlockEnd])
       | SCntFor (s, e, ss) -> let iv = ("F_" ^ s) in
         let fs1 = IVarDec(Iint, iv, (IIntval 0)) in
         let fh = IForHead(fs1, IBinop(IId iv, Lt, IIntval 1), IAssign(IId iv, IBinop(IId iv, Plus, IIntval 1))) in
         let lbody = trans_stmts (tid + 1) ss in
-        ( [fh] @ lbody @ [IBlockEnd])
+        ( [fh] @ lbody @ [IBlockEnd] )
       | SCndFor cs -> let isl0, ie, is = trans_condstmt tid [] cs in
         (isl0 @ [IWhileHead ie] @ is @ [IBlockEnd])
       | SDisp e -> let isl, ie = trans_expr [] e in isl@[IDisp ie]
@@ -118,6 +114,11 @@ and trans_condstmt tid isl cs =
   let isl0, iec = trans_expr isl cs.scond in
   let ies = trans_stmts (tid + 1) cs.sstmts in
   (isl0, iec, ies)
+and trans_condstmts tid condstmtlist = match condstmtlist with 
+    [] -> []
+  | hd::tl -> ((let isl2, ie2, is2 = trans_condstmt tid [] hd in
+                (isl2 @ [IElseIf ie2] @ is2)) @ (trans_condstmts tid tl))
+
 
 
 (* translate function declaration/definition *)
