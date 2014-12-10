@@ -100,20 +100,21 @@ let rec trans_stmts tid stmts = match stmts with
     ) @ (trans_stmts (tid + 1) tl)
 
 
-(*let rec trans_args sc args = match args with
-    [] -> ""
-  | [a] -> sprintf "%s %s" (tpt a.vtype) (a.vname)
-  | a::b::tl -> (sprintf "%s %s%s " (tpt a.vtype) a.vname sc) ^ (trans_args sc (b::tl))*)
+(* translate function declaration/definition *)
+let rec trans_args args = match args with
+    [] -> []
+  | a::tl -> {ivtype = (ipt a.vtype); ivname = a.vname} :: (trans_args tl)
 
 let rec trans_fundefs fundefs = match fundefs with
     [] -> []
-  | hd::tl -> (if hd.sbody!=[] then 
-               ([sprintf "%s %s(%s) {" (tpt hd.sreturn) hd.sfname (trans_args "," hd.sargs)]
-               @(trans_vardecs hd.slocals)@(trans_stmts hd.sbody))
-               else ([sprintf "%s %s(%s) ;" (tpt hd.sreturn) hd.sfname (trans_args "," hd.sargs)])
-              )@(trans_fundefs tl)
+  | hd::tl -> (
+      let ss_v = trans_vardecs hd.slocals in
+      let ss_s = trans_stmts 0 hd.sbody in
+      { ireturn = (ipt hd.sreturn); ifname = hd.sfname;
+        iargs = (trans_args hd.sargs); ibody = (ss_v@ss_s) }
+    )::(trans_fundefs tl)
 
-
+(* translate whole program *)
 let translate prg =
   let func_lines =
     let funs = prg.spfuns in
@@ -121,7 +122,16 @@ let translate prg =
   in
   let var_lines =
     let vars = prg.spvars in
-    []
+    trans_vardecs vars
   in
-  var_lines, func_lines
-
+  let stmt_lines =
+    let stmts = prg.spstms in
+    trans_stmts 0 stmts
+  in
+  let main_func = {
+    ireturn = Iint;
+    ifname = "main";
+    iargs = [];
+    ibody = var_lines @ stmt_lines
+  } in
+  { ivars = []; ifuns = func_lines @ [main_func] }

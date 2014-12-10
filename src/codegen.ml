@@ -56,22 +56,22 @@ let rec gen_vardecs vars = match vars with
 let gen_disp es = ("cout << " ^ es ^ " << endl;")
 
 (* translate statement list *)
-let rec gen_stmts stmts = match stmts with
+let rec gen_stmt stmt = match stmt with
+    IEmpty -> ";"
+  | IVarDec (vt, vn, ve) -> (sprintf "%s %s = %s;" (tpt vt) vn (gen_expr ve))
+  | IExpr e -> ((gen_expr e) ^ " ;")
+  | IReturn e -> (sprintf "return %s ;" (gen_expr e))
+  | IIfHead e -> (sprintf "if (%s) {"  (gen_expr e))
+  | IElseIf e -> (sprintf "} else if (%s) {"  (gen_expr e))
+  | IElse -> (sprintf "} else {")
+  | IForHead (e1, e2, e3) -> (sprintf "for (%s %s; %s) {" (gen_stmt e1) (gen_expr e2) (gen_expr e3))
+  | IWhileHead e -> (sprintf "while (%s) {"  (gen_expr e))
+  | IDisp e -> (sprintf "cout << %s << endl;" (gen_expr e))
+  | IContinue -> (sprintf "continue;")
+  | IBreak -> (sprintf "break;")
+and gen_stmts stmts = match stmts with
     [] -> []
-  | hd::tl -> ( match hd with
-        IEmpty -> [";"]
-      | IExpr e -> [(gen_expr e) ^ " ;"]
-      | IReturn e -> [sprintf "return %s ;" (gen_expr e)]
-      | IIfHead e -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
-      | IElseIf e -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
-      | IElse -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
-      | IForHead (e1, e2, e3) -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
-      | IWhileHead e -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
-      | IDisp e -> (let es = gen_expr e in [gen_disp es])
-      | IContinue -> ["continue;"]
-      | IBreak -> ["break;"]
-    ) @ (gen_stmts tl)
-
+  | hd::tl -> (gen_stmt hd) :: (gen_stmts tl)
 
 let rec gen_args sc args = match args with
     [] -> ""
@@ -81,8 +81,8 @@ let rec gen_fundefs fundefs = match fundefs with
     [] -> []
   | hd::tl -> (if hd.ibody != [] then
                ([sprintf "%s %s(%s) {" (tpt hd.ireturn) hd.ifname (gen_args "," hd.iargs)]
-               @(gen_stmts hd.ibody)@ "}")
-               else ([sprintf "%s %s(%s) ;" (tpt hd.itype) hd.ifname (gen_args "," hd.iargs)])
+               @(gen_stmts hd.ibody)@ ["}"])
+               else ([sprintf "%s %s(%s) ;" (tpt hd.ireturn) hd.ifname (gen_args "," hd.iargs)])
               )@(gen_fundefs tl)
 
 
@@ -90,20 +90,13 @@ let compile prg =
   let head_lines =
     ["#include \"buckcal_types.h\""] 
   in
-  let func_lines =
-    let funs = prg.spfuns in
-    gen_fundefs funs
-  in
   let var_lines =
-    let vars = prg.spvars in
+    let vars = prg.ivars in
     gen_vardecs vars
   in
-  let stm_lines =       (* statements *)
-    let stms = prg.spstms in
-    gen_stmts stms
+  let func_lines =
+    let funs = prg.ifuns in
+    gen_fundefs funs
   in
-  let all = head_lines @ func_lines
-            @ ["int main() {"] @ var_lines @ stm_lines
-            @["return 0;"; "}"] 
-  in
+  let all = head_lines @ var_lines @ func_lines in
   List.iter print_endline all
