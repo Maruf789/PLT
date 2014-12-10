@@ -2,17 +2,9 @@
 #include <fstream>
 #include <string>
 
-class int_mat {
-public:
-	int rows;
-	int cols;
-	std::vector<int> m;
-	/* constructors */
-	int_mat(int *, int, int);
-	int_mat(const int_mat &);
-	/* overload = and << */
-	int_mat & operator = (const int_mat &);
-};
+class int_mat;
+class double_mat;
+class string_mat;
 
 class double_mat {
 public:
@@ -22,8 +14,56 @@ public:
 	/* constructors */
 	double_mat(double *, int, int);
 	double_mat(const double_mat &);
+	double_mat(const int_mat &);
 	/* overload = and << */
 	double_mat & operator = (const double_mat &);
+	double_mat & operator = (const int_mat &);
+	double_mat operator + (const double_mat &);
+	double_mat operator + (const double &);
+	double_mat operator - (const double_mat &);
+	double_mat operator - (const double &);
+	double_mat operator * (const double_mat &);
+	double_mat operator * (const double &);
+	double_mat operator / (const double_mat &);
+	double_mat operator / (const double &);
+	double_mat operator + (const int_mat &);
+	double_mat operator + (const int &);
+	double_mat operator - (const int_mat &);
+	double_mat operator - (const int &);
+	double_mat operator * (const int_mat &);
+	double_mat operator * (const int &);
+	double_mat operator / (const int_mat &);
+	double_mat operator / (const int &);
+};
+
+class int_mat {
+public:
+	int rows;
+	int cols;
+	std::vector<int> m;
+	/* constructors */
+	int_mat(int *, int, int);
+	int_mat(const int_mat &);
+	int_mat(const double_mat &);
+	/* overload = and << */
+	int_mat & operator = (const int_mat &);
+	int_mat & operator = (const double_mat &);
+	int_mat operator + (const int_mat &);
+	int_mat operator + (const int &);
+	int_mat operator - (const int_mat &);
+	int_mat operator - (const int &);
+	int_mat operator * (const int_mat &);
+	int_mat operator * (const int &);
+	int_mat operator / (const int_mat &);
+	int_mat operator / (const int &);
+	double_mat operator + (const double_mat &);
+	double_mat operator + (const double &);
+	double_mat operator - (const double_mat &);
+	double_mat operator - (const double &);
+	double_mat operator * (const double_mat &);
+	double_mat operator * (const double &);
+	double_mat operator / (const double_mat &);
+	double_mat operator / (const double &);
 };
 
 class string_mat {
