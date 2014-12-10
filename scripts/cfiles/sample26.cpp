@@ -139,13 +139,13 @@ double_mat var_col(double_mat mx) {
 }
 int helper(int x) {
 int x =  0 ;
-return  "help"  ;
+cout <<  "help"  << endl;
 return  0  ;
 }
 void helper(double x) {
 double x = 0.000000;
-return  "help"  ;
+cout <<  "help"  << endl;
 }
 int main() {
-return  "help"  ;
+cout <<  "help"  << endl;
 }
