@@ -60,6 +60,7 @@ let rec gen_stmts stmts = match stmts with
     [] -> []
   | hd::tl -> ( match hd with
         IEmpty -> [";"]
+      | IVarDec iv -> []
       | IExpr e -> [(gen_expr e) ^ " ;"]
       | IReturn e -> [sprintf "return %s ;" (gen_expr e)]
       | IIfHead e -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
@@ -81,8 +82,8 @@ let rec gen_fundefs fundefs = match fundefs with
     [] -> []
   | hd::tl -> (if hd.ibody != [] then
                ([sprintf "%s %s(%s) {" (tpt hd.ireturn) hd.ifname (gen_args "," hd.iargs)]
-               @(gen_stmts hd.ibody)@ "}")
-               else ([sprintf "%s %s(%s) ;" (tpt hd.itype) hd.ifname (gen_args "," hd.iargs)])
+               @(gen_stmts hd.ibody)@ ["}"])
+               else ([sprintf "%s %s(%s) ;" (tpt hd.ireturn) hd.ifname (gen_args "," hd.iargs)])
               )@(gen_fundefs tl)
 
 
@@ -90,20 +91,13 @@ let compile prg =
   let head_lines =
     ["#include \"buckcal_types.h\""] 
   in
-  let func_lines =
-    let funs = prg.spfuns in
-    gen_fundefs funs
-  in
   let var_lines =
-    let vars = prg.spvars in
+    let vars = prg.ivars in
     gen_vardecs vars
   in
-  let stm_lines =       (* statements *)
-    let stms = prg.spstms in
-    gen_stmts stms
+  let func_lines =
+    let funs = prg.ifuns in
+    gen_fundefs funs
   in
-  let all = head_lines @ func_lines
-            @ ["int main() {"] @ var_lines @ stm_lines
-            @["return 0;"; "}"] 
-  in
+  let all = head_lines @ var_lines @ func_lines in
   List.iter print_endline all

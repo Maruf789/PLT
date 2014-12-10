@@ -17,7 +17,8 @@ let main lex_buf =
   try
     let prog = Parser.program Scanner.token lex_buf in
     let sprog = Scheck.check prog in
-      Translate.compile sprog
+    let tprog = Translate.translate sprog in
+      Codegen.compile tprog
   with
       Scanner.Scanner_error x -> perror "Scanner error" x
     | Parsing.Parse_error -> perror "Parser error" (loc_err lex_buf)
