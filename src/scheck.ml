@@ -57,7 +57,7 @@ let find_func func_table fnsg =
   let func_eq f1 fd =
     let f2 = sig_sfunc fd in
     f1.fsname = f2.fsname &&
-    try List.for_all2 eq_t f1.fsargs f2.fsargs
+    try List.for_all2 (=) f1.fsargs f2.fsargs
     with Invalid_argument _ -> false
   in
   try true, (List.find (func_eq fnsg) func_table)
