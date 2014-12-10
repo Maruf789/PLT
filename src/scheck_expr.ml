@@ -198,4 +198,3 @@ let check_assign sexp1 sexp2 =
   | Double, DoubleMat -> Double, ret0
   | String, StringMat -> String, ret0
   | x, y -> raise (Bad_type (sprintf "%s : %s operand types invalid" (pt x) (pt y)))
-
