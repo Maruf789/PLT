@@ -1,4 +1,4 @@
-(* 
+(*
   Translate SAST to TAST
   Input: SAST
   Output: TAST
