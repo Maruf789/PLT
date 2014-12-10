@@ -119,7 +119,14 @@ and trans_condstmts tid condstmtlist = match condstmtlist with
   | hd::tl -> ((let isl2, ie2, is2 = trans_condstmt tid [] hd in
                 (isl2 @ [IElseIf ie2] @ is2)) @ (trans_condstmts tid tl))
 
-
+(* translate main function - add return 0 if no statment of the last one is not return *)
+let trans_main_func stmts = 
+  let trans_stmts = trans_stmts 0 stmts in
+    match (List.rev trans_stmts) with
+        [] -> [IReturn (IIntval 0)]
+      | hd::tl -> match hd with
+                    IReturn e -> trans_stmts
+                  | _ -> trans_stmts @ [IReturn (IIntval 0)]
 
 (* translate function declaration/definition *)
 let rec trans_args args = match args with
@@ -147,7 +154,7 @@ let translate prg =
   in
   let stmt_lines =
     let stmts = prg.spstms in
-    trans_stmts 0 stmts
+    trans_main_func stmts
   in
   let main_func = {
     ireturn = Iint;
@@ -156,3 +163,4 @@ let translate prg =
     ibody = var_lines @ stmt_lines
   } in
   { ivars = []; ifuns = func_lines @ [main_func] }
+  
