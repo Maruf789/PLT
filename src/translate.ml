@@ -82,8 +82,6 @@ let rec trans_vardecs vars = match vars with
     ) @ (trans_vardecs tl)
 
 
-(*let gen_disp es = ("cout << " ^ es ^ " << endl;")*)
-
 (* translate statement list *)
 let rec trans_stmts tid stmts = match stmts with
     [] -> []
@@ -91,13 +89,19 @@ let rec trans_stmts tid stmts = match stmts with
         SEmpty -> [IEmpty]
       | SExpr e -> let isl, ie = trans_expr [] e in isl@[IExpr ie]
       | SReturn e -> let isl, ie = trans_expr [] e in isl@[IReturn ie]
-      | SIf (cs, csl, sl) -> raise (Not_now "CntFor not implemented")
-      | SCntFor (_, _, _) -> raise (Not_now "CntFor not implemented")
-      | SCndFor _ -> raise (Not_now "CndFor not implemented")
+      | SIf (cs, csl, sl) -> raise (Not_now "If not implemented")
+      | SCntFor (s, e, ss) -> (*let iterv = ("F_" ^ s) in
+                              let *) raise (Not_now "CntFor not implemented")
+      | SCndFor cs -> let isl0, ie, is = trans_condstmt tid [] cs in
+                      (isl0 @ [IWhileHead ie] @ is)
       | SDisp e -> let isl, ie = trans_expr [] e in isl@[IReturn ie]
       | SContinue -> [IContinue]
       | SBreak -> [IBreak]
     ) @ (trans_stmts (tid + 1) tl)
+and trans_condstmt tid isl cs =
+  let isl0, iec = trans_expr isl cs.scond in
+  let ies = trans_stmts (tid + 1) cs.sstmts in
+  (isl0, iec, ies)
 
 
 (* translate function declaration/definition *)

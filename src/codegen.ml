@@ -66,6 +66,7 @@ let rec gen_stmt stmt = match stmt with
   | IElse -> (sprintf "} else {")
   | IForHead (e1, e2, e3) -> (sprintf "for (%s %s; %s) {" (gen_stmt e1) (gen_expr e2) (gen_expr e3))
   | IWhileHead e -> (sprintf "while (%s) {"  (gen_expr e))
+  | IBlockEnd -> "}"
   | IDisp e -> (sprintf "cout << %s << endl;" (gen_expr e))
   | IContinue -> (sprintf "continue;")
   | IBreak -> (sprintf "break;")

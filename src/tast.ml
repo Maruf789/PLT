@@ -39,6 +39,7 @@ type irstmt =
   | IElse (* } else { *)
   | IForHead of irstmt * irexpr * irexpr (* for (s; s; e) { *)
   | IWhileHead of irexpr (* while (e) { *)
+  | IBlockEnd (* } *)
   | IDisp of irexpr (* cout << e << endl *)
   | IContinue (* continue *)
   | IBreak (* break *)
