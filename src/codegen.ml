@@ -58,7 +58,7 @@ let gen_disp es = ("cout << " ^ es ^ " << endl;")
 (* translate statement list *)
 let rec gen_stmt stmt = match stmt with
     IEmpty -> ";"
-  | IVarDec iv -> 
+  | IVarDec (vt, vn, ve) -> sprintf "%s %s = %s;" (tpt vt) vn (gen_expr ve)
   | IExpr e -> (gen_expr e) ^ " ;"
   | IReturn e -> sprintf "return %s ;" (gen_expr e)]
   | IIfHead e -> [sprintf "if (%s) {"  (gen_expr e)]
