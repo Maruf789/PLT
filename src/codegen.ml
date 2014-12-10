@@ -29,7 +29,7 @@ let gen_bop op = match op with
 (* translate expr to string *)
 (* @ttbl: (int*sexpr list list) list - temporary variable table *)
 (* return: (int*sexpr) list * string - updated ttbl and target code *)
-let rec gen_expr ttbl exp = match exp with
+let rec gen_expr exp = match exp with
     IIntval x -> (sprintf " %d " x)
   | IDoubleval x -> (sprintf "%f" x)
   | IStringval x -> (" \"" ^ x ^ "\" ")
@@ -39,11 +39,12 @@ let rec gen_expr ttbl exp = match exp with
   | IAssign (e1, e2) -> (sprintf "( %s = %s )" (gen_expr e1) (gen_expr e2))
   | IUnaop (u, e) -> (sprintf "( %s %s )" (gen_uop u) (gen_expr e))
   | ICall (s, el) -> (sprintf "( %s( %s ) )" s (gen_arg_list "," el))
-  | IArray el-> raise (Not_now "Matsub not implemented")
-and gen_arg_list ttbl sc el = match el with
+  | IArray el-> raise (Failure "IArray not implemented")
+  | IMatSub (_, _, _) -> raise (Failure "IArray not implemented")
+and gen_arg_list sc el = match el with
     [] -> ""
-  | [e] -> gen_expr ttbl e
-  | e1::e2::tl ->  sprintf "%s %s %s" (gen_expr ttbl e1) sc (gen_arg_list sc (e2::tl))
+  | [e] -> gen_expr e
+  | e1::e2::tl ->  sprintf "%s %s %s" (gen_expr e1) sc (gen_arg_list sc (e2::tl))
 
 (* translate variable definition list *)
 let rec gen_vardecs vars = match vars with
@@ -63,8 +64,8 @@ let rec gen_stmts stmts = match stmts with
       | IReturn e -> [sprintf "return %s ;" (gen_expr e)]
       | IIfHead e -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
       | IElseIf e -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
-      | IElse e -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
-      | IForHead e -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
+      | IElse -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
+      | IForHead (e1, e2, e3) -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
       | IWhileHead e -> [](*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
       | IDisp e -> (let es = gen_expr e in [gen_disp es])
       | IContinue -> ["continue;"]
@@ -74,14 +75,14 @@ let rec gen_stmts stmts = match stmts with
 
 let rec gen_args sc args = match args with
     [] -> ""
-  | [a] -> sprintf "%s %s" (tpt a.vtype) (a.vname)
-  | a::b::tl -> (sprintf "%s %s%s " (tpt a.vtype) a.vname sc) ^ (gen_args sc (b::tl))
+  | [a] -> sprintf "%s %s" (tpt a.ivtype) (a.ivname)
+  | a::b::tl -> (sprintf "%s %s%s " (tpt a.ivtype) a.ivname sc) ^ (gen_args sc (b::tl))
 let rec gen_fundefs fundefs = match fundefs with
     [] -> []
   | hd::tl -> (if hd.ibody != [] then
-               ([sprintf "%s %s(%s) {" (tpt hd.ireturn) hd.ifname (gen_args "," hd.sargs)]
+               ([sprintf "%s %s(%s) {" (tpt hd.ireturn) hd.ifname (gen_args "," hd.iargs)]
                @(gen_stmts hd.ibody)@ "}")
-               else ([sprintf "%s %s(%s) ;" (tpt hd.itype) hd.ifname (gen_args "," hd.sargs)])
+               else ([sprintf "%s %s(%s) ;" (tpt hd.itype) hd.ifname (gen_args "," hd.iargs)])
               )@(gen_fundefs tl)
 
 
