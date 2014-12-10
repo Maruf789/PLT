@@ -1,4 +1,6 @@
 #test other unit operations
+int mat mx1;
+int mat mx2;
 mx1[1,0]+mx2[1,0];
 mx1[1,0]*mx2[1,0];
 mx1[1,0]-mx2[1,0];

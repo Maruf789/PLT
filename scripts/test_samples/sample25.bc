@@ -1,6 +1,3 @@
 #test function declaration
 def helper(int x);
-def helper(int);
-def int mat range(int, int);
-def int mat range(int x, int y);
-def int cols(int mat);
+def helper(double x);

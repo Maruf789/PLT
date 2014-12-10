@@ -60,7 +60,7 @@ let rec trans_expr isl exp =
                                  let ta = smat_to_array t in
                                  let tname = sprintf "T_%d" (List.length isl) in
                                  let isl = isl@[IVarDec (ta, tname, arr)] in
-                                 let ex = ICall ((smat_to_cnsr t), [IStringval tname; IIntval nr; IIntval nc]) in
+                                 let ex = ICall ((smat_to_cnsr t), [IId tname; IIntval nr; IIntval nc]) in
                                  isl, ex)
 and trans_arglist is1 el = match el with
     [] -> is1, []
@@ -103,11 +103,14 @@ let rec trans_stmts tid stmts = match stmts with
                                         (is3 @ [IElse] @ is3))
                                       in
                             (part1 @ part2 @ part3 @ [IBlockEnd])
-      | SCntFor (s, e, ss) -> (*let iterv = ("F_" ^ s) in
-                              let *) raise (Not_now "CntFor not implemented")
+       | SCntFor (s, e, ss) -> let iv = ("F_" ^ s) in
+                              let fs1 = IVarDec(Iint, iv, (IIntval 0)) in
+                              let fh = IForHead(fs1, IBinop(IId iv, Lt, IIntval 1), IAssign(IId iv, IBinop(IId iv, Plus, IIntval 1))) in
+                              let lbody = trans_stmts (tid + 1) ss in
+                              ( [fh] @ lbody @ [IBlockEnd])
       | SCndFor cs -> let isl0, ie, is = trans_condstmt tid [] cs in
-                      (isl0 @ [IWhileHead ie] @ is)
-      | SDisp e -> let isl, ie = trans_expr [] e in isl@[IReturn ie]
+                      (isl0 @ [IWhileHead ie] @ is @ [IBlockEnd])
+      | SDisp e -> let isl, ie = trans_expr [] e in isl@[IDisp ie]
       | SContinue -> [IContinue]
       | SBreak -> [IBreak]
     ) @ (trans_stmts (tid + 1) tl)

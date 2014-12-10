@@ -4,6 +4,6 @@ def int returnint (int a) do
 fed
 
 def int callreturn (int b) do
-		disp b + '\n';
+		disp b;
 		disp returnint(b);
 fed

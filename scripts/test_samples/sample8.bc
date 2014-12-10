@@ -1,8 +1,6 @@
 #test operator
-#string a;
-#a: 's'+'u';
-#int mat b;
-#b: {1,2;3,4}*3;
+bool a: true;
 bool c;
-#c:1=2;
-c:1 not 2;
+c:1=2;
+c:1 != 2;
+c: not a;

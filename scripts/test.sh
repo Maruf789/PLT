@@ -1,12 +1,21 @@
 #! /bin/bash
+
 SAMPLES_DIR=./test_samples
 OUTPUT_DIR=./test_outputs
 IDEAL_DIR=./test_ideaoutputs
 NU=/dev/null
-#DIF="git diff -b"
+CFILE_DIR=./cfiles
+BINFILE=./binfiles
+
 DIF="diff -b -B"
 
-for (( i =  0; i <= 42; i++))
+## copy C++ header here
+cp ../src/buckcal_types.h $CFILE_DIR
+cp ../src/c++/buckcal_mat.cpp $CFILE_DIR
+cp ../src/c++/buckcal_mat.hpp $CFILE_DIR
+
+# compare <outputfile> <idealoutputfile>
+for (( i =  2; i <= 2; i++))
 do
 	$1 $SAMPLES_DIR/sample${i}.bc sample${i}.c > $NU \
 	 2> 		$OUTPUT_DIR/sample${i}out.txt 
@@ -14,4 +23,7 @@ do
 	if [ $? -eq 1 ]; then
 		echo "sample${i}.bc error"
 	fi
+# run <args>
+	$1 $SAMPLES_DIR/sample${i}.bc > $CFILE_DIR/sample${i}.cpp && g++ $CFILE_DIR/sample${i}.cpp $CFILE_DIR/buckcal_mat.cpp -o $BINFILE/sample${i}.bin \
+	2>>		$OUTPUT_DIR/sample${i}out.txt
 done

@@ -1,5 +1,9 @@
 #test operations
 string a: 'haha';
 string b: 'hehe';
-int c: -3+4;
-slice(a, range(1,3));
+string c: a + b;
+string d: 'haha' + 'hehe';
+disp a;
+disp b;
+disp c;
+disp d;

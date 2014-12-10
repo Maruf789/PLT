@@ -1,4 +1,6 @@
 #test data type conversion
 int a: 6.6;
-int b: int_of_string('haha');
-int mat a: mat_int_of_string({'ha';'he';'h'});
+int b: int_of_double(6.6);
+disp b;
+disp a;
+#int mat a: mat_int_of_string({'ha';'he';'h'});
