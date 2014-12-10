@@ -82,12 +82,11 @@ let rec trans_vardecs vars = match vars with
     ) @ (trans_vardecs tl)
 
 
-(*
-        SEmpty -> [IEmpty]
-      | SExpr e -> let isl, ie = trans_expr [] e in isl@[IExpr ie] translate statement list *)
 let rec trans_stmts tid stmts = match stmts with
     [] -> []
   | hd::tl -> ( match hd with
+      | SEmpty -> [IEmpty]
+      | SExpr e -> let isl, ie = trans_expr [] e in isl@[IExpr ie]
       | SReturn e -> let isl, ie = trans_expr [] e in isl@[IReturn ie]
       | SIf (cs, csl, sl) ->let part1 = let isl0, ie, is = trans_condstmt tid [] cs in
                                         (isl0 @ [IIfHead ie] @ is)
