@@ -93,7 +93,7 @@ let rec trans_stmts tid stmts = match stmts with
       | SCntFor (s, e, ss) -> (*let iterv = ("F_" ^ s) in
                               let *) raise (Not_now "CntFor not implemented")
       | SCndFor cs -> let isl0, ie, is = trans_condstmt tid [] cs in
-                      (isl0 @ [IWhileHead ie] @ is)
+                      (isl0 @ [IWhileHead ie] @ is @ [IBlockEnd])
       | SDisp e -> let isl, ie = trans_expr [] e in isl@[IReturn ie]
       | SContinue -> [IContinue]
       | SBreak -> [IBreak]
