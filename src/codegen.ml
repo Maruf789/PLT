@@ -39,7 +39,7 @@ let rec gen_expr exp = match exp with
   | IAssign (e1, e2) -> (sprintf "( %s = %s )" (gen_expr e1) (gen_expr e2))
   | IUnaop (u, e) -> (sprintf "( %s %s )" (gen_uop u) (gen_expr e))
   | ICall (s, el) -> (sprintf "( %s( %s ) )" s (gen_arg_list "," el))
-  | IArray el-> raise (Failure "IArray not implemented")
+  | IArray el->  (sprintf "{%s}" (gen_arg_list "," el) )
   | IMatSub (_, _, _) -> raise (Failure "IArray not implemented")
 and gen_arg_list sc el = match el with
     [] -> ""
