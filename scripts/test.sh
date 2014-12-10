@@ -7,14 +7,15 @@ NU=/dev/null
 CFILE_DIR=./cfiles
 BINFILE=./binfiles
 
-#DIF="git diff -b"
 DIF="diff -b -B"
 
 ## copy C++ header here
 cp ../src/buckcal_types.h $CFILE_DIR
+cp ../src/c++/buckcal_mat.cpp $CFILE_DIR
+cp ../src/c++/buckcal_mat.hpp $CFILE_DIR
 
 # compare <outputfile> <idealoutputfile>
-for (( i =  27; i <= 27; i++))
+for (( i =  26; i <= 26; i++))
 do
 	$1 $SAMPLES_DIR/sample${i}.bc sample${i}.c > $NU \
 	 2> 		$OUTPUT_DIR/sample${i}out.txt 
@@ -23,6 +24,6 @@ do
 		echo "sample${i}.bc error"
 	fi
 # run <args>
-	$1 $SAMPLES_DIR/sample${i}.bc > $CFILE_DIR/sample${i}.cpp && g++ $CFILE_DIR/sample${i}.cpp -o $BINFILE/sample${i}.bin \
+	$1 $SAMPLES_DIR/sample${i}.bc > $CFILE_DIR/sample${i}.cpp && g++ $CFILE_DIR/sample${i}.cpp $CFILE_DIR/buckcal_mat.cpp -o $BINFILE/sample${i}.bin \
 	2>>		$OUTPUT_DIR/sample${i}out.txt
 done

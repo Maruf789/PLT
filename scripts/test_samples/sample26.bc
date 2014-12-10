@@ -7,3 +7,5 @@ fed
 def helper(double x) do
 	disp 'help';
 fed
+
+disp 'help';
