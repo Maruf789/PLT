@@ -1,3 +1,12 @@
-# top variable declaration
-string int endstr : 'End' ;
+# test string variable
+string endstr;
+endstr: 'End\'';
 disp endstr;
+endstr: 'End\t';
+disp endstr;
+endstr: 'End\n';
+disp endstr;
+endstr: 'End\\';
+disp endstr;
+disp endstr;
+endstr: 'End"';

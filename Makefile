@@ -11,3 +11,5 @@ clean :
 	-cd src && $(MAKE) clean
 	-cd scripts && $(MAKE) clean 
 	-cd scripts/test_outputs && rm -f *out.txt
+	-cd scripts/cfiles && rm -f *.cpp *.h
+	-cd scripts/binfiles && rm -f *.bin

@@ -7,11 +7,3 @@ for r in range(1, 5) do
 		r: r + 1;
 		fi
 rof
-
-for r in range(1, 5) do
-		if r > 4 then
-		break
-		else
-		r: r + 1;
-		fi
-rof

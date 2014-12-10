@@ -1,11 +1,7 @@
 #test if-then-else-fi
 int b: 2;
 if b < 0 then
-		disp 0;
+	disp 0;
 else
-		disp b;
-fi;
-if b < 0 then
-		disp 0;
-else
-		disp b;
+	disp b;
+fi

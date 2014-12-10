@@ -3,7 +3,4 @@ int b: 5;
 for b < 10 do
 		b: b + 1;
 rof
-
-for b < 10 do
-		b = b + 1;
-rof
+disp b;

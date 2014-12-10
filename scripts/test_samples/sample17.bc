@@ -4,7 +4,3 @@ int r;
 for r in {1;2;3;4} do
 		b: b + 1;
 rof
-
-for r in [1;2;3;4] do
-		b: b + 1;
-rof
