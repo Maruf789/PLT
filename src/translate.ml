@@ -13,14 +13,14 @@ exception Not_now of string
 
 (* Translate dtype to C++ types *)
 let ipt t = match t with
-      Int -> Iint
-    | Double -> Idouble
-    | String -> Istring
-    | Bool -> Ibool
-    | IntMat -> Iint_mat
-    | DoubleMat -> Idouble_mat
-    | StringMat -> Istring_mat
-    | Void -> Ivoid
+    Int -> Iint
+  | Double -> Idouble
+  | String -> Istring
+  | Bool -> Ibool
+  | IntMat -> Iint_mat
+  | DoubleMat -> Idouble_mat
+  | StringMat -> Istring_mat
+  | Void -> Ivoid
 
 (* translate expr. 
    Note that translate an Matval may result in extra irstmt *)
@@ -28,16 +28,16 @@ let ipt t = match t with
 (* return : irstmt list * irexpr *)
 let rec trans_expr isl exp =
   let smat_to_array m = match m with
-    IntMat -> Iint_array
-  | DoubleMat -> Idouble_array
-  | StringMat -> Istring_array
-  | _ -> raise (Not_now "Mat should be IntMat, DoubleMat, StringMat")
+      IntMat -> Iint_array
+    | DoubleMat -> Idouble_array
+    | StringMat -> Istring_array
+    | _ -> raise (Not_now "Mat should be IntMat, DoubleMat, StringMat")
   in
   let smat_to_cnsr m = match m with
-    IntMat -> "int_mat"
-  | DoubleMat -> "double_mat"
-  | StringMat -> "string_mat"
-  | _ -> raise (Not_now "Mat should be IntMat, DoubleMat, StringMat")
+      IntMat -> "int_mat"
+    | DoubleMat -> "double_mat"
+    | StringMat -> "string_mat"
+    | _ -> raise (Not_now "Mat should be IntMat, DoubleMat, StringMat")
   in
   match exp with
     _, SIntval x -> isl, (IIntval x)
@@ -88,27 +88,28 @@ let rec trans_stmts tid stmts = match stmts with
       | SEmpty -> [IEmpty]
       | SExpr e -> let isl, ie = trans_expr [] e in isl@[IExpr ie]
       | SReturn e -> let isl, ie = trans_expr [] e in isl@[IReturn ie]
-      | SIf (cs, csl, sl) ->let part1 = let isl0, ie, is = trans_condstmt tid [] cs in
-                                        (isl0 @ [IIfHead ie] @ is)
-                                      in
-                            let rec helper condstmtlist = match condstmtlist with 
-                                                      [] -> []
-                                                      | hd::tl -> ((let isl2, ie2, is2 = trans_condstmt tid [] hd in
-                                                        (isl2 @ [IElseIf ie2] @ is2)) @ (helper tl))
-                                      in
-                            let part2 = helper csl
-                                      in
-                            let part3 = (let is3 = trans_stmts tid sl in
-                                        (is3 @ [IElse] @ is3))
-                                      in
-                            (part1 @ part2 @ part3 @ [IBlockEnd])
-       | SCntFor (s, e, ss) -> let iv = ("F_" ^ s) in
-                              let fs1 = IVarDec(Iint, iv, (IIntval 0)) in
-                              let fh = IForHead(fs1, IBinop(IId iv, Lt, IIntval 1), IAssign(IId iv, IBinop(IId iv, Plus, IIntval 1))) in
-                              let lbody = trans_stmts (tid + 1) ss in
-                              ( [fh] @ lbody @ [IBlockEnd])
+      | SIf (cs, csl, sl) ->
+        let part1 = let isl0, ie, is = trans_condstmt tid [] cs in
+          (isl0 @ [IIfHead ie] @ is)
+        in
+        let rec helper condstmtlist = match condstmtlist with 
+            [] -> []
+          | hd::tl -> ((let isl2, ie2, is2 = trans_condstmt tid [] hd in
+                        (isl2 @ [IElseIf ie2] @ is2)) @ (helper tl))
+        in
+        let part2 = helper csl
+        in
+        let part3 = (let is3 = trans_stmts tid sl in
+                     (is3 @ [IElse] @ is3))
+        in
+        (part1 @ part2 @ part3 @ [IBlockEnd])
+      | SCntFor (s, e, ss) -> let iv = ("F_" ^ s) in
+        let fs1 = IVarDec(Iint, iv, (IIntval 0)) in
+        let fh = IForHead(fs1, IBinop(IId iv, Lt, IIntval 1), IAssign(IId iv, IBinop(IId iv, Plus, IIntval 1))) in
+        let lbody = trans_stmts (tid + 1) ss in
+        ( [fh] @ lbody @ [IBlockEnd])
       | SCndFor cs -> let isl0, ie, is = trans_condstmt tid [] cs in
-                      (isl0 @ [IWhileHead ie] @ is @ [IBlockEnd])
+        (isl0 @ [IWhileHead ie] @ is @ [IBlockEnd])
       | SDisp e -> let isl, ie = trans_expr [] e in isl@[IDisp ie]
       | SContinue -> [IContinue]
       | SBreak -> [IBreak]

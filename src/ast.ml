@@ -76,12 +76,12 @@ type program = {
 
 (* A helper function: convert dtype to string *)
 let pt t = match t with
-      Int -> "Int"
-    | Double -> "Double"
-    | String -> "String"
-    | Bool -> "Bool"
-    | IntMat -> "IntMat"
-    | DoubleMat -> "DoubleMat"
-    | StringMat -> "StringMat"
-    | Void -> "Void"
+    Int -> "Int"
+  | Double -> "Double"
+  | String -> "String"
+  | Bool -> "Bool"
+  | IntMat -> "IntMat"
+  | DoubleMat -> "DoubleMat"
+  | StringMat -> "StringMat"
+  | Void -> "Void"
 

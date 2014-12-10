@@ -7,13 +7,13 @@ open Printf
 let check_uniop uop sexp =
   let ret = SUnaop(Not, sexp) in
   match uop with
-      Not -> (match sexp with
-          Bool, _ -> Bool, ret
-        | _, _ -> raise (Bad_type "\"not\" bad operand type"))
-    | Neg -> (match sexp with
-          Int, _ -> Int, ret
-        | Double, _ -> Double, ret
-        | _, _ -> raise (Bad_type "unary negitive: bad operand type"))
+    Not -> (match sexp with
+        Bool, _ -> Bool, ret
+      | _, _ -> raise (Bad_type "\"not\" bad operand type"))
+  | Neg -> (match sexp with
+        Int, _ -> Int, ret
+      | Double, _ -> Double, ret
+      | _, _ -> raise (Bad_type "unary negitive: bad operand type"))
 
 
 let check_binop bop sexp1 sexp2 =

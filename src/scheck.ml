@@ -13,7 +13,7 @@ open Printf
    return: (true, dtype) on found, (false, _) on not_found *)
 let find_var var_table name =
   (*let _ = ignore(List.iter (fun (_,n,_) -> printf "%s " n) var_table) in
-  let _ = printf "find: %s \n" name in*)
+    let _ = printf "find: %s \n" name in*)
   try
     let t, _, _ = List.find (fun (_,b,_) -> b = name) var_table in
     true, t
@@ -177,9 +177,9 @@ and check_stmts ftbl vtbl ret_type loop_flag stmts= match stmts with
         Empty -> SEmpty
       | Expr e -> SExpr (check_expr ftbl vtbl e)
       | Return e ->
-          let ret = check_expr ftbl vtbl e in
-          if(fst ret == Int) then SReturn ret
-          else raise (Bad_type "mismatch with function's return type") 
+        let ret = check_expr ftbl vtbl e in
+        if(fst ret == Int) then SReturn ret
+        else raise (Bad_type "mismatch with function's return type") 
       | If (c, cl, ss) -> SIf ((List.hd (check_condstmts ftbl vtbl ret_type loop_flag [c] )), 
                                (check_condstmts ftbl vtbl ret_type loop_flag cl),
                                (check_stmts ftbl vtbl ret_type loop_flag ss ))
