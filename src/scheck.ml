@@ -142,6 +142,28 @@ let rec check_vardecs ftbl vtbl vardecs = match vardecs with
     in
     (check_vardecs ftbl (vtbl@new_vardec) tl)
 
+(* get svar locals from var list, check all var with incremental vtbl, but not returning a merged vtbl *)
+let rec check_local_var_def ftbl vtbl local_var_list = match local_var_list with
+    [] -> []
+  | hd::tl -> let new_vardec = (
+    let new_v, init_e = (
+      match hd with
+        VarNoInit v -> v, (svar_init_sexpr v.vtype)
+      | VarInit (v, e) -> v, (check_expr ftbl vtbl e))
+    in
+    let new_type, new_name = new_v.vtype, new_v.vname in
+    let _ =
+      let f, _ = find_var vtbl new_name in
+      if not f then () else raise (Bad_type (new_v.vname ^ " defined twice"))
+    in
+    let new_type =
+      if eq_t new_type (fst init_e) then new_type
+      else raise (Bad_type "variable and expression type mismatch")
+    in
+    [(new_type, new_name, init_e)] )
+    in
+    (new_vardec@(check_local_var_def ftbl (new_vardec@vtbl) tl))
+
 (* check statement list.
    return: sstmt list *)
 let rec check_condstmts ftbl vtbl ret_type loop_flag cs = match cs with(* translate a list of elif *)
@@ -197,8 +219,8 @@ let check_fundef ftbl new_func_def =
   let new_sargs = new_func_def.args in (* arguments *)
   (* check local variables & build variable table *)
   let arg_def = var2def_list new_sargs in
-  let new_local = check_vardecs ftbl arg_def new_func_def.locals in
-  let vtbl = new_local in
+  let new_local = check_local_var_def ftbl arg_def new_func_def.locals in
+  let vtbl = (arg_def@new_local) in
   (* check statements *)
   let new_fstmts = check_stmts ftbl vtbl new_sret false new_func_def.body in
   let new_sfun_def = { sreturn = new_sret;
@@ -213,6 +235,7 @@ let check_fundef ftbl new_func_def =
     then (list_rep fbody new_sfun_def ftbl)
     else raise (Bad_type ("Function '" ^ new_sname ^ "' already defined"))
   )
+
 
 
 (* check function definition list
