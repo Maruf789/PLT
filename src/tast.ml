@@ -48,7 +48,7 @@ type irstmt =
 type irfun = {
   ireturn : itype;
   ifname : string;
-  iargs : var list;
+  iargs : ivar list;
   ibody : irstmt list
 }
 

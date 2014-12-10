@@ -107,7 +107,7 @@ let rec trans_stmts tid stmts = match stmts with
 
 let rec trans_fundefs fundefs = match fundefs with
     [] -> []
-  | hd::tl -> [](if hd.sbody=[] then 
+  | hd::tl -> (if hd.sbody!=[] then 
                ([sprintf "%s %s(%s) {" (tpt hd.sreturn) hd.sfname (trans_args "," hd.sargs)]
                @(trans_vardecs hd.slocals)@(trans_stmts hd.sbody))
                else ([sprintf "%s %s(%s) ;" (tpt hd.sreturn) hd.sfname (trans_args "," hd.sargs)])
