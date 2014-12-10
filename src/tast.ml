@@ -6,6 +6,11 @@ type itype = Ivoid | Iint | Idouble | Istring | Ibool
            | Iint_array | Idouble_array | Istring_array
            | Iint_mat | Idouble_mat | Istring_mat
 
+type ivar = {
+  ivtype : itype;
+  ivname : string
+}
+
 (* target expression *)
 type irexpr =
     IId of string

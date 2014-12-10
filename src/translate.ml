@@ -12,15 +12,15 @@ open Printf
 exception Not_now of string
 
 (* Translate dtype to C++ types *)
-let tpt t = match t with
-      Int -> "int"
-    | Double -> "double"
-    | String -> "string"
-    | Bool -> "bool"
-    | IntMat -> "int_mat"
-    | DoubleMat -> "double_mat"
-    | StringMat -> "string_mat"
-    | Void -> "void"
+let ipt t = match t with
+      Int -> Iint
+    | Double -> Idouble
+    | String -> Istring
+    | Bool -> Ibool
+    | IntMat -> Iint_mat
+    | DoubleMat -> Idouble_mat
+    | StringMat -> Istring_mat
+    | Void -> Ivoid
 
 (* translate expr. 
    Note that translate an Matval may result in extra irstmt *)
@@ -73,10 +73,13 @@ and trans_matval ell = (* matrix element should not generate extra irstmt *)
   (IArray irel)
 
 (* translate variable definition list *)
-(*let rec trans_vardecs vars = match vars with
+let rec trans_vardecs vars = match vars with
     [] -> []
   | (t, s, e)::tl -> (
-    (sprintf "%s %s = %s;" (tpt t) s (trans_expr e)) :: (trans_vardecs tl))*)
+      let it = ipt t in
+      let isl, ie = trans_expr [] e in
+      (isl@[IVarDec (it, s, ie)])
+    ) @ (trans_vardecs tl)
 
 
 (*let gen_disp es = ("cout << " ^ es ^ " << endl;")*)
