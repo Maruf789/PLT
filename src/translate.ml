@@ -97,7 +97,7 @@ let rec trans_stmts tid stmts = match stmts with
                               ( [fh] @ lbody @ [IBlockEnd])
       | SCndFor cs -> let isl0, ie, is = trans_condstmt tid [] cs in
                       (isl0 @ [IWhileHead ie] @ is @ [IBlockEnd])
-      | SDisp e -> let isl, ie = trans_expr [] e in isl@[IReturn ie]
+      | SDisp e -> let isl, ie = trans_expr [] e in isl@[IDisp ie]
       | SContinue -> [IContinue]
       | SBreak -> [IBreak]
     ) @ (trans_stmts (tid + 1) tl)

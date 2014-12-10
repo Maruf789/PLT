@@ -49,9 +49,12 @@ and gen_arg_list sc el = match el with
 (* translate variable definition list *)
 let rec gen_vardecs vars = match vars with
     [] -> []
-  | (t, s, e)::tl ->
-    (sprintf "%s %s = %s;" (tpt t) s (gen_expr e)) :: (gen_vardecs tl)
-
+  | v::tl -> (gen_vardec v) :: (gen_vardecs tl)
+and gen_vardec var =
+  let t, s, e = var in match t with
+    Iint_array | Idouble_array | Istring_array ->
+      sprintf "%s %s[] = %s;" (tpt t) s (gen_expr e)
+  | t -> sprintf "%s %s = %s;" (tpt t) s (gen_expr e)
 
 let gen_disp es = ("cout << " ^ es ^ " << endl;")
 
