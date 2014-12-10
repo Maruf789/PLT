@@ -1,4 +1,4 @@
-(* 
+(*
   Translate SAST to TAST
   Input: SAST
   Output: TAST
@@ -7,9 +7,9 @@
 open Ast
 open Sast
 open Tast
+open Translate_expr
 open Printf
 
-exception Not_now of string
 
 (* Translate dtype to C++ types *)
 let ipt t = match t with
@@ -24,22 +24,21 @@ let ipt t = match t with
 
 (* translate expr. 
    Note that translate an Matval may result in extra irstmt *)
+let smat_to_array m = match m with
+    IntMat -> Iint_array
+  | DoubleMat -> Idouble_array
+  | StringMat -> Istring_array
+  | _ -> raise (Not_now "Mat should be IntMat, DoubleMat, StringMat")
+
+let smat_to_cnsr m = match m with
+    IntMat -> "int_mat"
+  | DoubleMat -> "double_mat"
+  | StringMat -> "string_mat"
+  | _ -> raise (Not_now "Mat should be IntMat, DoubleMat, StringMat")
+
 (* @isl: irstmt list *)
 (* return : irstmt list * irexpr *)
-let rec trans_expr isl exp =
-  let smat_to_array m = match m with
-      IntMat -> Iint_array
-    | DoubleMat -> Idouble_array
-    | StringMat -> Istring_array
-    | _ -> raise (Not_now "Mat should be IntMat, DoubleMat, StringMat")
-  in
-  let smat_to_cnsr m = match m with
-      IntMat -> "int_mat"
-    | DoubleMat -> "double_mat"
-    | StringMat -> "string_mat"
-    | _ -> raise (Not_now "Mat should be IntMat, DoubleMat, StringMat")
-  in
-  match exp with
+let rec trans_expr isl exp = match exp with
     _, SIntval x -> isl, (IIntval x)
   | _, SDoubleval x -> isl, (IDoubleval x)
   | _, SStringval x -> isl, (IStringval x)
@@ -55,13 +54,16 @@ let rec trans_expr isl exp =
                          (isl, (IUnaop (u, ie))))
   | _, SCall (s, el) -> (let is1, iesl = trans_arglist isl el in
                          (isl, ICall (s, iesl)))
-  | _, SMatSub (s, e1, e2) -> raise (Not_now "Matsub not implemented")
-  | t, SMatval (ell, nr, nc) -> (let arr = trans_matval ell in
-                                 let ta = smat_to_array t in
-                                 let tname = sprintf "T_%d" (List.length isl) in
-                                 let isl = isl@[IVarDec (ta, tname, arr)] in
-                                 let ex = ICall ((smat_to_cnsr t), [IId tname; IIntval nr; IIntval nc]) in
-                                 isl, ex)
+  | _, SMatSub (s, e1, e2) -> (let isl, ie1 = trans_expr isl e1 in
+                               let isl, ie2 = trans_expr isl e2 in
+                               (isl, (trans_matsub s ie1 ie2)))
+  | t, SMatval (ell, nr, nc) -> (
+      let arr = trans_matval ell in
+      let ta = smat_to_array t in
+      let tname = sprintf "T_%d" (List.length isl) in
+      let isl = isl@[IVarDec (ta, tname, arr)] in
+      let ex = ICall ((smat_to_cnsr t), [IId tname; IIntval nr; IIntval nc]) in
+      isl, ex)
 and trans_arglist is1 el = match el with
     [] -> is1, []
   | e::tl -> (let isl, ie = trans_expr is1 e in

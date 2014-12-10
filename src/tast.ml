@@ -1,6 +1,8 @@
 (* target language AST *)
 open Ast
 
+exception Not_now of string
+
 (* target data type *)
 type itype = Ivoid | Iint | Idouble | Istring | Ibool
            | Iint_array | Idouble_array | Istring_array
@@ -12,35 +14,35 @@ type ivar = {
 }
 
 (* target expression *)
-type irexpr =
+type iexpr =
     IId of string
-  | IMatSub of string * irexpr * irexpr
+  | IMatSub of string * iexpr * iexpr * iexpr * iexpr (* M(x, y, r, c) *)
   | IIntval of int
   | IDoubleval of float
   | IStringval of string
   | IBoolval of bool
-  | IArray of irexpr list
-  | IBinop of irexpr * binop * irexpr
-  | IAssign of irexpr * irexpr
-  | IUnaop of unaop * irexpr
-  | ICall of string * irexpr list
+  | IArray of iexpr list
+  | IBinop of iexpr * binop * iexpr
+  | IAssign of iexpr * iexpr
+  | IUnaop of unaop * iexpr
+  | ICall of string * iexpr list
 
 (* target variable declare *)
-type ivar_dec = itype * string * irexpr (* type, name, init expr *)
+type ivar_dec = itype * string * iexpr (* type, name, init expr *)
 
 (* target statement *)
 type irstmt =
     IEmpty
   | IVarDec of ivar_dec
-  | IExpr of irexpr
-  | IReturn of irexpr (* return e *)
-  | IIfHead of irexpr (* if (e) { *)
-  | IElseIf of irexpr (* } else if (e) { *)
+  | IExpr of iexpr
+  | IReturn of iexpr (* return e *)
+  | IIfHead of iexpr (* if (e) { *)
+  | IElseIf of iexpr (* } else if (e) { *)
   | IElse (* } else { *)
-  | IForHead of irstmt * irexpr * irexpr (* for (s; s; e) { *)
-  | IWhileHead of irexpr (* while (e) { *)
+  | IForHead of irstmt * iexpr * iexpr (* for (s; s; e) { *)
+  | IWhileHead of iexpr (* while (e) { *)
   | IBlockEnd (* } *)
-  | IDisp of irexpr (* cout << e << endl *)
+  | IDisp of iexpr (* cout << e << endl *)
   | IContinue (* continue *)
   | IBreak (* break *)
 
