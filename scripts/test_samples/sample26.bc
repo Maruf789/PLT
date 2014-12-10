@@ -3,9 +3,6 @@ def int helper(int x) do
 	disp 'help';
 	return 0;
 fed
-
-#def helper(double x) do
-#	disp 'help';
-#fed
-#
-#disp 'help';
+def helper(double x) do
+	disp 'help';
+fed
