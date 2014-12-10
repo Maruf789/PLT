@@ -6,7 +6,7 @@ open Ast
 open Tast
 open Printf
 
-(* exception Not_now of string *)
+exception Not_done of string
 
 (* Translate dtype to C++ types *)
 let tpt t = match t with
@@ -40,7 +40,7 @@ let rec gen_expr exp = match exp with
   | IUnaop (u, e) -> (sprintf "( %s %s )" (gen_uop u) (gen_expr e))
   | ICall (s, el) -> (sprintf "( %s( %s ) )" s (gen_arg_list "," el))
   | IArray el->  (sprintf "{%s}" (gen_arg_list "," el) )
-  | IMatSub (_, _, _) -> raise (Failure "IArray not implemented")
+  | IMatSub (_, _, _) -> raise (Not_done "IArray not implemented")
 and gen_arg_list sc el = match el with
     [] -> ""
   | [e] -> gen_expr e

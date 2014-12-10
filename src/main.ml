@@ -24,6 +24,7 @@ let main lex_buf =
   | Parsing.Parse_error -> perror "Parser error" (loc_err lex_buf)
   | Sast.Bad_type x -> perror "Sast error" x
   | Translate.Not_now x -> perror "Translate error" x
+  | Codegen.Not_done x -> perror "Codegen error" x
   | _ -> perror "Unkown error" (loc_err lex_buf)
 
 (* Shell interface *)
