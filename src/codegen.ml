@@ -56,29 +56,28 @@ let rec gen_vardecs vars = match vars with
 let gen_disp es = ("cout << " ^ es ^ " << endl;")
 
 (* translate statement list *)
-let rec gen_stmts stmts = match stmts with
+let rec gen_stmt stmt = match stmt with
+    IEmpty -> ";"
+  | IVarDec iv -> 
+  | IExpr e -> (gen_expr e) ^ " ;"
+  | IReturn e -> sprintf "return %s ;" (gen_expr e)]
+  | IIfHead e -> [sprintf "if (%s) {"  (gen_expr e)]
+     (*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
+  | IElseIf e -> [sprintf "} else if (%s) {"  (gen_expr e)]
+     (*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
+  | IElse -> [sprintf "} else {"]
+     (*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
+  | IForHead (e1, e2, e3) -> [sprintf "for (%s %s; %s) {" (gen_stmt e1) (gen_expr e2) (gen_expr e3)]
+     (*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
+  | IWhileHead e -> [sprintf "while (%s) {"  (gen_expr e)]
+     (*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
+  | IDisp e -> [sprintf "cout << %s << endl;" (gen_expr e)]
+     (* let es = gen_expr e in [gen_disp es] *)
+  | IContinue -> [ sprintf "continue;"]
+  | IBreak -> [sprintf "break;"]
+and gen_stmts stmts = match stmts with
     [] -> []
-  | hd::tl -> ( match hd with
-        IEmpty -> [";"]
-      | IVarDec iv -> []
-      | IExpr e -> [(gen_expr e) ^ " ;"]
-      | IReturn e -> [sprintf "return %s ;" (gen_expr e)]
-      | IIfHead e -> [sprintf "if (%s) {"  (gen_expr e)]
-         (*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
-      | IElseIf e -> [sprintf "} else if (%s) {"  (gen_expr e)]
-         (*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
-      | IElse -> [sprintf "} else {"]
-         (*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
-      | IForHead (e1, e2, e3) -> [sprintf "for (%s; %s; %s) {"  (gen_expr e1) (gen_expr e2) (gen_expr e3)]
-         (*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
-      | IWhileHead e -> [sprintf "while (%s) {"  (gen_expr e)]
-         (*(gen_condstmts "if" cs) @ (gen_elifs csl) @ (gen_stmts sl)*)
-      | IDisp e -> [sprintf "cout << %s << endl;" (gen_expr e)]
-         (* let es = gen_expr e in [gen_disp es] *)
-      | IContinue -> [ sprintf "continue;"]
-      | IBreak -> [sprintf "break;"]
-    ) @ (gen_stmts tl)
-
+  | hd::tl -> (gen_stmt hd) @ (gen_stmts tl)
 
 let rec gen_args sc args = match args with
     [] -> ""
