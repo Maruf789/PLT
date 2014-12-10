@@ -1,13 +1,8 @@
 # display int
-def double caculate(double a,double b) do
-double c:a+b;
-fed
 
-def int caculate(int a,int b) do
-int c:a+b;
-fed
+int i : 0;
 
-def int caculate(int a,int b) do
-int c:a+b;
-fed
+for i < 5 do
+	i : i + 1;
+rof
 

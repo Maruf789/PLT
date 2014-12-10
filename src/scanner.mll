@@ -94,6 +94,7 @@ and string_lit buf = parse
   | eof      { raise (Scanner_error "Unexpected End-of-File") }
   | '\n'     { raise (Scanner_error "Unexpected End-of-Line") }
   | "\\n"    { string_lit ("\\n"::buf) lexbuf }
+  | "\""    { string_lit ("\\\""::buf) lexbuf }
   | "\\t"    { string_lit ("\\t"::buf) lexbuf }
   | "\\'"    { string_lit ("\\'"::buf) lexbuf }
   | "\\\\"   { string_lit ("\\\\"::buf) lexbuf }
