@@ -82,14 +82,27 @@ let rec trans_vardecs vars = match vars with
     ) @ (trans_vardecs tl)
 
 
-(* translate statement list *)
+(*
+        SEmpty -> [IEmpty]
+      | SExpr e -> let isl, ie = trans_expr [] e in isl@[IExpr ie] translate statement list *)
 let rec trans_stmts tid stmts = match stmts with
     [] -> []
   | hd::tl -> ( match hd with
-        SEmpty -> [IEmpty]
-      | SExpr e -> let isl, ie = trans_expr [] e in isl@[IExpr ie]
       | SReturn e -> let isl, ie = trans_expr [] e in isl@[IReturn ie]
-      | SIf (cs, csl, sl) -> raise (Not_now "If not implemented")
+      | SIf (cs, csl, sl) ->let part1 = let isl0, ie, is = trans_condstmt tid [] cs in
+                                        (isl0 @ [IIfHead ie] @ is)
+                                      in
+                            let rec helper condstmtlist = match condstmtlist with 
+                                                      [] -> []
+                                                      | hd::tl -> ((let isl2, ie2, is2 = trans_condstmt tid [] hd in
+                                                        (isl2 @ [IElseIf ie2] @ is2)) @ (helper tl))
+                                      in
+                            let part2 = helper csl
+                                      in
+                            let part3 = (let is3 = trans_stmts tid sl in
+                                        (is3 @ [IElse] @ is3))
+                                      in
+                            (part1 @ part2 @ part3 @ [IBlockEnd])
       | SCntFor (s, e, ss) -> (*let iterv = ("F_" ^ s) in
                               let *) raise (Not_now "CntFor not implemented")
       | SCndFor cs -> let isl0, ie, is = trans_condstmt tid [] cs in
