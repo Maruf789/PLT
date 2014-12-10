@@ -60,7 +60,7 @@ let rec trans_expr isl exp =
                                  let ta = smat_to_array t in
                                  let tname = sprintf "T_%d" (List.length isl) in
                                  let isl = isl@[IVarDec (ta, tname, arr)] in
-                                 let ex = ICall ((smat_to_cnsr t), [IStringval tname; IIntval nr; IIntval nc]) in
+                                 let ex = ICall ((smat_to_cnsr t), [IId tname; IIntval nr; IIntval nc]) in
                                  isl, ex)
 and trans_arglist is1 el = match el with
     [] -> is1, []
