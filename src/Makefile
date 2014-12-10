@@ -1,6 +1,6 @@
 OBJS = ast.cmo parser.cmo scanner.cmo \
        sast.cmo lib.cmo scheck_expr.cmo scheck.cmo \
-       translate.cmo main.cmo
+       tast.cmo translate.cmo codegen.cmo main.cmo
 MAIN = main.bin
 
 OCFLAG = -w A

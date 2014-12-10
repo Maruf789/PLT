@@ -1,4 +1,13 @@
 # display int
-int i : 0;
-disp i;
-disp 'Hello World';
+def double caculate(double a,double b) do
+double c:a+b;
+fed
+
+def int caculate(int a,int b) do
+int c:a+b;
+fed
+
+def int caculate(int a,int b) do
+int c:a+b;
+fed
+

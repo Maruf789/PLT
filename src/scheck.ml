@@ -28,6 +28,15 @@ let sig_sfunc sfn = {
   fsargs = List.map (fun v -> v.vtype) sfn.sargs
 }
 
+(* helper: print function signature *)
+let print_func_sig sfn =
+  let rec args_s xx = match xx with
+      [] -> ""
+    | [a] -> pt a
+    | a::b::tl -> (sprintf "%s, %s" (pt a) (args_s (b::tl)))
+  in
+  eprintf "%s(%s)\n" sfn.fsname (args_s sfn.fsargs)
+
 (* replace @o in List @lst with @n *)
 let rec list_rep o n lst = match lst with
     [] -> []
@@ -174,6 +183,7 @@ let check_fundef ftbl new_func_def =
   } in
   let new_fnsg = sig_func new_func_def in (* signature *)
   let new_sret = new_func_def.return in (* return type *)
+  (*let _ = print_func_sig new_fnsg in*)
   let new_sname = new_func_def.fname in (* name *)
   let new_sargs = new_func_def.args in (* arguments *)
   (* check local variables & build variable table *)
@@ -190,8 +200,9 @@ let check_fundef ftbl new_func_def =
   let found, fbody = find_func ftbl new_fnsg in
   if not found then ftbl@[new_sfun_def]
   else (
-    if fbody.sbody = [] then (list_rep fbody new_sfun_def ftbl)
-    else raise (Bad_type ("Function " ^ new_sname ^ " already defined"))
+    if (fbody.sbody=[] && fbody.slocals=[])
+    then (list_rep fbody new_sfun_def ftbl)
+    else raise (Bad_type ("Function '" ^ new_sname ^ "' already defined"))
   )
 
 
