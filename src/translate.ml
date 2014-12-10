@@ -94,7 +94,7 @@ let rec trans_stmts tid stmts = match stmts with
       | SIf (cs, csl, sl) -> raise (Not_now "CntFor not implemented")
       | SCntFor (_, _, _) -> raise (Not_now "CntFor not implemented")
       | SCndFor _ -> raise (Not_now "CndFor not implemented")
-      | SDisp e -> let isl, ie = trans_expr [] e in isl@[IReturn ie]
+      | SDisp e -> let isl, ie = trans_expr [] e in isl@[IDisp ie]
       | SContinue -> [IContinue]
       | SBreak -> [IBreak]
     ) @ (trans_stmts (tid + 1) tl)
