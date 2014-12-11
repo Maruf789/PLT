@@ -1,4 +1,4 @@
 # test string variable
 string endstr;
-endstr: 'End"';
+endstr: 'End'';
 disp endstr;

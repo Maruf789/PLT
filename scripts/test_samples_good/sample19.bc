@@ -1,5 +1,4 @@
 #test function call
-int b:4;
 def int returnint (int a) do
 		a:a+10;
 		return a;
@@ -10,5 +9,5 @@ def callreturn (int b) do
 		b:b+returnint(b);
 		disp b;
 fed
-
+int b:4;
 callreturn(b);

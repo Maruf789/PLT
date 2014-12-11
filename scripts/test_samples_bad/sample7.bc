@@ -1,4 +1,4 @@
 #test operator
 int a;
-a=2;
+a:=2;
 disp a;

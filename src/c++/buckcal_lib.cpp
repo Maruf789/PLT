@@ -74,7 +74,7 @@ string_mat mat_string_of_int(int_mat x) {
 string_mat mat_string_of_double(double_mat x) {
 	string* array = new string[x.rows * x.cols];
 	for (int i = 0; i < x.rows * x.cols; i++)
-		array[i] = to_(x.m[i]);
+		array[i] = to_string(x.m[i]);
 	string_mat mat(array, x.rows, x.cols);
 	delete array;
 	return mat;

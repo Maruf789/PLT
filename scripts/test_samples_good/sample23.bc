@@ -7,5 +7,4 @@ disp ax[0,1];
 disp a;
 ax[1,2]: 4;
 ax[1,2]: {4};
-ax[1,0]: range(1, (cols A));
 disp ax;
