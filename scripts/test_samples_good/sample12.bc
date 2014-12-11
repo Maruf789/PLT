@@ -1,0 +1,8 @@
+#test counting loop
+int mat b;
+int r;
+b[r,0]: 1;
+
+for r in range(1, rows(b)) do
+		b[r,0]: 1;
+rof

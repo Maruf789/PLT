@@ -1,0 +1,20 @@
+#test break statement
+int r:0;
+int a:0;
+for r < 100 do
+		if a < 4 then
+		r: r + 1;
+		a: a + 2;
+		continue;
+		else
+		break;
+		fi
+rof
+disp a;
+
+if a < 100 then
+else
+	a: a + 50;
+	continue;
+fi
+	

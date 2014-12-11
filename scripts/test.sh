@@ -11,12 +11,12 @@ BINFILE=./binfiles
 DIF="diff -b -B"
 
 ## copy C++ header here
-cp ../src/buckcal_types.h $CFILE_DIR
+#cp ../src/buckcal_types.h $CFILE_DIR
 cp ../src/c++/buckcal_mat.cpp $CFILE_DIR
 cp ../src/c++/buckcal_mat.hpp $CFILE_DIR
 
 # run good cases
-for (( i =  26; i <= 26; i++))
+for (( i =  0; i <= 23; i++))
 do
 	$1 $GOOD_DIR/sample${i}.bc sample${i}.c > $NU \
 	 2> 		$OUTPUT_DIR/goodsample${i}out.txt 
@@ -33,7 +33,7 @@ do
 done
 
 # run bad cases
-for (( i =  0; i <= 0; i++))
+for (( i =  0; i <= 29; i++))
 do
 	$1 $GOOD_DIR/sample${i}.bc sample${i}.c > $NU \
 	 2> 		$OUTPUT_DIR/badsample${i}out.txt 
