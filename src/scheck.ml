@@ -168,26 +168,32 @@ let rec check_local_var_def ftbl vtbl local_var_list = match local_var_list with
 (* check statement list.
    return: sstmt list *)
 let rec check_condstmts ftbl vtbl ret_type loop_flag cs = match cs with(* translate a list of elif *)
-    [] -> []
-  | hd::tl -> { scond=(check_expr ftbl vtbl hd.cond) ;
-                sstmts=(check_stmts ftbl vtbl ret_type false false loop_flag hd.stmts)
+    [] -> [] 
+  | hd::tl -> let tmp,sstmts = (check_stmts ftbl vtbl ret_type false false loop_flag hd.stmts) in
+                { scond=(check_expr ftbl vtbl hd.cond) ; 
+                  sstmts
               } :: (check_condstmts ftbl vtbl ret_type loop_flag tl )
 and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stmts with
-    [] -> []
-  | hd::tl -> ( match hd with
-        Empty -> SEmpty
-      | Expr e -> SExpr (check_expr ftbl vtbl e)
+    [] -> ret_flag,[]
+  | hd::tl -> 
+      let flag0, flist0 = 
+      ( match hd with
+        Empty -> ret_flag, SEmpty
+      | Expr e -> ret_flag, SExpr (check_expr ftbl vtbl e)
       | Return e ->
         let ret = check_expr ftbl vtbl e in
-        if(fst ret == ret_type) then SReturn ret
-        else raise (Bad_type "mismatch with function's return type") 
-      | If (c, cl, ss) -> SIf ((List.hd (check_condstmts ftbl vtbl ret_type loop_flag [c] )), 
+        if fst ret == ret_type 
+          then (if (main_flag) then true,SReturn ret else false,SReturn ret)
+        else raise (Bad_type "mismatch with function's return type")
+      | If (c, cl, ss) -> let tmp, check_ss = check_stmts ftbl vtbl ret_type false ret_flag loop_flag ss  in
+                              ret_flag, SIf ((List.hd (check_condstmts ftbl vtbl ret_type loop_flag [c] )), 
                                (check_condstmts ftbl vtbl ret_type loop_flag cl),
-                               (check_stmts ftbl vtbl ret_type false ret_flag loop_flag ss ))
+                               check_ss
+                               )
       | CntFor (s, e, ss) -> (
           let f, st = find_var vtbl s in
           let et, e = check_expr ftbl vtbl e in
-          let sss = check_stmts ftbl vtbl ret_type false ret_flag true ss  in
+          let dummy, sss = check_stmts ftbl vtbl ret_type false ret_flag true ss  in
           let _ = if f then () else raise (Bad_type (s ^ "undefined")) in
           let et_t = match et with
               IntMat -> Int
@@ -195,13 +201,15 @@ and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stm
             | StringMat -> String
             | _ -> raise (Bad_type "must be loop in a mat")
           in
-          if eq_t et_t st then SCntFor (s, (et, e), sss)
+          if eq_t et_t st then ret_flag, SCntFor (s, (et, e), sss)
           else raise (Bad_type "loop variable type mismatch") )
-      | CndFor cs -> SCndFor (List.hd (check_condstmts ftbl vtbl ret_type true [cs]))
-      | Disp e -> SDisp (check_expr ftbl vtbl e)
-      | Continue -> if(loop_flag) then SContinue else raise (Bad_type "Continue should only be used inside a loop")
-      | Break -> if(loop_flag) then SBreak else raise (Bad_type "Break should only be used inside a loop")
-    ) :: (check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag tl)
+      | CndFor cs -> ret_flag,SCndFor (List.hd (check_condstmts ftbl vtbl ret_type true [cs]))
+      | Disp e -> ret_flag, SDisp (check_expr ftbl vtbl e)
+      | Continue -> if(loop_flag) then ret_flag, SContinue else raise (Bad_type "Continue should only be used inside a loop")
+      | Break -> if(loop_flag) then ret_flag, SBreak else raise (Bad_type "Break should only be used inside a loop")
+    ) in 
+    let flag1, flist1 = check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag tl
+  in flag0||flag1 , flist0::flist1
 
 
 (* check_fundef
@@ -223,8 +231,9 @@ let check_fundef ftbl new_func_def =
   let new_local = check_local_var_def ftbl arg_def new_func_def.locals in
   let vtbl = (arg_def@new_local) in
   (* check statements *)
-  let new_fstmts = check_stmts ftbl vtbl new_sret true false false new_func_def.body in
-
+  let flag, new_fstmts = check_stmts ftbl vtbl new_sret true false false new_func_def.body in
+    if (not flag) then raise (Bad_type ("Function '" ^ new_sname ^ "' return statement missing"))
+  else
   let new_sfun_def = { sreturn = new_sret;
                        sfname = new_sname;
                        sargs = new_sargs;
@@ -260,7 +269,7 @@ let check prg =
     let var_table_0 = [] in    (* init variable table as empty *)  
     check_vardecs func_table var_table_0 prg.pvars
   in
-  let stm_lines =            (* statements *)
+  let _, stm_lines =            (* statements *)
     check_stmts func_table var_table Int true true false prg.pstms
   in
   { spfuns = func_table;  spvars = var_table; spstms = stm_lines }
