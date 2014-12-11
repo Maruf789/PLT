@@ -18,6 +18,8 @@ public:
 	double_mat(double *, int, int);
 	double_mat(const double_mat &);
 	double_mat(const int_mat &);
+	/* index */
+	double & operator [] (int);
 	/* overload = and << */
 	double_mat & operator = (const double_mat &);
 	double_mat & operator = (const int_mat &);
@@ -48,6 +50,8 @@ public:
 	int_mat(int *, int, int);
 	int_mat(const int_mat &);
 	int_mat(const double_mat &);
+	/* index */
+	int & operator [] (int);
 	/* overload = and << */
 	int_mat & operator = (const int_mat &);
 	int_mat & operator = (const double_mat &);
@@ -77,6 +81,8 @@ public:
 	/* constructors */
 	string_mat(std::string *, int, int);
 	string_mat(const string_mat &);
+	/* index */
+	std::string & operator [] (int);
 	/* overload = and << */
 	string_mat & operator = (const string_mat &);
 };
