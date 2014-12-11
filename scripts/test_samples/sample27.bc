@@ -1,4 +1,0 @@
-#test function overloading
-def int hello(int a);
-def int hello(double a);
-def int hello(string a);

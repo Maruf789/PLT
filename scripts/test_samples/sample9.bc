@@ -1,3 +1,0 @@
-#test operator
-bool a;
-a: (1 = 2)and true;

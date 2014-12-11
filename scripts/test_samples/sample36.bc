@@ -1,5 +1,0 @@
-#test other unit operations
-int mat mx1;
-int mat mx2;
-int mat mx;
-mx: rowcat(mx1,mx2);
