@@ -34,7 +34,7 @@ done
 # run bad cases
 for (( i =  0; i <= 29; i++))
 do
-	$1 $GOOD_DIR/sample${i}.bc sample${i}.c > $NU \
+	$1 $BAD_DIR/sample${i}.bc sample${i}.c > $NU \
 	 2> 		$OUTPUT_DIR/badsample${i}out.txt 
 	$DIF $IDEAL_DIR/sample${i}idea.txt $OUTPUT_DIR/badsample${i}out.txt > $NU
 	if [ $? -eq 1 ]; then

@@ -1,1 +1,1 @@
-SAST error
+Scanner error: Unexpected End-of-Line

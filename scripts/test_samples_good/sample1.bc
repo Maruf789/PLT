@@ -8,5 +8,7 @@ endstr: 'End\n';
 disp endstr;
 endstr: 'End\\';
 disp endstr;
+endstr: 'End"';
+disp endstr;
 endstr: 'End\"';
 disp endstr;

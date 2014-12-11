@@ -10,11 +10,6 @@ for r < 100 do
 		break;
 		fi
 rof
-disp a;
 
-if a < 100 then
-else
-	a: a + 50;
-	continue;
-fi
+disp a;
 	
