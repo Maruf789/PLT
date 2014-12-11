@@ -123,11 +123,11 @@ let lib_funs = [
     slocals=[]; sbody=[]
   };
   { sreturn=String; sfname="string_of_int";
-    sargs=[ {vtype=String; vname="x"}; ];
+    sargs=[ {vtype=Int; vname="x"}; ];
     slocals=[]; sbody=[]
   };
   { sreturn=String; sfname="string_of_double";
-    sargs=[ {vtype=String; vname="x"}; ];
+    sargs=[ {vtype=Double; vname="x"}; ];
     slocals=[]; sbody=[]
   };
   { sreturn=Int; sfname="int_of_string";
@@ -146,12 +146,20 @@ let lib_funs = [
     sargs=[ {vtype=StringMat; vname="x"}; ];
     slocals=[]; sbody=[]
   };
-  { sreturn=StringMat; sfname="mat_double_of_double";
+  { sreturn=IntMat; sfname="mat_int_of_double";
     sargs=[ {vtype=DoubleMat; vname="x"}; ];
     slocals=[]; sbody=[]
   };
-  { sreturn=StringMat; sfname="mat_double_of_int";
+  { sreturn=DoubleMat; sfname="mat_double_of_int";
     sargs=[ {vtype=IntMat; vname="x"}; ];
+    slocals=[]; sbody=[]
+  };
+  { sreturn=StringMat; sfname="mat_string_of_int";
+    sargs=[ {vtype=IntMat; vname="x"}; ];
+    slocals=[]; sbody=[]
+  };
+  { sreturn=StringMat; sfname="mat_string_of_double";
+    sargs=[ {vtype=DoubleMat; vname="x"}; ];
     slocals=[]; sbody=[]
   };
   { sreturn=String; sfname="slice";

@@ -13,9 +13,10 @@ DIF="diff -b -B"
 cp ../src/c++/buckcal_mat.hpp $CFILE_DIR
 cp ../src/c++/buckcal_mat.cpp $CFILE_DIR
 cp ../src/c++/buckcal_mat.hpp $CFILE_DIR
+cp ../src/c++/buckcal_lib.cpp $CFILE_DIR
 
 # compare <outputfile> <idealoutputfile>
-for (( i =  20; i <= 20; i++))
+for (( i =  7; i <= 7; i++))
 do
 	$1 $SAMPLES_DIR/sample${i}.bc sample${i}.c > $NU \
 	 2> 		$OUTPUT_DIR/sample${i}out.txt 
@@ -27,7 +28,7 @@ do
 	$1 $SAMPLES_DIR/sample${i}.bc > $CFILE_DIR/sample${i}.cpp \
 	2>>		$OUTPUT_DIR/sample${i}out.txt
 	if [ -s $CFILE_DIR/buckcal_mat.cpp ]; then
-		g++ $CFILE_DIR/sample${i}.cpp $CFILE_DIR/buckcal_mat.cpp -o $BINFILE/sample${i}.bin \
+		g++ $CFILE_DIR/sample${i}.cpp $CFILE_DIR/buckcal_mat.cpp $CFILE_DIR/buckcal_lib.cpp-o $BINFILE/sample${i}.bin \
 		2>>		$OUTPUT_DIR/sample${i}out.txt
 	fi
 done
