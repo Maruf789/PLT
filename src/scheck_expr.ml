@@ -155,9 +155,10 @@ let check_matval_s sexp_list_list =
       | Void, y -> y
       | Int, Int -> Int
       | Int, Double -> Double
+      | Double, Double -> Double
       | Double, Int -> Double
       | String, String -> String
-      | _, _ -> raise (Bad_type "Mat elements must have same type")
+      | x, y -> raise (Bad_type (sprintf "Mat elements must have same type (%s, %s)" (pt x) (pt y)))
     in
     List.fold_left helpr Void (List.flatten tll)
   in
