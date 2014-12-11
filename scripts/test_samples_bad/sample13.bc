@@ -1,0 +1,10 @@
+#test if-then-elif-then-else-if
+int b: 2;
+if b = 0 then
+		disp 'b is 0';
+fi
+elif b = 1 then
+		disp 'b is 1';
+else
+		disp 'b is 2';
+fi

@@ -1,1 +1,1 @@
-Parser error: token [, line 8,10
+Parser error: token , line 5,8

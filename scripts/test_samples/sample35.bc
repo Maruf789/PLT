@@ -1,6 +1,0 @@
-#test unit implicitly assigning
-int mat mx : {1,2;3,4;5,6};
-mx[2,1]: {1kg};
-mx[2,1]: {2};
-mx[1,1]: {1lb};
-mx[3,1]: {1m};

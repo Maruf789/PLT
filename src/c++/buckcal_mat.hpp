@@ -1,3 +1,6 @@
+#ifndef _BUCKCAL_HPP_
+#define _BUCKCAL_HPP_
+#include <iostream>
 #include <vector>
 #include <fstream>
 #include <string>
@@ -81,3 +84,4 @@ public:
 std::ostream & operator << (std::ostream &sys, const int_mat &in);
 std::ostream & operator << (std::ostream &sys, const double_mat &in);
 std::ostream & operator << (std::ostream &sys, const string_mat &in);
+#endif

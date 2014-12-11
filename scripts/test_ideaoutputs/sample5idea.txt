@@ -1,1 +1,1 @@
-Parser error: token *, line 2,8
+Sast error: variable and expression type mismatch

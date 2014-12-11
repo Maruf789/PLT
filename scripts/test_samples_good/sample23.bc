@@ -1,0 +1,10 @@
+#test matrix accessing
+int mat ax: {1,2,3;4,5,6;7,8,9};
+int a : ax[1,2];
+disp ax;
+disp ax[1,0];
+disp ax[0,1];
+disp a;
+ax[1,2]: 4;
+ax[1,2]: {4};
+disp ax;

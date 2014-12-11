@@ -1,0 +1,6 @@
+#test function definition
+def helper() do
+	string a: 'a';
+	disp 'help';
+	return a;
+fed

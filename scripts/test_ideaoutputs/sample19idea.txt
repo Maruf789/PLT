@@ -1,1 +1,1 @@
-Parser error: token {, line 11,4
+Sast error: Break should only be used inside a loop

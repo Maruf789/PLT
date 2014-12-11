@@ -1,0 +1,4 @@
+#test matrix type
+string mat b;
+int mat a;
+double mat c;
