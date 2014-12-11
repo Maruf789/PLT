@@ -89,7 +89,7 @@ let rec trans_stmts tid stmts = (*print_int tid;*) match stmts with
           let tt = (sprintf "TT_%d" tid) in
           let tarrtype = ipt (fst e) in
           let tt_array = IVarDec(tarrtype, tt, temparr) in
-          let fh = IForHead(fs1, (IBinop(IId iv, Lt, (IBinop((rows tt),Times,(cols, tt))))), 
+          let fh = IForHead(fs1, (IBinop(IId iv, Lt, (IBinop((rows tt),Times,(cols tt))))), 
                           (IAssign(IId iv, IBinop(IId iv, Plus, int1))))
           in
           let mainbody =
