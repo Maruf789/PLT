@@ -102,11 +102,27 @@ let rec trans_stmts tid stmts = (*print_int tid;*) match stmts with
            ([IElse] @ is3))
         in
         ((isl1 @ isl2) @ (stmts1 @ stmts2) @ part3 @ [IBlockEnd])
-      | SCntFor (s, e, ss) -> let iv = ("F_" ^ s) in
-        let fs1 = IVarDec(Iint, iv, (IIntval 0)) in
-        let fh = IForHead(fs1, IBinop(IId iv, Lt, IIntval 1), IAssign(IId iv, IBinop(IId iv, Plus, IIntval 1))) in
-        let lbody = trans_stmts (tid + 1) ss in
-        ( [fh] @ lbody @ [IBlockEnd] )
+      | SCntFor (s, e, ss) -> 
+          let iv = ("F_" ^ s) in
+          let fs1 = IVarDec(Iint, iv, (IIntval 0)) in  
+          let isl, temparr = (trans_expr tid [] e) in
+          let tt = ("TT") in
+          let tarrtype = match fst e with
+            IntMat -> Iint_mat
+          | DoubleMat -> Idouble_mat
+          | StringMat -> Istring_mat
+          in
+          let tt_array = IVarDec(tarrtype, tt, temparr)
+          in
+          let fh = IForHead(fs1, (IBinop(IId iv, Lt, (IBinop(ICall("rows",[IId tt]),Times,ICall("cols", [IId tt]))))), 
+                          (IAssign(IId iv, IBinop(IId iv, Plus, IIntval 1))))
+          in
+          let mainbody =
+             let lbody_h = IExpr (IAssign(IId s, IIndex(tt, IId iv))) in
+             let lbody = trans_stmts (tid + 1) ss in
+             (lbody_h :: lbody)
+          in
+        ( isl @ [tt_array] @ [fh] @ mainbody @ [IBlockEnd] )
       | SCndFor cs -> let isl0, ie, is = trans_condstmt tid [] cs in
         (isl0 @ [IWhileHead ie] @ is @ [IBlockEnd])
       | SDisp e -> let isl, ie = trans_expr tid [] e in isl@[IDisp ie]
