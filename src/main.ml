@@ -13,12 +13,12 @@ let perror head err_msg =
   eprintf "%s: %s\n" head err_msg
 
 (* main function *)
-let main lex_buf =
+let main lex_buf oc =
   try
     let prog = Parser.program Scanner.token lex_buf in
     let sprog = Scheck.check prog in
     let tprog = Translate.translate sprog in
-    Codegen.compile tprog
+    Codegen.compile oc tprog
   with
     Scanner.Scanner_error x -> perror "Scanner error" x
   | Parsing.Parse_error -> perror "Parser error" (loc_err lex_buf)
@@ -29,11 +29,23 @@ let main lex_buf =
 
 (* Shell interface *)
 let _ =
-  if Array.length Sys.argv >= 2 then
+  let argc = Array.length Sys.argv in
+  if argc >= 2 then
+    let ic =
     try
-      let lexbuf = Lexing.from_channel (open_in Sys.argv.(1)) in
-      main lexbuf
+      open_in Sys.argv.(1)
     with
-      Sys_error msg -> print_endline("Error: " ^ msg)
+      Sys_error msg -> (eprintf "I/O error: %s" msg); raise End_of_file
+    in
+    let ofile =
+      if argc >= 3 then Sys.argv.(2) else "a.cpp"
+    in
+    let oc =
+    try
+       open_out ofile
+    with
+      Sys_error msg -> (eprintf "I/O error: %s" msg); raise End_of_file
+    in
+    main (Lexing.from_channel ic) oc
   else
     print_endline "Usage: main.bin <input file>"
