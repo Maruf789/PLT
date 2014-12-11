@@ -179,7 +179,7 @@ and check_stmts ftbl vtbl ret_type loop_flag stmts= match stmts with
       | Expr e -> SExpr (check_expr ftbl vtbl e)
       | Return e ->
         let ret = check_expr ftbl vtbl e in
-        if(fst ret == Int) then SReturn ret
+        if (fst ret == ret_type) then SReturn ret
         else raise (Bad_type "mismatch with function's return type") 
       | If (c, cl, ss) -> SIf ((List.hd (check_condstmts ftbl vtbl ret_type loop_flag [c] )), 
                                (check_condstmts ftbl vtbl ret_type loop_flag cl),

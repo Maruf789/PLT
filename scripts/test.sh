@@ -14,6 +14,8 @@ DIF="diff -b -B"
 cp ../src/c++/buckcal_mat.cpp $CFILE_DIR
 cp ../src/c++/buckcal_mat.hpp $CFILE_DIR
 
+#g++ -c $CFILE_DIR/buckcal_mat.cpp -o $CFILE_DIR/buckcal_mat.o
+
 # run good cases
 for (( i =  0; i <= 23; i++))
 do
