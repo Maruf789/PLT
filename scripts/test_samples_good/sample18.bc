@@ -1,0 +1,10 @@
+#test function overloading
+def int hello(int a) do
+	return a;
+fed
+def int hello(double a) do
+	return a;
+fed
+def int hello(string a) do
+	return a;
+fed

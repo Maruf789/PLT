@@ -1,5 +1,0 @@
-#test unit explicitly assigning
-colunit(mx, {'lb','ft'});
-colunit(mx[0,2],{'ft'});
-colunit(mx[1,2],{'ft'});
-colunit(mx[0,2],{'ft','lb'});

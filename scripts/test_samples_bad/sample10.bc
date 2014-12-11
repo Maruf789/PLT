@@ -1,0 +1,5 @@
+#test operations
+string a: 'haha';
+string b: 'hehe';
+string d: 'haha' - 'hehe';
+disp d;

@@ -1,0 +1,8 @@
+#test variable comparation
+int i1:1;
+string s2: 'hehe';
+bool c;
+c:i1=s2;
+disp c;
+c:i1>s2;
+disp c;

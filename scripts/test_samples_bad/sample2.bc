@@ -1,0 +1,3 @@
+# matrix definition
+mat int budget: {1,2;3,4};
+disp budget;

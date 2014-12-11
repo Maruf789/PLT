@@ -1,0 +1,4 @@
+#test function definition
+def int helper() do
+	disp 'help';
+fed

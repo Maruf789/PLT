@@ -1,0 +1,4 @@
+# test string variable
+string endstr;
+endstr: 'End"';
+disp endstr;

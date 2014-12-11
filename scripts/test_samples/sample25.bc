@@ -1,3 +1,0 @@
-#test function declaration
-def helper(int x);
-def helper(double x);

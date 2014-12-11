@@ -1,0 +1,9 @@
+#test function definition
+def int helper(int x) do
+	disp 'help';
+	return 0;
+fed
+def helper2(double x) do
+	x: 0;
+	disp x;
+fed

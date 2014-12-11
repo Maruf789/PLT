@@ -1,0 +1,6 @@
+#test operator
+bool x;
+bool y;
+x:true;
+y:1 not 2;
+disp y;
