@@ -1,5 +1,7 @@
 #include "buckcal_mat.hpp"
 #include <string>
+#include <cstdio>
+#include <sstream>
 using namespace std;
 
 /* get number of rows and columns */
@@ -37,17 +39,17 @@ string string_of_double(double x) {
 }
 
 int int_of_string(string x) {
-	return stoi(x);
+	return atoi(x.c_str);
 }
 
 double double_of_string(string x) {
-	return stod(x);
+	return atof(x.c_str);
 }
 
 int_mat mat_int_of_string(string_mat x) {
 	int* array = new int[x.rows * x.cols];
 	for (int i = 0; i < x.rows * x.cols; i++)
-		array[i] = stoi(x.m[i]);
+		array[i] = atoi(x.m[i].c_str);
 	int_mat mat(array, x.rows, x.cols);
 	delete array;
 	return mat;
@@ -56,7 +58,7 @@ int_mat mat_int_of_string(string_mat x) {
 double_mat mat_double_of_string(string_mat x) {
 	double* array = new double[x.rows * x.cols];
 	for (int i = 0; i < x.rows * x.cols; i++)
-		array[i] = stod(x.m[i]);
+		array[i] = atof(x.m[i].c_str);
 	double_mat mat(array, x.rows, x.cols);
 	delete array;
 	return mat;
@@ -64,8 +66,11 @@ double_mat mat_double_of_string(string_mat x) {
 
 string_mat mat_string_of_int(int_mat x) {
 	string* array = new string[x.rows * x.cols];
-	for (int i = 0; i < x.rows * x.cols; i++)
-		array[i] = to_string(x.m[i]);
+	for (int i = 0; i < x.rows * x.cols; i++) {
+		ostringstream ss;
+		ss << x.m[i];
+		array[i] = ss.str();
+	}
 	string_mat mat(array, x.rows, x.cols);
 	delete array;
 	return mat;
@@ -73,8 +78,11 @@ string_mat mat_string_of_int(int_mat x) {
 
 string_mat mat_string_of_double(double_mat x) {
 	string* array = new string[x.rows * x.cols];
-	for (int i = 0; i < x.rows * x.cols; i++)
-		array[i] = to_string(x.m[i]);
+	for (int i = 0; i < x.rows * x.cols; i++) {
+		ostringstream ss;
+		ss << x.m[i];
+		array[i] = ss.str();
+	}
 	string_mat mat(array, x.rows, x.cols);
 	delete array;
 	return mat;
