@@ -15,7 +15,7 @@ cp ../src/c++/buckcal_mat.cpp $CFILE_DIR
 cp ../src/c++/buckcal_mat.hpp $CFILE_DIR
 
 # compare <outputfile> <idealoutputfile>
-for (( i =  38; i <= 38; i++))
+for (( i =  20; i <= 20; i++))
 do
 	$1 $SAMPLES_DIR/sample${i}.bc sample${i}.c > $NU \
 	 2> 		$OUTPUT_DIR/sample${i}out.txt 
