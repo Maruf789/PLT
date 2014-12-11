@@ -91,7 +91,7 @@ let rec gen_fundefs fundefs = match fundefs with
               )@(gen_fundefs tl)
 
 
-let compile prg =
+let compile oc prg =
   let head_lines =
     ["#include \"buckcal_mat.hpp\""; "using namespace std;"] 
   in
@@ -104,4 +104,5 @@ let compile prg =
     gen_fundefs funs
   in
   let all = head_lines @ var_lines @ func_lines in
-  List.iter print_endline all
+  (*List.iter print_endline all*)
+  List.iter (fun line -> fprintf oc "%s\n" line) all
