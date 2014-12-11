@@ -1,0 +1,6 @@
+#test variable comparation
+string s1: 'haha';
+string s2: 'hehe';
+bool c;
+c:s1>s2;
+disp c;

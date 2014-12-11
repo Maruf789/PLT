@@ -1,5 +1,0 @@
-#test variable comparation
-string a: 'haha';
-string b: 'hehe';
-bool c:a=b;
-disp c;

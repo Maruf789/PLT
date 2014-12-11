@@ -1,0 +1,3 @@
+#test matrix definition
+int mat ax: {'ab','cd';'ef','gh'};
+disp ax;

@@ -1,0 +1,8 @@
+#test break continue statement
+int a:0;
+if a < 100 then
+else
+	a: a + 50;
+	break;
+fi
+	
