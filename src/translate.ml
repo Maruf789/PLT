@@ -91,17 +91,16 @@ let rec trans_stmts tid stmts = match stmts with
       | SExpr e -> let isl, ie = trans_expr [] e in isl@[IExpr ie]
       | SReturn e -> let isl, ie = trans_expr [] e in isl@[IReturn ie]
       | SIf (cs, csl, sl) ->
-        let isl1, stmts1 =
+        let part1 =
           let isl0, ie, is = trans_condstmt tid [] cs in
-          (isl0, ([IIfHead ie] @ is))
-          in
-          let isl2, stmts2 = trans_condstmts tid csl 
-          in
-          let part3 =
+          (isl0 @ [IIfHead ie] @ is)
+        in
+        let part2 = trans_condstmts tid csl in
+        let part3 =
           (let is3 = trans_stmts tid sl in
-              ([IElse] @ is3))
-          in
-        ((isl1 @ isl2) @ (stmts1 @ stmts2) @ part3 @ [IBlockEnd])
+           (is3 @ [IElse] @ is3))
+        in
+        (part1 @ part2 @ part3 @ [IBlockEnd])
       | SCntFor (s, e, ss) -> let iv = ("F_" ^ s) in
         let fs1 = IVarDec(Iint, iv, (IIntval 0)) in
         let fh = IForHead(fs1, IBinop(IId iv, Lt, IIntval 1), IAssign(IId iv, IBinop(IId iv, Plus, IIntval 1))) in
@@ -118,13 +117,19 @@ and trans_condstmt tid isl cs =
   let ies = trans_stmts (tid + 1) cs.sstmts in
   (isl0, iec, ies)
 and trans_condstmts tid condstmtlist = match condstmtlist with 
-    [] -> [] , []
-    | hd::tl -> let isl1, stmts1 = 
-                let isl2, ie2, is2 = trans_condstmt tid [] hd in
-                (isl2, ([IElseIf ie2] @ is2))
-                in
-                let isls, stmtss = trans_condstmts tid tl in
-                (isl1@isls, stmts1@stmtss)
+    [] -> []
+  | hd::tl -> ((let isl2, ie2, is2 = trans_condstmt tid [] hd in
+                (isl2 @ [IElseIf ie2] @ is2)) @ (trans_condstmts tid tl))
+
+(* translate main function - add return 0 if no statment of the last one is not return *)
+let trans_main_func stmts = 
+  let trans_stmts = trans_stmts 0 stmts in
+    match (List.rev trans_stmts) with
+        [] -> [IReturn (IIntval 0)]
+      | hd::tl -> match hd with
+                    IReturn e -> trans_stmts
+                  | _ -> trans_stmts @ [IReturn (IIntval 0)]
+
 (* translate function declaration/definition *)
 let rec trans_args args = match args with
     [] -> []
@@ -151,7 +156,7 @@ let translate prg =
   in
   let stmt_lines =
     let stmts = prg.spstms in
-    trans_stmts 0 stmts
+    trans_main_func stmts
   in
   let main_func = {
     ireturn = Iint;
@@ -160,3 +165,4 @@ let translate prg =
     ibody = var_lines @ stmt_lines
   } in
   { ivars = []; ifuns = func_lines @ [main_func] }
+  

@@ -61,7 +61,7 @@ let gen_disp es = ("cout << " ^ es ^ " << endl;")
 (* translate statement list *)
 let rec gen_stmt stmt = match stmt with
     IEmpty -> ";"
-  | IVarDec (vt, vn, ve) -> (sprintf "%s %s = %s;" (tpt vt) vn (gen_expr ve))
+  | IVarDec (vt, vn, ve) -> (gen_vardec (vt, vn, ve))
   | IExpr e -> ((gen_expr e) ^ " ;")
   | IReturn e -> (sprintf "return %s ;" (gen_expr e))
   | IIfHead e -> (sprintf "if (%s) {"  (gen_expr e))
@@ -92,7 +92,7 @@ let rec gen_fundefs fundefs = match fundefs with
 
 let compile prg =
   let head_lines =
-    ["#include \"buckcal_types.h\""] 
+    ["#include \"buckcal_mat.hpp\""; "using namespace std;"] 
   in
   let var_lines =
     let vars = prg.ivars in
