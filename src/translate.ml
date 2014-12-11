@@ -11,31 +11,8 @@ open Translate_expr
 open Printf
 
 
-(* Translate dtype to C++ types *)
-let ipt t = match t with
-    Int -> Iint
-  | Double -> Idouble
-  | String -> Istring
-  | Bool -> Ibool
-  | IntMat -> Iint_mat
-  | DoubleMat -> Idouble_mat
-  | StringMat -> Istring_mat
-  | Void -> Ivoid
-
 (* translate expr. 
    Note that translate an Matval may result in extra irstmt *)
-let smat_to_array m = match m with
-    IntMat -> Iint_array
-  | DoubleMat -> Idouble_array
-  | StringMat -> Istring_array
-  | _ -> raise (Not_now "Mat should be IntMat, DoubleMat, StringMat")
-
-let smat_to_cnsr m = match m with
-    IntMat -> "int_mat"
-  | DoubleMat -> "double_mat"
-  | StringMat -> "string_mat"
-  | _ -> raise (Not_now "Mat should be IntMat, DoubleMat, StringMat")
-
 (* @isl: irstmt list *)
 (* return : irstmt list * irexpr *)
 let rec trans_expr tid isl exp = match exp with
@@ -46,7 +23,8 @@ let rec trans_expr tid isl exp = match exp with
   | _, SId x -> isl, (IId x)
   | _, SBinop (e1, b, e2) -> (let isl, ie1 = trans_expr tid isl e1 in
                               let isl, ie2 = trans_expr tid isl e2 in
-                              (isl, (IBinop (ie1, b,ie2))))
+                              let isl1, ret = trans_binop ie1 ie2 b in
+                              (isl@isl1, ret))
   | _, SAssign (e1, e2) -> (let isl, ie1 = trans_expr tid isl e1 in
                             let isl, ie2 = trans_expr tid isl e2 in
                             (isl, (IAssign (ie1, ie2))))
@@ -61,9 +39,11 @@ let rec trans_expr tid isl exp = match exp with
       let arr = trans_matval ell in
       let ta = smat_to_array t in
       let tname = sprintf "T_%d_%d" tid (List.length isl) in
+      let ttname = sprintf "TT_%d_%d" tid (List.length isl) in
       let isl = isl@[IVarDec (ta, tname, arr)] in
       let ex = ICall ((smat_to_cnsr t), [IId tname; IIntval nr; IIntval nc]) in
-      isl, ex)
+      let isl = isl@[IVarDec ((ipt t), ttname, ex)] in
+      isl, IId ttname)
 and trans_arglist tid is1 el = match el with
     [] -> is1, []
   | e::tl -> (let isl, ie = trans_expr tid is1 e in
@@ -107,15 +87,10 @@ let rec trans_stmts tid stmts = (*print_int tid;*) match stmts with
           let fs1 = IVarDec(Iint, iv, (IIntval 0)) in  
           let isl, temparr = (trans_expr tid [] e) in
           let tt = (sprintf "TT_%d" tid) in
-          let tarrtype = match fst e with
-            IntMat -> Iint_mat
-          | DoubleMat -> Idouble_mat
-          | StringMat -> Istring_mat
-          in
-          let tt_array = IVarDec(tarrtype, tt, temparr)
-          in
-          let fh = IForHead(fs1, (IBinop(IId iv, Lt, (IBinop(ICall("rows",[IId tt]),Times,ICall("cols", [IId tt]))))), 
-                          (IAssign(IId iv, IBinop(IId iv, Plus, IIntval 1))))
+          let tarrtype = ipt (fst e) in
+          let tt_array = IVarDec(tarrtype, tt, temparr) in
+          let fh = IForHead(fs1, (IBinop(IId iv, Lt, (IBinop((rows tt),Times,(cols, tt))))), 
+                          (IAssign(IId iv, IBinop(IId iv, Plus, int1))))
           in
           let mainbody =
              let lbody_h = IExpr (IAssign(IId s, IIndex(tt, IId iv))) in
