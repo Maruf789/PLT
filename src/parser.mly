@@ -59,9 +59,9 @@ var_dec_def_list:
 /* argument list in function declaration/definition */
 arg_def_list_1 :
   | dt ID                      { [{ vname = $2; vtype = $1; }] }
-  | dt                         { [{ vname = "_"; vtype = $1; }] }
+  | dt                         { [{ vname = ""; vtype = $1; }] }
   | arg_def_list COMMA dt ID   { $1 @ [{ vname = $4; vtype = $3; }] }
-  | arg_def_list COMMA dt      { $1 @ [{ vname = "_"; vtype = $3; }] }
+  | arg_def_list COMMA dt      { $1 @ [{ vname = ""; vtype = $3; }] }
 
 arg_def_list:
     /* empty */    { [] }
