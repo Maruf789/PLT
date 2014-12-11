@@ -28,6 +28,10 @@ int_mat::int_mat(const double_mat &in) {
 		m[i] = in.m[i];
 }
 
+int & int_mat::operator [] (int i) {
+	return m.at(i);
+}
+
 int_mat & int_mat::operator = (const int_mat &in) {
 	rows = in.rows;
 	cols = in.cols;
@@ -225,6 +229,9 @@ double_mat::double_mat(const int_mat &in) {
 	for (int i = 0; i < rows * cols; i++)
 		m[i] = in.m[i];
 }
+double & double_mat::operator [] (int i) {
+	return m.at(i);
+}
 double_mat & double_mat::operator = (const double_mat &in) {
 	rows = in.rows;
 	cols = in.cols;
@@ -410,16 +417,19 @@ string_mat::string_mat(const string_mat &in) {
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
-	for (int i = 0; i < rows * cols; i++)
-			m.push_back(in.m[i]);
+	m = in.m;
 }
-
+string & string_mat::operator [] (int i) {
+	return m.at(i);
+}
 string_mat & string_mat::operator = (const string_mat &in) {
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
+	m.resize(rows*cols);
+	/* copy array */
 	for (int i = 0; i < rows * cols; i++)
-			m.push_back(in.m[i]);
+		m[i] = in.m[i];
 	return *this;
 }
 

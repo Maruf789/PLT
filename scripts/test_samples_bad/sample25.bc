@@ -2,6 +2,6 @@
 def int hello(int a) do
 	return a;
 fed
-def hello(int b) do
+def hello(int) do
 	disp 'hello';
 fed

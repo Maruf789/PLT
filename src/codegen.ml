@@ -41,6 +41,7 @@ let rec gen_expr exp = match exp with
   | ICall (s, el) -> (sprintf "( %s( %s ) )" s (gen_arg_list "," el))
   | IArray el->  (sprintf "{%s}" (gen_arg_list "," el) )
   | IMatSub (s, e1, e2, e3, e4) -> raise (Not_done "IMatSub not implemented")
+  | IIndex (s, e) -> (sprintf " (%s[%s]) " s (gen_expr e))
 and gen_arg_list sc el = match el with
     [] -> ""
   | [e] -> gen_expr e
@@ -90,7 +91,7 @@ let rec gen_fundefs fundefs = match fundefs with
               )@(gen_fundefs tl)
 
 
-let compile prg =
+let compile oc prg =
   let head_lines =
     ["#include \"buckcal_mat.hpp\""; "using namespace std;"] 
   in
@@ -103,4 +104,5 @@ let compile prg =
     gen_fundefs funs
   in
   let all = head_lines @ var_lines @ func_lines in
-  List.iter print_endline all
+  (*List.iter print_endline all*)
+  List.iter (fun line -> fprintf oc "%s\n" line) all

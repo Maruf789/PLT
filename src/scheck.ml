@@ -216,6 +216,8 @@ and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stm
      check function definition
    arguments: Sast.sfun_def list, Ast.func_def
    return: Sast.sfun_def list *)
+let is_func_dec ff = (ff.sbody=[] && ff.slocals=[])
+
 let check_fundef ftbl new_func_def =
   let sig_func fn = {
     fsname = fn.fname;
@@ -232,7 +234,7 @@ let check_fundef ftbl new_func_def =
   let vtbl = (arg_def@new_local) in
   (* check statements *)
   let flag, new_fstmts = check_stmts ftbl vtbl new_sret true false false new_func_def.body in
-    if (not flag) then raise (Bad_type ("Function '" ^ new_sname ^ "' return statement missing"))
+    if (new_sret != Void && not flag) then raise (Bad_type ("Function '" ^ new_sname ^ "' return statement missing"))
   else
   let new_sfun_def = { sreturn = new_sret;
                        sfname = new_sname;
@@ -240,13 +242,13 @@ let check_fundef ftbl new_func_def =
                        slocals = new_local;
                        sbody = new_fstmts } in
   let found, fbody = find_func (=) ftbl new_fnsg in
+  (*let _ = eprintf "%s: %s" new_sname (if found then "found" else "not found") in*)
   if not found then ftbl@[new_sfun_def]
   else (
-    if (fbody.sbody=[] && fbody.slocals=[])
+    if (is_func_dec fbody) && not (is_func_dec new_sfun_def)
     then (list_rep fbody new_sfun_def ftbl)
     else raise (Bad_type ("Function '" ^ new_sname ^ "' already defined"))
   )
-
 
 
 (* check function definition list
@@ -273,4 +275,3 @@ let check prg =
     check_stmts func_table var_table Int true true false prg.pstms
   in
   { spfuns = func_table;  spvars = var_table; spstms = stm_lines }
-

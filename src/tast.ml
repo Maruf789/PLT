@@ -26,6 +26,7 @@ type iexpr =
   | IAssign of iexpr * iexpr
   | IUnaop of unaop * iexpr
   | ICall of string * iexpr list
+  | IIndex of string * iexpr
 
 (* target variable declare *)
 type ivar_dec = itype * string * iexpr (* type, name, init expr *)
