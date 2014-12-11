@@ -1,6 +1,6 @@
 #include "buckcal_mat.hpp"
 #include <string>
-#include <cstdio>
+#include <cstdlib>
 #include <sstream>
 using namespace std;
 
@@ -31,11 +31,15 @@ int cols(string_mat mx) {
 
 /* data conversion */
 string string_of_int(int x) {
-	return to_string(x);
+	ostringstream ss;
+	ss << x;
+	return ss.str();
 }
 
 string string_of_double(double x) {
-	return to_string(x);
+	ostringstream ss;
+	ss << x;
+	return ss.str();
 }
 
 int int_of_string(string x) {
