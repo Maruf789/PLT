@@ -92,7 +92,7 @@ let rec gen_fundefs fundefs = match fundefs with
 
 let compile prg =
   let head_lines =
-    ["#include \"buckcal_types.h\""] 
+    ["#include \"buckcal_mat.hpp\""; "using namespace std;"] 
   in
   let var_lines =
     let vars = prg.ivars in

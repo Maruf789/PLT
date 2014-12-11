@@ -10,7 +10,7 @@ BINFILE=./binfiles
 DIF="diff -b -B"
 
 ## copy C++ header here
-cp ../src/buckcal_types.h $CFILE_DIR
+cp ../src/c++/buckcal_mat.hpp $CFILE_DIR
 cp ../src/c++/buckcal_mat.cpp $CFILE_DIR
 cp ../src/c++/buckcal_mat.hpp $CFILE_DIR
 
