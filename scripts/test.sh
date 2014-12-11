@@ -19,7 +19,7 @@ cp ../src/c++/buckcal_lib.cpp $CFILE_DIR
 #g++ -c $CFILE_DIR/buckcal_mat.cpp -o $CFILE_DIR/buckcal_mat.o
 
 # run good cases
-for (( i =  0; i <= 22; i++))
+for (( i =  0; i <= 23; i++))
 do
 	$1 $GOOD_DIR/sample${i}.bc sample${i}.c > $NU \
 	 2> 		$OUTPUT_DIR/goodsample${i}out.txt 
@@ -36,7 +36,7 @@ do
 done
 
 # run bad cases
-for (( i =  24; i <= 29; i++))
+for (( i =  0; i <= 29; i++))
 do
 	$1 $BAD_DIR/sample${i}.bc sample${i}.c > $NU \
 	 2> 		$OUTPUT_DIR/badsample${i}out.txt 
