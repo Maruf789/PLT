@@ -417,8 +417,7 @@ string_mat::string_mat(const string_mat &in) {
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
-	for (int i = 0; i < rows * cols; i++)
-			m.push_back(in.m[i]);
+	m = in.m;
 }
 string & string_mat::operator [] (int i) {
 	return m.at(i);
@@ -427,8 +426,10 @@ string_mat & string_mat::operator = (const string_mat &in) {
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
+	m.resize(rows*cols);
+	/* copy array */
 	for (int i = 0; i < rows * cols; i++)
-			m.push_back(in.m[i]);
+		m[i] = in.m[i];
 	return *this;
 }
 

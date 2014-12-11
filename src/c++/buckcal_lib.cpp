@@ -51,7 +51,7 @@ int_mat mat_int_of_string(string_mat x) {
 	for (int i = 0; i < x.rows * x.cols; i++)
 		array[i] = atoi(x.m[i].c_str());
 	int_mat mat(array, x.rows, x.cols);
-	delete array;
+	delete[] array;
 	return mat;
 }
 
@@ -60,7 +60,7 @@ double_mat mat_double_of_string(string_mat x) {
 	for (int i = 0; i < x.rows * x.cols; i++)
 		array[i] = atof(x.m[i].c_str());
 	double_mat mat(array, x.rows, x.cols);
-	delete array;
+	delete[] array;
 	return mat;
 }
 
@@ -72,7 +72,7 @@ string_mat mat_string_of_int(int_mat x) {
 		array[i] = ss.str();
 	}
 	string_mat mat(array, x.rows, x.cols);
-	delete array;
+	delete[] array;
 	return mat;
 }
 
@@ -84,7 +84,7 @@ string_mat mat_string_of_double(double_mat x) {
 		array[i] = ss.str();
 	}
 	string_mat mat(array, x.rows, x.cols);
-	delete array;
+	delete[] array;
 	return mat;
 }
 
@@ -93,7 +93,7 @@ int_mat mat_int_of_double(double_mat x) {
 	for (int i = 0; i < x.rows * x.cols; i++)
 		array[i] = (int) x.m[i];
 	int_mat mat(array, x.rows, x.cols);
-	delete array;
+	delete[] array;
 	return mat;
 }
 
@@ -102,6 +102,6 @@ double_mat mat_double_of_int(int_mat x)  {
 	for (int i = 0; i < x.rows * x.cols; i++)
 		array[i] = (double) x.m[i];
 	double_mat mat(array, x.rows, x.cols);
-	delete array;
+	delete[] array;
 	return mat;
 }
