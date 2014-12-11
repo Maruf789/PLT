@@ -49,15 +49,16 @@ let rec list_rep o n lst = match lst with
   | hd::tl -> let a = (if hd=o then n else hd) in a::(list_rep o n tl)
 
 (* find a function signature in function table
-   arguments: @fnsg - function signature to be found
+   arguments: @eq - the equal operator : can be (=) or eq_t
+              @fnsg - function signature to be found
               @func_table - function table
    return: (true, sfun_def) on found, (false, _) on not_found *)
-let find_func func_table fnsg =
+let find_func eq func_table fnsg =
   let dummy = {sreturn=Void; sfname="_"; sargs=[]; slocals=[]; sbody=[]} in
   let func_eq f1 fd =
     let f2 = sig_sfunc fd in
     f1.fsname = f2.fsname &&
-    try List.for_all2 (=) f1.fsargs f2.fsargs
+    try List.for_all2 eq f1.fsargs f2.fsargs
     with Invalid_argument _ -> false
   in
   try true, (List.find (func_eq fnsg) func_table)
@@ -99,7 +100,7 @@ and check_matval ftbl vtbl matx =
 and check_call ftbl vtbl fn exp_list =
   let sexp_list = List.map (check_expr ftbl vtbl) exp_list in
   let typ_list = List.map (fst) sexp_list in
-  let found, fnsg = find_func ftbl {fsname=fn; fsargs=typ_list} in
+  let found, fnsg = find_func eq_t ftbl {fsname=fn; fsargs=typ_list} in
   if found then fnsg.sreturn, SCall(fn, sexp_list)
   else raise (Bad_type ("function " ^ fn ^ " not defined"))
 and check_expr ftbl vtbl exp = match exp with
@@ -228,7 +229,7 @@ let check_fundef ftbl new_func_def =
                        sargs = new_sargs;
                        slocals = new_local;
                        sbody = new_fstmts } in
-  let found, fbody = find_func ftbl new_fnsg in
+  let found, fbody = find_func (=) ftbl new_fnsg in
   if not found then ftbl@[new_sfun_def]
   else (
     if (fbody.sbody=[] && fbody.slocals=[])

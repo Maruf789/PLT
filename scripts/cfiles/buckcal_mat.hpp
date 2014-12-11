@@ -12,6 +12,8 @@ public:
 	int_mat(const int_mat &);
 	/* overload = and << */
 	int_mat & operator = (const int_mat &);
+	int_mat operator + (const int_mat &);
+	int_mat operator + (const int &);
 };
 
 class double_mat {

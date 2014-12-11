@@ -7,3 +7,8 @@ def int callreturn (int b) do
 		disp b;
 		disp returnint(b);
 fed
+
+#def int falsereturn (int a) do
+#		double b;
+#		return b;
+#fed
