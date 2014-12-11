@@ -1,7 +1,0 @@
-#test matrix accessing
-#double a : ax[1,2];
-#disp ax[1,2];
-#disp ax[0,range(1,2)];
-ax[1,2]: 4;
-ax[1,2]: {4};
-ax[1,0]: range(1, (cols A));

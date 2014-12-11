@@ -1,1 +1,1 @@
-Parser error: token double, line 3,6
+Parser error: token import, line 2,5

@@ -1,1 +1,0 @@
-Sast error: variable mx not defined

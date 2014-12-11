@@ -1,0 +1,22 @@
+#test operator
+int a;
+int b;
+int c;
+bool x;
+bool y;
+a:1;
+b:2;
+c:a+b;
+disp c;
+x:true;
+disp x;
+y:1=2;
+disp y;
+y:1!=2;
+disp y;
+y:not x;
+disp y;
+y:(1=2)and true;
+disp y;
+y:(1=2)or true;
+disp y;

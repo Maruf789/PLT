@@ -1,0 +1,4 @@
+#test function declaration
+def helper(int x);
+def helper2(double x);
+def int helper3(int);

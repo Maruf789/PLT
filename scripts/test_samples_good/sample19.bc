@@ -1,0 +1,14 @@
+#test function call
+int b:4;
+def int returnint (int a) do
+		a:a+10;
+		return a;
+fed
+
+def callreturn (int b) do
+		disp b;
+		b:b+returnint(b);
+		disp b;
+fed
+
+callreturn(b);
