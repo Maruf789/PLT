@@ -1,6 +1,6 @@
 (* Helper functions in translate *)
 open Ast
-open Sast
+(*open Sast*)
 open Tast
 
 (* Translate dtype to C++ types *)
@@ -38,7 +38,6 @@ let cols s = ICall("cols", [IId s])
 let trans_binop e1 e2 b = [], IBinop (e1, b, e2)
 
 let trans_matsub s ie1 ie2 =
-  let r = rows s in
   let c = cols s in
   match ie1, ie2 with
     IIntval x, IIntval y -> (

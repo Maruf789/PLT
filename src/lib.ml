@@ -162,6 +162,10 @@ let lib_funs = [
     sargs=[ {vtype=DoubleMat; vname="x"}; ];
     slocals=[]; sbody=[]
   };
+  { sreturn=Int; sfname="strlen";
+    sargs=[ {vtype=String; vname="x"}; ];
+    slocals=[]; sbody=[]
+  };
   { sreturn=String; sfname="slice";
     sargs=[ {vtype=String; vname="x"}; {vtype=IntMat; vname="idx"}; ];
     slocals=[]; sbody=[]
