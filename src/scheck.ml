@@ -22,7 +22,9 @@ let find_var var_table name =
 (* general type equality - int = double *)
 let eq_t t1 t2 = match t1, t2 with
     Int, Double | Double, Int | IntMat, DoubleMat | DoubleMat, IntMat -> true
-  | x, y -> if x == y then true else false
+  | Int, IntMat | Int, DoubleMat | Double, IntMat | Double, DoubleMat -> true
+  | x, y when x==y -> true 
+  | _, _ -> false
 
 
 (* function table *)
