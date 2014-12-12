@@ -30,7 +30,7 @@ let rec trans_expr tid isl exp = match exp with
                             (isl, (IAssign (ie1, ie2))))
   | _, SUnaop (u, e) -> (let isl, ie = trans_expr tid isl e in
                          (isl, (IUnaop (u, ie))))
-  | _, SCall (s, el) -> (let is1, iesl = trans_arglist tid isl el in
+  | _, SCall (s, el) -> (let isl, iesl = trans_arglist tid isl el in
                          (isl, ICall (s, iesl)))
   | _, SMatSub (s, e1, e2) -> (let isl, ie1 = trans_expr tid isl e1 in
                                let isl, ie2 = trans_expr tid isl e2 in
@@ -43,10 +43,10 @@ let rec trans_expr tid isl exp = match exp with
       let isl = isl@[IVarDec (ta, tname, arr)] in
       let ex = ICall ((smat_to_cnsr t), [IId tname; IIntval nr; IIntval nc]) in
       let isl = isl@[IVarDec ((ipt t), ttname, ex)] in
-      isl, IId ttname)
-and trans_arglist tid is1 el = match el with
-    [] -> is1, []
-  | e::tl -> (let isl, ie = trans_expr tid is1 e in
+      (isl, (IId ttname)))
+and trans_arglist tid isl el = match el with
+    [] -> isl, []
+  | e::tl -> (let isl, ie = trans_expr tid isl e in
               let isl, itl = trans_arglist tid isl tl in
               isl, ie::itl)
 and trans_matval ell = (* matrix element should not generate extra irstmt *)
@@ -106,8 +106,8 @@ let rec trans_stmts tid stmts = (*print_int tid;*) match stmts with
         in
         ((tid+1), ( isl @ [tt_array] @ [fh] @ mainbody @ [IBlockEnd] ))
       | SCndFor cs -> let isl0, ie, is = trans_condstmt tid [] cs in
-        (tid, (isl0 @ [IWhileHead ie] @ is @ [IBlockEnd]))
-      | SDisp e -> let isl, ie = trans_expr tid [] e in (tid, isl@[IDisp ie])
+        (tid+1, (isl0 @ [IWhileHead ie] @ is @ [IBlockEnd]))
+      | SDisp e -> let isl, ie = trans_expr tid [] e in (tid+1, isl@[IDisp ie])
       | SContinue -> (tid, [IContinue])
       | SBreak -> (tid, [IBreak])
     ) in
@@ -129,7 +129,7 @@ and trans_condstmts tid condstmtlist = match condstmtlist with
 
 (* translate main function - add return 0 if no statment of the last one is not return *)
 let trans_main_func tid stmts =
-  let tid, main_stmts = trans_stmts tid stmts in
+  let _, main_stmts = trans_stmts tid stmts in
   match (List.rev main_stmts) with
     [] -> [IReturn (IIntval 0)]
   | hd::tl -> match hd with IReturn _ -> main_stmts
