@@ -27,8 +27,15 @@ def double abs(double x) do
 	fi
 fed
 
-#function: find the range of matrix
+#function: Return the number of columns  in matrix mx;
 def int mat range(int x, int y) do
+
+	#yet to implement it
+
+fed
+
+#function: Return the number of rows in matrix mx;
+def int mat ranger(int x, int y) do
 
 	#yet to implement it
 
@@ -38,9 +45,9 @@ fed
 def double mat sum_row(double mat mx) do
 	int x;
 	double mat s: range(1, cols(mx)) * 0.;
-	for x in range(1, (rows mx)) do
+	for x in range(1, (rows(mx))) do
 		s: s+ mx[x, 0];
-	orf
+	rof
 	return s;
 fed
 
@@ -48,8 +55,18 @@ fed
 def double mat sum_col(double mat mx) do
 	int x;
 	double mat s: range(rows(mx), 1) * 0.;
-	for x in range((cols mx), 1) do
+	for x in range(cols(mx), 1) do
 		s: s+ mx[0, x];
-	orf
+	rof
 	return s;
+fed
+
+#function: average of the all rows of a matrix
+def mat avg_row(double mat mx) do
+	return sum_row(mx)/rows(mx);
+fed
+
+#function: average of the all rows of a matrix
+def mat avg_col(double mat mx) do
+	return sum_col(mx)/cols(mx);
 fed
