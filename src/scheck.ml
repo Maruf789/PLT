@@ -234,10 +234,11 @@ let check_fundef new_ftbl ftbl new_func_def =
   let new_sargs = new_func_def.args in (* arguments *)
   (* check local variables & build variable table *)
   let arg_def = var2def_list new_sargs in
-  let new_local = check_local_var_def ftbl arg_def new_func_def.locals in
+  let full_ftbl = ftbl @ new_ftbl in
+  let new_local = check_local_var_def full_ftbl arg_def new_func_def.locals in
   let vtbl = (arg_def@new_local) in
   (* check statements *)
-  let flag, new_fstmts = check_stmts ftbl vtbl new_sret true false false new_func_def.body in
+  let flag, new_fstmts = check_stmts full_ftbl vtbl new_sret true false false new_func_def.body in
   let new_sfun_def = { sreturn = new_sret;
                        sfname = new_sname;
                        sargs = new_sargs;
