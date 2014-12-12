@@ -210,7 +210,8 @@ and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stm
    return: Sast.sfun_def list *)
 let is_func_dec ff = (ff.sbody=[] && ff.slocals=[])
 
-let check_fundef ftbl new_func_def =
+
+let check_fundef new_ftbl ftbl new_func_def =
   let sig_func fn = {
     fsname = fn.fname;
     fsargs = List.map (fun v -> v.vtype) fn.args
@@ -232,15 +233,16 @@ let check_fundef ftbl new_func_def =
                        sargs = new_sargs;
                        slocals = new_local;
                        sbody = new_fstmts } in
-  let found, fbody = find_func (=) ftbl new_fnsg in
+  let found, fbody = find_func (=) (ftbl) new_fnsg in
   (*let _ = eprintf "%s: %s" new_sname (if found then "found" else "not found") in*)
-  if not found then ftbl@[new_sfun_def]
-  else (
-    if (is_func_dec fbody) && not (is_func_dec new_sfun_def)
-    then (list_rep fbody new_sfun_def ftbl)
-    else raise (Bad_type ("Function '" ^ new_sname ^ "' already defined"))
-  )
-
+  
+  let foundnew, fbodynew = find_func (=) (new_ftbl) new_fnsg in
+  (*let _ = eprintf "%s: %s" new_sname (if found then "found" else "not found") in*)
+  match found, foundnew with
+    false, false -> new_ftbl @ [new_sfun_def]
+  | false, true ->  if (is_func_dec fbodynew) && not (is_func_dec new_sfun_def)
+                     then (list_rep fbodynew new_sfun_def new_ftbl)
+  | true, _ -> raise (Bad_type ("Function '" ^ new_sname ^ "' already defined"))
 
 (* check function definition list
    input: func_def list
@@ -252,7 +254,7 @@ let rec check_fundefs ftbl funsgs = match funsgs with
 
 
 (* check the whole program
-   return a sprogram *)
+   returns a sprogram *)
 let check prg =
   let func_table =
     let func_table_0 = lib_funs in (* init function table, should be built-in functions *)
