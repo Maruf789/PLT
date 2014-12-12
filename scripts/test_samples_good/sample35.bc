@@ -1,0 +1,14 @@
+#test built-in function rowname, colname
+int mat ix: {1,2,3;4,5,6};
+double mat dx: {1.1,2.2;3.3,4.4;5.5,6.6};
+string mat sx: {'a','b','c';'d','e','f'};
+string mat ssx: {'John','Josh'};
+rowname(ix, ssx);
+colname(ix, {'foods','clothes','appliances'});
+disp ix;
+rowname(dx, {'a','b','c'});
+colname(dx, ssx);
+disp dx;
+rowname(sx, ssx);
+colname(sx, {'a','b','c'});
+disp sx;

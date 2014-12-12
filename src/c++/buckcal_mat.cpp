@@ -1,6 +1,3 @@
-#include <iostream>
-#include <stdexcept>
-#include <sstream>
 #include "buckcal_mat.hpp"
 
 using namespace std;
@@ -81,7 +78,7 @@ int_mat int_mat::operator + (const int_mat &in) {
 	int_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '+': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] += in.m[i];
 	return result;
@@ -99,7 +96,7 @@ int_mat int_mat::operator - (const int_mat &in) {
 	int_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '-': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] -= in.m[i];
 	return result;
@@ -117,7 +114,7 @@ int_mat int_mat::operator * (const int_mat &in) {
 	int_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '*': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] *= in.m[i];
 	return result;
@@ -135,7 +132,7 @@ int_mat int_mat::operator / (const int_mat &in) {
 	int_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '/': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] /= in.m[i];
 	return result;
@@ -153,7 +150,7 @@ double_mat int_mat::operator + (const double_mat &in) {
 	double_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '+': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] = double(this->m[i]) + in.m[i];
 	return result;
@@ -171,7 +168,7 @@ double_mat int_mat::operator - (const double_mat &in) {
 	double_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '-': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] -= in.m[i];
 	return result;
@@ -189,7 +186,7 @@ double_mat int_mat::operator * (const double_mat &in) {
 	double_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '*': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] *= in.m[i];
 	return result;
@@ -207,7 +204,7 @@ double_mat int_mat::operator / (const double_mat &in) {
 	double_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '/': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] /= in.m[i];
 	return result;
@@ -297,7 +294,7 @@ double_mat double_mat::operator + (const double_mat &in) {
 	double_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '+': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] += in.m[i];
 	return result;
@@ -315,7 +312,7 @@ double_mat double_mat::operator - (const double_mat &in) {
 	double_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '-': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] -= in.m[i];
 	return result;
@@ -333,7 +330,7 @@ double_mat double_mat::operator * (const double_mat &in) {
 	double_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '*': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] *= in.m[i];
 	return result;
@@ -351,7 +348,7 @@ double_mat double_mat::operator / (const double_mat &in) {
 	double_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '/': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] /= in.m[i];
 	return result;
@@ -369,7 +366,7 @@ double_mat double_mat::operator + (const int_mat &in) {
 	double_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '+': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] += in.m[i];
 	return result;
@@ -387,7 +384,7 @@ double_mat double_mat::operator - (const int_mat &in) {
 	double_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '-': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] -= in.m[i];
 	return result;
@@ -405,7 +402,7 @@ double_mat double_mat::operator * (const int_mat &in) {
 	double_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '*': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] *= in.m[i];
 	return result;
@@ -423,7 +420,7 @@ double_mat double_mat::operator / (const int_mat &in) {
 	double_mat result = *this;
 
 	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("Matrixes do not match");
+		throw std::invalid_argument("operator '/': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] /= in.m[i];
 	return result;

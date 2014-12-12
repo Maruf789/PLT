@@ -36,7 +36,7 @@ do
 done
 
 # run bad cases
-for (( i =  34; i <= 36; i++))
+for (( i =  0; i <= 36; i++))
 do
 	$1 $BAD_DIR/sample${i}.bc > $NU \
 	 2> 		$OUTPUT_DIR/badsample${i}out.txt 

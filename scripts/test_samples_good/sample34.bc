@@ -1,5 +1,6 @@
 #test data type conversion
-int a: 6.6;
-double b: 6;
-disp a;
-disp b;
+def int cal(double) do
+	return 1+2.2;
+fed
+int i:0;
+i: cal(1.1);
