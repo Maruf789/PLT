@@ -208,7 +208,7 @@ and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stm
         | Disp e -> ret_flag, SDisp (check_expr ftbl vtbl e)
         | Continue -> if(loop_flag) then ret_flag, SContinue else raise (Bad_type "Continue should only be used inside a loop")
         | Break -> if(loop_flag) then ret_flag, SBreak else raise (Bad_type "Break should only be used inside a loop")
-      ) in 
+      ) in
     let flag1, flist1 = check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag tl
     in flag0||flag1 , flist0::flist1
 
@@ -273,11 +273,12 @@ let check prg =
                                                       and init new function table (user-defined & empty) *)
     check_fundefs [] func_table_0 prg.pfuns
   in
+  let full_ftbl = lib_funs @ func_table in
   let var_table =
     let var_table_0 = [] in    (* init variable table as empty *)  
-    check_vardecs func_table var_table_0 prg.pvars
+    check_vardecs full_ftbl var_table_0 prg.pvars
   in
   let _, stm_lines =            (* statements *)
-    check_stmts func_table var_table Int true true false prg.pstms
+    check_stmts full_ftbl var_table Int true true false prg.pstms
   in
   { spfuns = func_table;  spvars = var_table; spstms = stm_lines }
