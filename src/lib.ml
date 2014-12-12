@@ -66,7 +66,7 @@ let lib_funs = [
     sargs=[ {vtype=IntMat; vname="mx"}; {vtype=StringMat; vname="n"}; ];
     slocals=[]; sbody=[]
   };
-  { sreturn=Void; sfname="rowame";
+  { sreturn=Void; sfname="rowname";
     sargs=[ {vtype=DoubleMat; vname="mx"}; {vtype=StringMat; vname="n"}; ];
     slocals=[]; sbody=[]
   };
