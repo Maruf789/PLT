@@ -67,8 +67,12 @@ type func_def = {
   body : stmt list;
 }
 
+(* import statement *)
+(*type imp = string*)
+
 (* program is function definition plus variable definition and statements *)
 type program = {
+  pimps : string list;
   pfuns : func_def list;
   pvars : var_dec list;
   pstms : stmt list;
