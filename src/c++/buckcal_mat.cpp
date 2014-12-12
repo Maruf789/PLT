@@ -28,7 +28,7 @@ int_mat::int_mat(int *array, int r, int c) {
 }
 
 int_mat::int_mat(const int_mat &in) {
-	if (*this == in)
+	if (this == &in)
 		return;
 	rows = in.rows;
 	cols = in.cols;
@@ -54,7 +54,7 @@ int & int_mat::operator [] (int i) {
 }
 
 int_mat & int_mat::operator = (const int_mat &in) {
-	if (*this == in)
+	if (this == &in)
 		return *this;
 	rows = in.rows;
 	cols = in.cols;
