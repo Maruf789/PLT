@@ -1,2 +1,4 @@
-*.*c*
-*.*b*
+*.cpp
+*.bc
+*.o
+sample.bin
