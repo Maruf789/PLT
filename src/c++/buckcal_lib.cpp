@@ -1,7 +1,7 @@
 #include "buckcal_mat.hpp"
+#include <string>
 #include <cstdlib>
-#include <sstream>
-#include <stdexcept>
+
 using namespace std;
 
 /* get number of rows and columns */
