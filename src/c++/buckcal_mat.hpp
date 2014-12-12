@@ -14,6 +14,8 @@ public:
 	int rows;
 	int cols;
 	std::vector<double> m;
+	std::vector<std::string> rownames;
+	std::vector<std::string> colnames;
 	/* constructors */
 	double_mat(double *, int, int);
 	double_mat(const double_mat &);
@@ -46,6 +48,8 @@ public:
 	int rows;
 	int cols;
 	std::vector<int> m;
+	std::vector<std::string> rownames;
+	std::vector<std::string> colnames;
 	/* constructors */
 	int_mat(int *, int, int);
 	int_mat(const int_mat &);
@@ -78,6 +82,8 @@ public:
 	int rows;
 	int cols;
 	std::vector<std::string> m;
+	std::vector<std::string> rownames;
+	std::vector<std::string> colnames;
 	/* constructors */
 	string_mat(std::string *, int, int);
 	string_mat(const string_mat &);

@@ -1,8 +1,22 @@
 #include <iostream>
 #include <stdexcept>
+#include <sstream>
 #include "buckcal_mat.hpp"
 
 using namespace std;
+
+void init_names(vector<string> &rownames, vector<string> &colnames, int r, int c) {
+	for (int i = 0; i < r; i++) {
+		ostringstream ss;
+		ss << "row" << (i + 1);
+		rownames.push_back(ss.str());
+	}
+	for (int i = 0; i < c; i++) {
+		ostringstream ss;
+		ss << "col" << (i + 1);
+		colnames.push_back(ss.str());
+	}
+}
 
 int_mat::int_mat(int *array, int r, int c) {
 	rows = r;
@@ -10,13 +24,18 @@ int_mat::int_mat(int *array, int r, int c) {
 	/* initialize vector of vectors */
 	for (int i = 0; i < r * c; i++)
 		m.push_back(array[i]);
+	init_names(rownames, colnames, rows, cols);
 }
 
 int_mat::int_mat(const int_mat &in) {
+	if (*this == in)
+		return;
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
 	m = in.m;
+	rownames = in.rownames;
+	colnames = in.colnames;
 }
 
 int_mat::int_mat(const double_mat &in) {
@@ -26,6 +45,8 @@ int_mat::int_mat(const double_mat &in) {
 	/* copy array */
 	for (int i = 0; i < rows * cols; i++)
 		m[i] = in.m[i];
+	rownames = in.rownames;
+	colnames = in.colnames;	
 }
 
 int & int_mat::operator [] (int i) {
@@ -33,10 +54,14 @@ int & int_mat::operator [] (int i) {
 }
 
 int_mat & int_mat::operator = (const int_mat &in) {
+	if (*this == in)
+		return *this;
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
 	m = in.m;
+	rownames = in.rownames;
+	colnames = in.colnames;
 	return *this;
 }
 
@@ -47,6 +72,8 @@ int_mat & int_mat::operator = (const double_mat &in) {
 	/* copy array */
 	for (int i = 0; i < rows * cols; i++)
 		m[i] = in.m[i];
+	rownames = in.rownames;
+	colnames = in.colnames;
 	return *this;
 }
 
@@ -195,12 +222,17 @@ double_mat int_mat::operator / (const double &in) {
 }
 
 ostream & operator << (ostream &sys, const int_mat &in) {
+	sys << "\t\t";
+	for (int i = 0; i < in.cols; i++) {
+		sys << in.colnames[i] << "\t";
+	}
+	sys << endl;
 	for (int i = 0; i < in.rows; i++) {
-		sys << "[";
+		sys << in.rownames[i] << "\t[";
 		for (int j = 0; j < in.cols; j++) {
 			sys << in.m[i * in.cols + j];
 			if (j < in.cols - 1)
-				sys << ", ";
+				sys << ",\t";
 		}
 		sys << "]" <<endl;
 	}
@@ -213,30 +245,41 @@ double_mat::double_mat(double *array, int r, int c) {
 	/* initialize vector of vectors */
 	for (int i = 0; i < r * c; i++)
 		m.push_back(array[i]);
+	init_names(rownames, colnames, rows, cols);
 }
 
 double_mat::double_mat(const double_mat &in) {
+	if (*this == in)
+		return;
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
 	m = in.m;
+	rownames = in.rownames;
+	colnames = in.colnames;
 }
 double_mat::double_mat(const int_mat &in) {
 	rows = in.rows;
-	cols = in.cols;
+	cols = in.cols; 
 	m.resize(rows*cols);
 	/* copy array */
 	for (int i = 0; i < rows * cols; i++)
 		m[i] = in.m[i];
+	rownames = in.rownames;
+	colnames = in.colnames;
 }
 double & double_mat::operator [] (int i) {
 	return m.at(i);
 }
 double_mat & double_mat::operator = (const double_mat &in) {
+	if (*this == in)
+		return;
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
 	m = in.m;
+	rownames = in.rownames;
+	colnames = in.colnames;
 	return *this;
 }
 double_mat & double_mat::operator = (const int_mat &in) {
@@ -246,6 +289,8 @@ double_mat & double_mat::operator = (const int_mat &in) {
 	/* copy array */
 	for (int i = 0; i < rows * cols; i++)
 		m[i] = in.m[i];
+	rownames = in.rownames;
+	colnames = in.colnames;
 	return *this;
 }
 double_mat double_mat::operator + (const double_mat &in) {
@@ -393,12 +438,17 @@ double_mat double_mat::operator / (const int &in) {
 }
 
 ostream & operator << (ostream &sys, const double_mat &in) {
+	sys << "\t\t";
+	for (int i = 0; i < in.cols; i++) {
+		sys << in.colnames[i] << "\t";
+	}
+	sys << endl;
 	for (int i = 0; i < in.rows; i++) {
-		sys << "[";
+		sys << in.rownames[i] << "\t[";
 		for (int j = 0; j < in.cols; j++) {
 			sys << in.m[i * in.cols + j];
 			if (j < in.cols - 1)
-				sys << ", ";
+				sys << ",\t";
 		}
 		sys << "]" <<endl;
 	}
@@ -411,34 +461,49 @@ string_mat::string_mat(string *array, int r, int c) {
 	/* initialize vector of vectors */
 	for (int i = 0; i < r * c; i++)
 		m.push_back(array[i]);
+	init_names(rownames, colnames, rows, cols);
 }
 
 string_mat::string_mat(const string_mat &in) {
+	if (*this == in)
+		return;
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
-	for (int i = 0; i < rows * cols; i++)
-			m.push_back(in.m[i]);
+	m = in.m;
+	rownames = in.rownames;
+	colnames = in.colnames;
 }
 string & string_mat::operator [] (int i) {
 	return m.at(i);
 }
 string_mat & string_mat::operator = (const string_mat &in) {
+	if (*this == in)
+		return *this;
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
+	m.resize(rows*cols);
+	/* copy array */
 	for (int i = 0; i < rows * cols; i++)
-			m.push_back(in.m[i]);
+		m[i] = in.m[i];
+	rownames = in.rownames;
+	colnames = in.colnames;
 	return *this;
 }
 
 ostream & operator << (ostream &sys, const string_mat &in) {
+	sys << "\t\t";
+	for (int i = 0; i < in.cols; i++) {
+		sys << in.colnames[i] << "\t";
+	}
+	sys << endl;
 	for (int i = 0; i < in.rows; i++) {
-		sys << "[";
+		sys << in.rownames[i] << "\t[";
 		for (int j = 0; j < in.cols; j++) {
 			sys << in.m[i * in.cols + j];
 			if (j < in.cols - 1)
-				sys << ", ";
+				sys << ",\t";
 		}
 		sys << "]" <<endl;
 	}

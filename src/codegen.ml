@@ -35,10 +35,10 @@ let rec gen_expr exp = match exp with
   | IStringval x -> (" string(\"" ^ x ^ "\") ")
   | IBoolval x -> if x then " true " else " false "
   | IId x -> (" " ^ x ^ " ")
-  | IBinop (e1, b, e2) -> (sprintf " ( %s %s %s ) " (gen_expr e1) (gen_bop b) (gen_expr e2))
+  | IBinop (e1, b, e2) -> (sprintf "( %s %s %s )" (gen_expr e1) (gen_bop b) (gen_expr e2))
   | IAssign (e1, e2) -> (sprintf "( %s = %s )" (gen_expr e1) (gen_expr e2))
   | IUnaop (u, e) -> (sprintf "( %s %s )" (gen_uop u) (gen_expr e))
-  | ICall (s, el) -> (sprintf "( %s( %s ) )" s (gen_arg_list "," el))
+  | ICall (s, el) -> (sprintf "( %s(%s) )" s (gen_arg_list "," el))
   | IArray el->  (sprintf "{%s}" (gen_arg_list "," el) )
   | IMatSub (s, e1, e2, e3, e4) -> raise (Not_done "IMatSub not implemented")
   | IIndex (s, e) -> (sprintf " (%s[%s]) " s (gen_expr e))
@@ -91,7 +91,7 @@ let rec gen_fundefs fundefs = match fundefs with
               )@(gen_fundefs tl)
 
 
-let compile prg =
+let compile oc prg =
   let head_lines =
     ["#include \"buckcal_mat.hpp\""; "using namespace std;"] 
   in
@@ -104,4 +104,5 @@ let compile prg =
     gen_fundefs funs
   in
   let all = head_lines @ var_lines @ func_lines in
-  List.iter print_endline all
+  (*List.iter print_endline all*)
+  List.iter (fun line -> fprintf oc "%s\n" line) all

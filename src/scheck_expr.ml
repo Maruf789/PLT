@@ -146,7 +146,7 @@ let check_matval_s sexp_list_list =
                    else raise (Bad_type "Mat rows must have same length"))
       in List.fold_left helpr (-1) ncol_list in
     let num_row = List.length ncol_list in
-    (num_col, num_row)
+    (num_row, num_col)
   in
   let type_check tll =
     (*let mat_elem_type = [Int; Double; String] in*)
@@ -192,10 +192,15 @@ let check_assign sexp1 sexp2 =
   | DoubleMat, DoubleMat -> DoubleMat, ret0
   | DoubleMat, IntMat -> DoubleMat, ret0
   | StringMat, StringMat -> StringMat, ret0
-  (* 1-by-1 mat assigned to scalar *)
+  (* 1-by-1 mat assigned <-> scalar *)
   | Int, IntMat -> Int, ret0 
   | Double, IntMat -> Double, ret0
   | Int, DoubleMat -> Int, ret0
   | Double, DoubleMat -> Double, ret0
   | String, StringMat -> String, ret0
+  | IntMat, Int -> Int, ret0
+  | IntMat, Double -> Double, ret0
+  | DoubleMat, Int -> Int, ret0
+  | DoubleMat, Double -> Double, ret0
+  | StringMat, String -> String, ret0
   | x, y -> raise (Bad_type (sprintf "%s : %s operand types invalid" (pt x) (pt y)))
