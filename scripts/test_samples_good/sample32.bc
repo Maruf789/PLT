@@ -1,0 +1,8 @@
+#test data type conversion
+def int cal(double) do
+	disp 1;
+	return 1;
+fed
+
+int i;
+i: cal();

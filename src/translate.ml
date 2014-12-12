@@ -30,7 +30,7 @@ let rec trans_expr tid isl exp = match exp with
                             (isl, (IAssign (ie1, ie2))))
   | _, SUnaop (u, e) -> (let isl, ie = trans_expr tid isl e in
                          (isl, (IUnaop (u, ie))))
-  | _, SCall (s, el) -> (let is1, iesl = trans_arglist tid isl el in
+  | _, SCall (s, el) -> (let isl, iesl = trans_arglist tid isl el in
                          (isl, ICall (s, iesl)))
   | _, SMatSub (s, e1, e2) -> (let isl, ie1 = trans_expr tid isl e1 in
                                let isl, ie2 = trans_expr tid isl e2 in
@@ -43,10 +43,10 @@ let rec trans_expr tid isl exp = match exp with
       let isl = isl@[IVarDec (ta, tname, arr)] in
       let ex = ICall ((smat_to_cnsr t), [IId tname; IIntval nr; IIntval nc]) in
       let isl = isl@[IVarDec ((ipt t), ttname, ex)] in
-      isl, IId ttname)
-and trans_arglist tid is1 el = match el with
-    [] -> is1, []
-  | e::tl -> (let isl, ie = trans_expr tid is1 e in
+      (isl, (IId ttname)))
+and trans_arglist tid isl el = match el with
+    [] -> isl, []
+  | e::tl -> (let isl, ie = trans_expr tid isl e in
               let isl, itl = trans_arglist tid isl tl in
               isl, ie::itl)
 and trans_matval ell = (* matrix element should not generate extra irstmt *)
@@ -55,77 +55,85 @@ and trans_matval ell = (* matrix element should not generate extra irstmt *)
   (IArray irel)
 
 (* translate variable definition list *)
+(* return tid, statement list *)
 let rec trans_vardecs tid vars = match vars with
-    [] -> []
-  | (t, s, e)::tl -> (
-      let it = ipt t in
-      let isl, ie = trans_expr tid [] e in
-      (isl@[IVarDec (it, s, ie)])
-    ) @ (trans_vardecs (tid + 1) tl)
+    [] -> tid, []
+  | (t, s, e)::tl -> let hd_x = (
+    let it = ipt t in
+    let isl, ie = trans_expr tid [] e in
+    (isl@[IVarDec (it, s, ie)])
+  ) in
+    let tid, tl_x = trans_vardecs (tid + 1) tl in
+    ((tid + 1), (hd_x@tl_x))
 
-
+(*
+  translate statement. 
+  A temporary variable id (@tid) is for preventing naming conflict
+  return : tid, statement list
+*)
 let rec trans_stmts tid stmts = (*print_int tid;*) match stmts with
-    [] -> []
-  | hd::tl -> ( match hd with
-      | SEmpty -> [IEmpty]
-      | SExpr e -> let isl, ie = trans_expr tid [] e in isl@[IExpr ie]
-      | SReturn e -> let isl, ie = trans_expr tid [] e in isl@[IReturn ie]
+    [] -> tid, []
+  | hd::tl -> let tid, hd_stmts = 
+    ( match hd with
+      | SEmpty -> (tid, [IEmpty])
+      | SExpr e -> let isl, ie = trans_expr tid [] e in (tid, isl@[IExpr ie])
+      | SReturn e -> let isl, ie = trans_expr tid [] e in (tid, isl@[IReturn ie])
       | SIf (cs, csl, sl) ->
-        let isl1, stmts1 =
+        let tid, isl1, stmts1 =
           let isl0, ie, is = trans_condstmt tid [] cs in
-          (isl0, ([IIfHead ie] @ is))
+          ((tid+1), isl0, ([IIfHead ie] @ is))
         in
-        let isl2, stmts2 = trans_condstmts tid csl
+        let tid, (isl2, stmts2) = (tid+1), trans_condstmts tid csl in
+        let tid, part3 =
+          let tid, is3 = trans_stmts tid sl in
+          ((tid+1), ([IElse] @ is3))
         in
-        let part3 =
-          (let is3 = trans_stmts tid sl in
-           ([IElse] @ is3))
-        in
-        ((isl1 @ isl2) @ (stmts1 @ stmts2) @ part3 @ [IBlockEnd])
+        (tid, ((isl1 @ isl2) @ (stmts1 @ stmts2) @ part3 @ [IBlockEnd]))
       | SCntFor (s, e, ss) ->
-          let iv = ("F_" ^ s) in
-          let fs1 = IVarDec(Iint, iv, (IIntval 0)) in  
-          let isl, temparr = (trans_expr tid [] e) in
-          let tt = (sprintf "TT_%d" tid) in
-          let tarrtype = ipt (fst e) in
-          let tt_array = IVarDec(tarrtype, tt, temparr) in
-          let fh = IForHead(fs1, (IBinop(IId iv, Lt, (IBinop((rows tt),Times,(cols tt))))), 
+        let iv = ("F_" ^ s) in
+        let fs1 = IVarDec(Iint, iv, (IIntval 0)) in  
+        let isl, temparr = (trans_expr tid [] e) in
+        let tt = (sprintf "TT_%d" tid) in
+        let tarrtype = ipt (fst e) in
+        let tt_array = IVarDec(tarrtype, tt, temparr) in
+        let fh = IForHead(fs1, (IBinop(IId iv, Lt, (IBinop((rows tt),Times,(cols tt))))), 
                           (IAssign(IId iv, IBinop(IId iv, Plus, int1))))
-          in
-          let mainbody =
-             let lbody_h = IExpr (IAssign(IId s, IIndex(tt, IId iv))) in
-             let lbody = trans_stmts (tid + 1) ss in
-             (lbody_h :: lbody)
-          in
-        ( isl @ [tt_array] @ [fh] @ mainbody @ [IBlockEnd] )
+        in
+        let mainbody =
+          let lbody_h = IExpr (IAssign(IId s, IIndex(tt, IId iv))) in
+          let _, lbody = trans_stmts (tid + 1) ss in
+          (lbody_h :: lbody)
+        in
+        ((tid+1), ( isl @ [tt_array] @ [fh] @ mainbody @ [IBlockEnd] ))
       | SCndFor cs -> let isl0, ie, is = trans_condstmt tid [] cs in
-        (isl0 @ [IWhileHead ie] @ is @ [IBlockEnd])
-      | SDisp e -> let isl, ie = trans_expr tid [] e in isl@[IDisp ie]
-      | SContinue -> [IContinue]
-      | SBreak -> [IBreak]
-    ) @ (trans_stmts (tid + 1) tl)
+        (tid+1, (isl0 @ [IWhileHead ie] @ is @ [IBlockEnd]))
+      | SDisp e -> let isl, ie = trans_expr tid [] e in (tid+1, isl@[IDisp ie])
+      | SContinue -> (tid, [IContinue])
+      | SBreak -> (tid, [IBreak])
+    ) in
+    let tid, tl_stmts = trans_stmts (tid + 1) tl in
+    (tid, hd_stmts@tl_stmts)
 and trans_condstmt tid isl cs =
   let isl0, iec = trans_expr tid isl cs.scond in
-  let ies = trans_stmts (tid + 1) cs.sstmts in
-  (isl0, iec, ies)
+  let _, iss = trans_stmts (tid + 1) cs.sstmts in
+  (isl0, iec, iss)
 and trans_condstmts tid condstmtlist = match condstmtlist with 
     [] -> [], []
   | hd::tl -> let isl1, stmts1 = 
-              let isl2, ie2, is2 = trans_condstmt tid [] hd in
-              (isl2, ([IElseIf ie2] @ is2))
-              in
-              let isls, stmtss = trans_condstmts tid tl in
-              (isl1@isls, stmts1@stmtss)
+    let isl2, ie2, is2 = trans_condstmt tid [] hd in
+    (isl2, ([IElseIf ie2] @ is2))
+    in
+    let isls, stmtss = trans_condstmts tid tl in
+    (isl1@isls, stmts1@stmtss)
 
 
 (* translate main function - add return 0 if no statment of the last one is not return *)
-let trans_main_func stmts =
-  let trans_stmts = trans_stmts 2048 stmts in
-    match (List.rev trans_stmts) with
-        [] -> [IReturn (IIntval 0)]
-      | hd::tl -> match hd with
-                    IReturn e -> trans_stmts
-                  | _ -> trans_stmts @ [IReturn (IIntval 0)]
+let trans_main_func tid stmts =
+  let _, main_stmts = trans_stmts tid stmts in
+  match (List.rev main_stmts) with
+    [] -> [IReturn (IIntval 0)]
+  | hd::tl -> match hd with IReturn _ -> main_stmts
+                          | _ -> main_stmts @ [IReturn int0]
 
 (* translate function declaration/definition *)
 let rec trans_args args = match args with
@@ -135,8 +143,8 @@ let rec trans_args args = match args with
 let rec trans_fundefs fundefs = match fundefs with
     [] -> []
   | hd::tl -> (
-      let ss_v = trans_vardecs 0 hd.slocals in
-      let ss_s = trans_stmts 0 hd.sbody in
+      let _, ss_v = trans_vardecs 0 hd.slocals in
+      let _, ss_s = trans_stmts 0 hd.sbody in
       { ireturn = (ipt hd.sreturn); ifname = hd.sfname;
         iargs = (trans_args hd.sargs); ibody = (ss_v@ss_s) }
     )::(trans_fundefs tl)
@@ -147,13 +155,13 @@ let translate prg =
     let funs = prg.spfuns in
     trans_fundefs funs
   in
-  let var_lines =
+  let tid, var_lines =
     let vars = prg.spvars in
     trans_vardecs 0 vars
   in
   let stmt_lines =
     let stmts = prg.spstms in
-    trans_main_func stmts
+    trans_main_func tid stmts
   in
   let main_func = {
     ireturn = Iint;
@@ -162,4 +170,4 @@ let translate prg =
     ibody = var_lines @ stmt_lines
   } in
   { ivars = []; ifuns = func_lines @ [main_func] }
-  
+

@@ -40,7 +40,6 @@ let rec gen_expr exp = match exp with
   | IUnaop (u, e) -> (sprintf "( %s %s )" (gen_uop u) (gen_expr e))
   | ICall (s, el) -> (sprintf "( %s(%s) )" s (gen_arg_list "," el))
   | IArray el->  (sprintf "{%s}" (gen_arg_list "," el) )
-  | IMatSub (s, e1, e2, e3, e4) -> raise (Not_done "IMatSub not implemented")
   | IIndex (s, e) -> (sprintf " (%s[%s]) " s (gen_expr e))
 and gen_arg_list sc el = match el with
     [] -> ""

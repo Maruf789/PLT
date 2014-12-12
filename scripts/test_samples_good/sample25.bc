@@ -1,0 +1,14 @@
+#test built-in function string_of_int string_of_double int_of_string
+#double_of_string
+int a:1;
+double b:1.0;
+string c;
+c:string_of_int(a);
+disp c;
+c:string_of_double(b);
+disp c;
+c:'10.1';
+a:int_of_string(c);
+disp a;
+b:double_of_string(c);
+disp b;

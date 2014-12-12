@@ -1,0 +1,20 @@
+#test built-in function string_of_int string_of_double int_of_string
+#double_of_string
+int i;
+double d;
+string s;
+bool b;
+i: int_of_string('1.0');
+disp i;
+d: double_of_string('1.0');
+disp d;
+s: string_of_int(1.0);
+disp s;
+s: string_of_double(1.1);
+disp s;
+b: int_of_string('2')>int_of_string('1');
+disp b;
+b: double_of_string('22.2')>double_of_string('100.3');
+disp b;
+b: string_of_int(1)>string_of_int(2);
+disp b;

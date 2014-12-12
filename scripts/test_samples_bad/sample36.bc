@@ -1,0 +1,8 @@
+#test function call
+def int cal(double a, double b) do
+	disp 1;
+	return 1;
+fed
+
+double i;
+i: cal(i,i,i);
