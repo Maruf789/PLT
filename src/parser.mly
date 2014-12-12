@@ -44,8 +44,10 @@ dt:
   | STRINGMAT           { StringMat }
 
 /* import */
-import_stmt: IMPORT STRING_LITERAL { Import($2) }
+import_stmt: IMPORT STRING_LITERAL { $2 }
 
+import_stmts:                   { [] }
+  | import_stmts import_stmt    { $1 @ [$2] }
 
 /* variable declaration or definition */
 var_dec_def:
@@ -189,13 +191,7 @@ program:
     import_stmts func_def_list var_dec_def_list stmt_list  {
        {pimps = $1; pfuns = $2; pvars = $3; pstms = $4;}
       }
-  | func_def_list var_dec_def_list stmt_list  {
-       {pimps = []; pfuns = $1; pvars = $2; pstms = $3;}
-      }
   | import_stmts var_dec_def_list stmt_list  {
         {pimps = $1; pfuns = []; pvars = $2; pstms = $3;}
-      }
-  | var_dec_def_list stmt_list  {
-        {pimps = []; pfuns = []; pvars = $1; pstms = $2;}
       }
 

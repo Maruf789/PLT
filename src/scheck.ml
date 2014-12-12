@@ -265,9 +265,19 @@ let rec check_fundefs new_ftbl ftbl funsgs = match funsgs with
                check_fundefs new_ftbl ftbl tl
 
 
+let rec check_imports imps = match imps with
+    [] -> []
+  | hd::tl -> ( try (open_in hd) 
+              with Sys_error x -> raise (Bad_type x)
+            ) :: (check_imports tl)
+
+
 (* check the whole program
    returns a sprogram *)
 let check prg =
+  let imp_files =
+    check_imports prg.pimps
+  in
   let func_table =
     let func_table_0 = lib_funs in (* init function table (should be built-in functions) 
                                                       and init new function table (user-defined & empty) *)
