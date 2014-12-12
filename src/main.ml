@@ -5,10 +5,11 @@ open Ast
 let loc_err lex_buf =
   let p = lex_buf.Lexing.lex_curr_p in
   let tok = Lexing.lexeme lex_buf in
+  let fname = p.Lexing.pos_fname in
   let line = p.Lexing.pos_lnum in
   let cnum = p.Lexing.pos_cnum - p.Lexing.pos_bol + 1
              - String.length tok in
-  sprintf "token %s, line %d,%d" tok line cnum
+  sprintf "token %s, in %s line %d,%d" tok fname line cnum
 
 let perror head err_msg =
   eprintf "%s: %s\n" head err_msg
@@ -17,7 +18,9 @@ let perror head err_msg =
 (* Front end: scanner and parser *)
 let get_lex_buf in_file =
     try
-      Lexing.from_channel (open_in in_file)
+      let lexbuf = Lexing.from_channel (open_in in_file) in
+      lexbuf.lex_curr_p <- { lexbuf.lex_curr_p with pos_fname = in_file };
+      lexbuf
     with
       Sys_error x -> let msg = sprintf "import %s" x in
                      raise (Ast.Syntax_error msg)
