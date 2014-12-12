@@ -267,16 +267,19 @@ let rec check_fundefs new_ftbl ftbl funsgs = match funsgs with
 
 let rec check_imports imps = match imps with
     [] -> []
-  | hd::tl -> ( try (open_in hd) 
+  | hd::tl -> ( try (Lexing.from_channel (open_in hd)) 
               with Sys_error x -> raise (Bad_type x)
             ) :: (check_imports tl)
+
+let rec bfs_gather_ftbl imp_files =
 
 
 (* check the whole program
    returns a sprogram *)
 let check prg =
-  let imp_files =
-    check_imports prg.pimps
+  let other_func_table =
+    let imp_files = check_imports prg.pimps in
+    bfs_gather_ftbl imp_files
   in
   let func_table =
     let func_table_0 = lib_funs in (* init function table (should be built-in functions) 
