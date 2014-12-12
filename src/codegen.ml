@@ -73,6 +73,7 @@ let rec gen_stmt stmt = match stmt with
   | IDisp e -> (sprintf "cout << %s << endl;" (gen_expr e))
   | IContinue -> (sprintf "continue;")
   | IBreak -> (sprintf "break;")
+  | ICheck (s, e) -> (sprintf "if (!(%s)) throw invalid_argument(\"%s\");" (gen_expr e) s)
 and gen_stmts stmts = match stmts with
     [] -> []
   | hd::tl -> (gen_stmt hd) :: (gen_stmts tl)

@@ -1,6 +1,8 @@
 open Printf
 open Ast
 
+let return_failure = () (*exit 1*)
+
 (* error reporting functions *)
 let loc_err lex_buf =
   let p = lex_buf.Lexing.lex_curr_p in
@@ -19,7 +21,9 @@ let perror head err_msg =
 let get_lex_buf in_file =
     try
       let lexbuf = Lexing.from_channel (open_in in_file) in
-      lexbuf.lex_curr_p <- { lexbuf.lex_curr_p with pos_fname = in_file };
+      lexbuf.Lexing.lex_curr_p <- { 
+        lexbuf.Lexing.lex_curr_p with Lexing.pos_fname = in_file 
+      };
       lexbuf
     with
       Sys_error x -> let msg = sprintf "import %s" x in
@@ -61,25 +65,22 @@ let main in_file oc =
     let tast = Translate.translate sast in
     Codegen.compile oc tast
   with
-    Scanner.Scanner_error x -> perror "Scanner error" x
-  | Ast.Syntax_error x -> perror "Parser error" x
-  | Sast.Bad_type x -> perror "Sast error" x
-  | Tast.Not_now x -> perror "Translate error" x
-  | Codegen.Not_done x -> perror "Codegen error" x
+    Scanner.Scanner_error x -> perror "Scanner error" x; return_failure
+  | Ast.Syntax_error x -> perror "Parser error" x; return_failure
+  | Sast.Bad_type x -> perror "Sast error" x; return_failure
+  | Tast.Not_now x -> perror "Translate error" x; return_failure
+  | Codegen.Not_done x -> perror "Codegen error" x; return_failure
 
 (* Shell interface *)
 let _ =
   let argc = Array.length Sys.argv in
   if argc >= 2 then
-    let oc = 
+    let oc =
       let ofile =
-        if argc >= 3 then Sys.argv.(2) else "a.cpp"
+        if argc >= 3 then Sys.argv.(2) else "buckcal_out.cpp"
       in
-      try
-        open_out ofile
-      with
-        Sys_error msg -> (eprintf "I/O error: %s" msg); raise End_of_file
+      open_out ofile
     in
     main Sys.argv.(1) oc
   else
-    print_endline "Usage: main.bin <input file>"
+    eprintf "Usage: main.bin <input file>\n"; return_failure
