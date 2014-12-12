@@ -250,24 +250,25 @@ let check_fundef new_ftbl ftbl new_func_def =
   match found, foundnew with
     false, false -> new_ftbl @ [new_sfun_def]
   | false, true ->  if (is_func_dec fbodynew) && not (is_func_dec new_sfun_def)
-                     then (list_rep fbodynew new_sfun_def new_ftbl)
+                    then (list_rep fbodynew new_sfun_def new_ftbl)
+                    else raise (Bad_type ("Function '" ^ new_sname ^ "' already defined")) 
   | true, _ -> raise (Bad_type ("Function '" ^ new_sname ^ "' already defined"))
 
 (* check function definition list
    input: func_def list
    return: sfun_def list *)
-let rec check_fundefs ftbl funsgs = match funsgs with
+let rec check_fundefs new_ftbl ftbl funsgs = match funsgs with
     [] -> ftbl
-  | hd::tl -> (let new_ftbl = check_fundef ftbl hd in
-               check_fundefs new_ftbl tl)
-
-
+  | hd::tl -> (let new_ftbl2 = check_fundef new_ftbl ftbl hd in
+               check_fundefs new_ftbl new_ftbl2 tl)
+  
 (* check the whole program
    returns a sprogram *)
 let check prg =
   let func_table =
-    let func_table_0 = lib_funs in (* init function table, should be built-in functions *)
-    check_fundefs func_table_0 prg.pfuns
+    let func_table_0 = lib_funs in (* init function table (should be built-in functions) 
+                                                      and init new function table (user-defined & empty) *)
+    check_fundefs [] func_table_0 prg.pfuns
   in
   let var_table =
     let var_table_0 = [] in    (* init variable table as empty *)  
