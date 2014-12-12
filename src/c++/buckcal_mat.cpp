@@ -466,7 +466,7 @@ string_mat::string_mat(string *array, int r, int c) {
 
 string_mat::string_mat(const string_mat &in) {
 	if (this == &in)
-		return *this;
+		return;
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
