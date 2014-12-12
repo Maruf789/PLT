@@ -1,0 +1,18 @@
+#test built-in function rowcat, colcat
+int mat ix1: {1,2,3;4,5,6};
+int mat ix2: {1,2,3;4,5,6;7,8,9};
+int mat ix3: {1,2;3,4};
+int mat ix4;
+double mat dx1: {1.1,2.2;3.3,4.4;5.5,6.6};
+double mat dx2: {1.1,2.2,3.3;4.4,5.5,6.6;7.7,8.8,9.9};
+double mat dx3: {1.1,2.2;3.3,4.4};
+double mat dx4;
+string mat sx1: {'a','b','c';'d','e','f'};
+string mat sx2: {'a','b','c';'d','e','f';'g','h','i'};
+string mat sx3: {'a','b';'c','d'};
+string mat sx4;
+ix4: rowcat(ix1,dx2);
+disp ix4;
+ix4: colcat(ix1,sx3);
+disp ix4;
+
