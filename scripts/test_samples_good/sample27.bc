@@ -1,0 +1,15 @@
+#test conditional loop
+int b: 0;
+int a: 0;
+int r;
+for b <10 do
+	for a < 10 do
+		a: a+1;
+		r: r+1;
+	rof
+	a: 0;
+	b: b + 1;
+rof
+disp b;
+disp a;
+disp r;
