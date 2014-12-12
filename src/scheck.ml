@@ -165,6 +165,7 @@ let rec check_local_var_def ftbl vtbl local_var_list = match local_var_list with
     in
     (new_vardec@(check_local_var_def ftbl (new_vardec@vtbl) tl))
 
+
 (* check statement list.
    return: sstmt list *)
 let rec check_condstmts ftbl vtbl ret_type loop_flag cs = match cs with(* translate a list of elif *)
@@ -235,13 +236,15 @@ let check_fundef new_ftbl ftbl new_func_def =
   let vtbl = (arg_def@new_local) in
   (* check statements *)
   let flag, new_fstmts = check_stmts ftbl vtbl new_sret true false false new_func_def.body in
-  if (new_sret != Void && not flag) then raise (Bad_type ("Function '" ^ new_sname ^ "' return statement missing"))
-  else
   let new_sfun_def = { sreturn = new_sret;
                        sfname = new_sname;
                        sargs = new_sargs;
                        slocals = new_local;
                        sbody = new_fstmts } in
+  let _ = if (new_sret != Void && not (is_func_dec new_sfun_def) && not flag)
+    then raise (Bad_type ("Function '" ^ new_sname ^ "' return statement missing"))
+    else ()
+  in
   let found, fbody = find_func (=) (ftbl) new_fnsg in
   let foundnew, fbodynew = find_func (=) (new_ftbl) new_fnsg in
   (*let _ = eprintf "%s: %s" new_sname (if found then "found" else "not found") in*)
