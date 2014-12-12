@@ -123,7 +123,7 @@ and trans_condstmts tid condstmtlist = match condstmtlist with
     let isl2, ie2, is2 = trans_condstmt tid [] hd in
     (isl2, ([IElseIf ie2] @ is2))
     in
-    let isls, stmtss = trans_condstmts tid tl in
+    let isls, stmtss = trans_condstmts (tid+1) tl in
     (isl1@isls, stmts1@stmtss)
 
 

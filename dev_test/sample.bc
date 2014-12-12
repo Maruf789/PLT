@@ -1,3 +1,23 @@
-import 'buckcal_lib.bc'
+#import 'buckcal_lib.bc'
+#test built-in function rows cols
 
-disp abs(1);
+if (cols({1,2,3})=2) then
+	disp cols({1,2,3});
+	cols({1,2,3});
+elif (cols({1,2,3,4})=3) then
+	disp 'cols=3';
+	cols({1,2,3});
+	cols({1,2,3});
+	cols({1,2,3});
+elif (rows({1,2;3,4})=1) then
+	disp 'rows=1';
+	cols({1,2,3});
+	cols({1,2,3});
+elif (rows({1,2})=2) then
+	disp 'rows=2';
+	cols({1,2,3});
+	cols({1,2,3});
+else
+	disp 'end';
+	cols({1,2,3});
+fi
