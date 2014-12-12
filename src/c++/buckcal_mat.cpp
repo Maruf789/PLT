@@ -249,7 +249,7 @@ double_mat::double_mat(double *array, int r, int c) {
 }
 
 double_mat::double_mat(const double_mat &in) {
-	if (*this == in)
+	if (this == &in)
 		return;
 	rows = in.rows;
 	cols = in.cols;
@@ -272,8 +272,8 @@ double & double_mat::operator [] (int i) {
 	return m.at(i);
 }
 double_mat & double_mat::operator = (const double_mat &in) {
-	if (*this == in)
-		return;
+	if (this == &in)
+		return *this;
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
@@ -465,8 +465,8 @@ string_mat::string_mat(string *array, int r, int c) {
 }
 
 string_mat::string_mat(const string_mat &in) {
-	if (*this == in)
-		return;
+	if (this == &in)
+		return *this;
 	rows = in.rows;
 	cols = in.cols;
 	/* copy array */
@@ -478,7 +478,7 @@ string & string_mat::operator [] (int i) {
 	return m.at(i);
 }
 string_mat & string_mat::operator = (const string_mat &in) {
-	if (*this == in)
+	if (this == &in)
 		return *this;
 	rows = in.rows;
 	cols = in.cols;
