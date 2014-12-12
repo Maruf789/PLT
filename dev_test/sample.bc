@@ -1,6 +1,3 @@
-import 'lib.bc'
+import 'buckcal_lib.bc'
 
-#int mat x : {1, 2, 3};
-#int xx : x[1, 1];
-
-disp myrows({1, 2, 3});
+disp abs(1);
