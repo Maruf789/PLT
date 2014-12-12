@@ -14,6 +14,9 @@
 	# int mat addrows(int mat mx, int mat dr, string mat drn);
 	# double mat addrows(double mat mx, double mat dr, string mat drn);
 	# string mat addrows(string mat mx, string mat dr, string mat drn);
+	# int mat addcols(int mat mx, int mat dr, string mat drn);
+	# double mat addcols(double mat mx, double mat dr, string mat drn);
+	# string mat addcols(string mat mx, string mat dr, string mat drn);
 
 
 # Implementations start here:
@@ -27,11 +30,11 @@ def double abs(double x) do
 	fi
 fed
 
-#function: Return the number of columns  in matrix mx;
+#function: Return the number of columns in matrix mx;
 def int mat range(int x, int y) do
 
 	#yet to implement it
-
+ 
 fed
 
 #function: Return the number of rows in matrix mx;
@@ -54,19 +57,14 @@ fed
 #function: sum the columns of a matrix
 def double mat sum_col(double mat mx) do
 	int x;
-	double mat s: range(rows(mx), 1) * 0.;
-	for x in range(cols(mx), 1) do
+	double mat s: range(1, rows(mx)) * 0.;
+	for x in range(1, cols(mx)) do
 		s: s+ mx[0, x];
 	rof
 	return s;
 fed
 
 #function: average of the all rows of a matrix
-def mat avg_row(double mat mx) do
-	return sum_row(mx)/rows(mx);
-fed
+
 
 #function: average of the all rows of a matrix
-def mat avg_col(double mat mx) do
-	return sum_col(mx)/cols(mx);
-fed
