@@ -1,0 +1,5 @@
+#test matrix definition
+string mat sx : {'ab','cd';'ef','gh'};
+string s;
+sx[1,1]:1;
+disp s; 

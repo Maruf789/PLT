@@ -1,0 +1,25 @@
+#test matrix definition
+int mat ax: {1,2,3;4,5,6;7,8,9};
+double mat dx: {1.1,2.2;3.3,4.4};
+string mat sx : {'ab','cd';'ef','gh'};
+int a;
+double d;
+string s;
+a: ax[2,1];
+disp a;
+a: ax[2,2]+10;
+disp ax;
+a: ax[2,2]+dx[1,1];
+disp a;
+ax[1,1]:100;
+disp ax;
+d: dx[1,1]+1;
+disp d;
+d: dx[1,1]+ax[2,2];
+disp d;
+dx[1,1]:100.1;
+disp dx;
+s: sx[1,2]+sx[2,1];
+disp s; 
+sx[1,1]:'zzz';
+disp sx;

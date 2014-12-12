@@ -1,5 +1,5 @@
 #test data type conversion
-def int cal(double) do
+def double cal(double) do
 	return 1+2.2;
 fed
 int i:0;
