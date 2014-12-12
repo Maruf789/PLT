@@ -1,1 +1,1 @@
-Parser error: token *, line 2,8
+Parser error: token *, in ./test_samples_bad/sample4.bc line 2,8

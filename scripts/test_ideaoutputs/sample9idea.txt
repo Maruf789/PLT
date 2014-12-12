@@ -1,1 +1,1 @@
-Sast error: ">" bad operand type
+Sast error: "=" bad operand type

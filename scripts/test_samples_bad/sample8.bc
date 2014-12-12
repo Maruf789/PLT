@@ -1,6 +1,6 @@
 #test variable comparation
 string s1: 'haha';
-string s2: 'hehe';
+int i1: 1;
 bool c;
-c:s1>s2;
+c:s1>i1;
 disp c;

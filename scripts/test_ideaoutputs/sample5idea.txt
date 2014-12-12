@@ -1,1 +1,1 @@
-Sast error: variable and expression type mismatch
+error

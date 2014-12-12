@@ -1,1 +1,1 @@
-Sast error: Function 'hello' already defined
+error

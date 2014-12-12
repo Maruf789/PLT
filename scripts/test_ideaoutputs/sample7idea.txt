@@ -1,1 +1,1 @@
-Parser error: token =, line 3,3
+Parser error: token =, in ./test_samples_bad/sample7.bc line 3,3

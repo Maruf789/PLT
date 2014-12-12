@@ -1,1 +1,1 @@
-Parser error: token then, line 7,12
+Parser error: token then, in ./test_samples_bad/sample12.bc line 7,12

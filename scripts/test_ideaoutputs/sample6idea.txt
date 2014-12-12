@@ -1,1 +1,1 @@
-Parser error: token not, line 5,5
+Parser error: token not, in ./test_samples_bad/sample6.bc line 5,5
