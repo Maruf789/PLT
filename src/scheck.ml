@@ -267,7 +267,15 @@ let rec check_fundefs new_ftbl ftbl funsgs = match funsgs with
   | hd::tl -> let new_ftbl = check_fundef new_ftbl ftbl hd in
                check_fundefs new_ftbl ftbl tl
 
+(*
+let rec check_imports imps = match imps with
+    [] -> []
+  | hd::tl -> ( try (Lexing.from_channel (open_in hd)) 
+              with Sys_error x -> raise (Bad_type x)
+            ) :: (check_imports tl)
 
+let bfs_gather_ftbl imp_files = []
+*)
 (* check the whole program
    returns a sprogram *)
 let check prg =

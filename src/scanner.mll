@@ -67,6 +67,7 @@ rule token = parse
       | "int mat"       { INTMAT }
       | "double mat"    { DOUBLEMAT }
       | "string mat"    { STRINGMAT }
+      | "import"        { IMPORT }
       | lower(lower|digit|'_')* as lxm { ID(lxm) }
       | digit+ as lxm { INT_LITERAL(int_of_string lxm) }
       | digit+'.'digit* as lxm { 

@@ -1,6 +1,5 @@
 %{
   open Ast
-  exception Parser_error of string
 %}
 
 %token LPAREN RPAREN LSBRACK RSBRACK LBRACE RBRACE SEMI COMMA ASSIGN
@@ -9,6 +8,7 @@
 %token EQ NEQ LT LEQ GT GEQ NOT AND OR
 %token INT DOUBLE STRING BOOL
 %token INTMAT DOUBLEMAT STRINGMAT
+%token IMPORT
 %token <string> ID
 %token <bool>  BOOL_LITERAL
 %token <int> INT_LITERAL
@@ -41,6 +41,12 @@ dt:
   | INTMAT              { IntMat }
   | DOUBLEMAT           { DoubleMat }
   | STRINGMAT           { StringMat }
+
+/* import */
+import_stmt: IMPORT STRING_LITERAL { $2 }
+
+import_stmts:                   { [] }
+  | import_stmts import_stmt    { $1 @ [$2] }
 
 /* variable declaration or definition */
 var_dec_def:
@@ -181,10 +187,10 @@ stmt:
 
 /* a source file */
 program:
-    func_def_list var_dec_def_list stmt_list  {
-       {pfuns = $1; pvars = $2; pstms = $3;}
+    import_stmts func_def_list var_dec_def_list stmt_list  {
+       {pimps = $1; pfuns = $2; pvars = $3; pstms = $4;}
       }
-  | var_dec_def_list stmt_list  {
-        {pfuns = []; pvars = $1; pstms = $2;}
+  | import_stmts var_dec_def_list stmt_list  {
+        {pimps = $1; pfuns = []; pvars = $2; pstms = $3;}
       }
 

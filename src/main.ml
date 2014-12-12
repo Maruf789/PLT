@@ -1,4 +1,5 @@
 open Printf
+open Ast
 
 (* error reporting functions *)
 let loc_err lex_buf =
@@ -12,40 +13,70 @@ let loc_err lex_buf =
 let perror head err_msg =
   eprintf "%s: %s\n" head err_msg
 
+
+(* Front end: scanner and parser *)
+let get_lex_buf in_file =
+    try
+      Lexing.from_channel (open_in in_file)
+    with
+      Sys_error x -> let msg = sprintf "import %s" x in
+                     raise (Ast.Syntax_error msg)
+
+let front_end file =
+  let rec bfs queue visited funlist =
+    let add_queue visited oldq newfile =
+      if List.mem newfile visited then oldq else oldq@[newfile]
+    in
+    match queue with
+      [] -> [], visited, funlist
+    | hd::tl -> if List.mem hd visited then bfs tl visited funlist
+                else begin
+                  let lex_buf = get_lex_buf hd in
+                  try
+                    let visited = hd::visited in
+                    let prog = Parser.program Scanner.token lex_buf in
+                    let newfiles = prog.pimps in
+                    let newq = List.fold_left (add_queue visited) tl newfiles in
+                    let funlist = funlist @ prog.pfuns in
+                    bfs newq visited funlist
+                  with
+                    Parsing.Parse_error -> raise (Syntax_error (loc_err lex_buf))
+                end
+  in
+  let _, _, funlist = bfs [file] [] [] in
+  let prog = Parser.program Scanner.token (get_lex_buf file) in
+  { pimps = []; pfuns = funlist;
+    pvars = prog.pvars; pstms = prog.pstms }
+
+
 (* main function *)
-let main lex_buf oc =
+let main in_file oc =
   try
-    let prog = Parser.program Scanner.token lex_buf in
-    let sprog = Scheck.check prog in
-    let tprog = Translate.translate sprog in
-    Codegen.compile oc tprog
+    (*let prog = Parser.program Scanner.token lex_buf in*)
+    let ast = front_end in_file in
+    let sast = Scheck.check ast in
+    let tast = Translate.translate sast in
+    Codegen.compile oc tast
   with
     Scanner.Scanner_error x -> perror "Scanner error" x
-  | Parsing.Parse_error -> perror "Parser error" (loc_err lex_buf)
+  | Ast.Syntax_error x -> perror "Parser error" x
   | Sast.Bad_type x -> perror "Sast error" x
   | Tast.Not_now x -> perror "Translate error" x
   | Codegen.Not_done x -> perror "Codegen error" x
-  | _ -> perror "Unkown error" (loc_err lex_buf)
 
 (* Shell interface *)
 let _ =
   let argc = Array.length Sys.argv in
   if argc >= 2 then
-    let ic =
-      try
-        open_in Sys.argv.(1)
-      with
-        Sys_error msg -> (eprintf "I/O error: %s" msg); raise End_of_file
-    in
-    let ofile =
-      if argc >= 3 then Sys.argv.(2) else "a.cpp"
-    in
-    let oc =
+    let oc = 
+      let ofile =
+        if argc >= 3 then Sys.argv.(2) else "a.cpp"
+      in
       try
         open_out ofile
       with
         Sys_error msg -> (eprintf "I/O error: %s" msg); raise End_of_file
     in
-    main (Lexing.from_channel ic) oc
+    main Sys.argv.(1) oc
   else
     print_endline "Usage: main.bin <input file>"
