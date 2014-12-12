@@ -1,5 +1,4 @@
 #include "buckcal_mat.hpp"
-#include <string>
 #include <cstdlib>
 
 using namespace std;
@@ -224,31 +223,31 @@ string_mat colcat(string_mat mx1, string_mat mx2) {
 	return mat;
 }
 
-void rowname(int_mat mx, string_mat n) {
+void rowname(int_mat &mx, string_mat n) {
 	if (mx.rows != n.cols)
 		throw std::invalid_argument("rowname: name matrix does not have enough entries");
 	if (n.rows > 1)
 		throw std::invalid_argument("rowname: name matrix should have only one row");
-	mx.colnames = n.m;
+	mx.rownames = n.m;
 }
 
-void rowname(double_mat mx, string_mat n) {
+void rowname(double_mat &mx, string_mat n) {
 	if (mx.rows != n.cols)
 		throw std::invalid_argument("rowname: name matrix does not have enough entries");
 	if (n.rows > 1)
 		throw std::invalid_argument("rowname: name matrix should have only one row");
-	mx.colnames = n.m;
+	mx.rownames = n.m;
 }
 
-void rowname(string_mat mx, string_mat n) {
+void rowname(string_mat &mx, string_mat n) {
 	if (mx.rows != n.cols)
 		throw std::invalid_argument("rowname: name matrix does not have enough entries");
 	if (n.rows > 1)
 		throw std::invalid_argument("rowname: name matrix should have only one row");
-	mx.colnames = n.m;
+	mx.rownames = n.m;
 }	
 	
-void colname(int_mat mx, string_mat n) {
+void colname(int_mat &mx, string_mat n) {
 	if (mx.cols != n.cols)
 		throw std::invalid_argument("rowname: name matrix does not have enough entries");
 	if (n.rows > 1)
@@ -256,7 +255,7 @@ void colname(int_mat mx, string_mat n) {
 	mx.colnames = n.m;
 }
 
-void colname(double_mat mx, string_mat n) {
+void colname(double_mat &mx, string_mat n) {
 	if (mx.cols != n.cols)
 		throw std::invalid_argument("rowname: name matrix does not have enough entries");
 	if (n.rows > 1)
@@ -264,7 +263,7 @@ void colname(double_mat mx, string_mat n) {
 	mx.colnames = n.m;
 }
 	
-void colname(string_mat mx, string_mat n) {
+void colname(string_mat &mx, string_mat n) {
 	if (mx.cols != n.cols)
 		throw std::invalid_argument("rowname: name matrix does not have enough entries");
 	if (n.rows > 1)
