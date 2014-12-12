@@ -1,0 +1,168 @@
+In file included from ./cfiles/sample9.cpp:1:
+./cfiles/buckcal_mat.hpp:132:1: error: unknown type name 'string'; did you mean 'std::string'?
+string string_of_int(int x) ;
+^~~~~~
+std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/sample9.cpp:1:
+./cfiles/buckcal_mat.hpp:133:1: error: unknown type name 'string'; did you mean 'std::string'?
+string string_of_double(double x) ;
+^~~~~~
+std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/sample9.cpp:1:
+./cfiles/buckcal_mat.hpp:134:19: error: unknown type name 'string'; did you mean 'std::string'?
+int int_of_string(string x) ;
+                  ^~~~~~
+                  std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/sample9.cpp:1:
+./cfiles/buckcal_mat.hpp:135:25: error: unknown type name 'string'; did you mean 'std::string'?
+double double_of_string(string x) ;
+                        ^~~~~~
+                        std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/sample9.cpp:1:
+./cfiles/buckcal_mat.hpp:142:1: error: unknown type name 'string'; did you mean 'std::string'?
+string slice(string x, int_mat idx) ;
+^~~~~~
+std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/sample9.cpp:1:
+./cfiles/buckcal_mat.hpp:142:14: error: unknown type name 'string'; did you mean 'std::string'?
+string slice(string x, int_mat idx) ;
+             ^~~~~~
+             std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+6 errors generated.
+In file included from ./cfiles/buckcal_mat.cpp:4:
+./cfiles/buckcal_mat.hpp:132:1: error: unknown type name 'string'; did you mean 'std::string'?
+string string_of_int(int x) ;
+^~~~~~
+std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/buckcal_mat.cpp:4:
+./cfiles/buckcal_mat.hpp:133:1: error: unknown type name 'string'; did you mean 'std::string'?
+string string_of_double(double x) ;
+^~~~~~
+std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/buckcal_mat.cpp:4:
+./cfiles/buckcal_mat.hpp:134:19: error: unknown type name 'string'; did you mean 'std::string'?
+int int_of_string(string x) ;
+                  ^~~~~~
+                  std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/buckcal_mat.cpp:4:
+./cfiles/buckcal_mat.hpp:135:25: error: unknown type name 'string'; did you mean 'std::string'?
+double double_of_string(string x) ;
+                        ^~~~~~
+                        std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/buckcal_mat.cpp:4:
+./cfiles/buckcal_mat.hpp:142:1: error: unknown type name 'string'; did you mean 'std::string'?
+string slice(string x, int_mat idx) ;
+^~~~~~
+std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/buckcal_mat.cpp:4:
+./cfiles/buckcal_mat.hpp:142:14: error: unknown type name 'string'; did you mean 'std::string'?
+string slice(string x, int_mat idx) ;
+             ^~~~~~
+             std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+./cfiles/buckcal_mat.cpp:31:12: error: invalid operands to binary expression ('int_mat' and 'const int_mat')
+        if (*this == in)
+            ~~~~~ ^  ~~
+./cfiles/buckcal_mat.cpp:57:12: error: invalid operands to binary expression ('int_mat' and 'const int_mat')
+        if (*this == in)
+            ~~~~~ ^  ~~
+./cfiles/buckcal_mat.cpp:252:12: error: invalid operands to binary expression ('double_mat' and 'const double_mat')
+        if (*this == in)
+            ~~~~~ ^  ~~
+./cfiles/buckcal_mat.cpp:275:12: error: invalid operands to binary expression ('double_mat' and 'const double_mat')
+        if (*this == in)
+            ~~~~~ ^  ~~
+./cfiles/buckcal_mat.cpp:276:3: error: non-void function (null) should return a value [-Wreturn-type]
+                return;
+                ^
+./cfiles/buckcal_mat.cpp:468:12: error: invalid operands to binary expression ('string_mat' and 'const string_mat')
+        if (*this == in)
+            ~~~~~ ^  ~~
+./cfiles/buckcal_mat.cpp:481:12: error: invalid operands to binary expression ('string_mat' and 'const string_mat')
+        if (*this == in)
+            ~~~~~ ^  ~~
+13 errors generated.
+In file included from ./cfiles/buckcal_lib.cpp:1:
+./cfiles/buckcal_mat.hpp:132:1: error: unknown type name 'string'; did you mean 'std::string'?
+string string_of_int(int x) ;
+^~~~~~
+std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/buckcal_lib.cpp:1:
+./cfiles/buckcal_mat.hpp:133:1: error: unknown type name 'string'; did you mean 'std::string'?
+string string_of_double(double x) ;
+^~~~~~
+std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/buckcal_lib.cpp:1:
+./cfiles/buckcal_mat.hpp:134:19: error: unknown type name 'string'; did you mean 'std::string'?
+int int_of_string(string x) ;
+                  ^~~~~~
+                  std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/buckcal_lib.cpp:1:
+./cfiles/buckcal_mat.hpp:135:25: error: unknown type name 'string'; did you mean 'std::string'?
+double double_of_string(string x) ;
+                        ^~~~~~
+                        std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/buckcal_lib.cpp:1:
+./cfiles/buckcal_mat.hpp:142:1: error: unknown type name 'string'; did you mean 'std::string'?
+string slice(string x, int_mat idx) ;
+^~~~~~
+std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+In file included from ./cfiles/buckcal_lib.cpp:1:
+./cfiles/buckcal_mat.hpp:142:14: error: unknown type name 'string'; did you mean 'std::string'?
+string slice(string x, int_mat idx) ;
+             ^~~~~~
+             std::string
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iosfwd:189:65: note: 'std::string' declared here
+typedef basic_string<char, char_traits<char>, allocator<char> > string;
+                                                                ^
+6 errors generated.

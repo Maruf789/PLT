@@ -1,0 +1,5 @@
+#test function overloading
+def int hello(int a);
+def hello(int) do
+	disp 'hello';
+fed

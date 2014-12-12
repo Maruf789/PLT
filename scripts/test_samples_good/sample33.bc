@@ -1,0 +1,5 @@
+#test data type conversion
+int a: 6.6;
+double b: 6;
+disp a;
+disp b;
