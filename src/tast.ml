@@ -16,7 +16,7 @@ type ivar = {
 (* target expression *)
 type iexpr =
     IId of string
-  | IMatSub of string * iexpr * iexpr * iexpr * iexpr (* M(x, y, r, c) *)
+  (*| IMatSub of string * iexpr * iexpr * iexpr * iexpr (* M(x, y, r, c) *)*)
   | IIntval of int
   | IDoubleval of float
   | IStringval of string

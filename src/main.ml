@@ -32,19 +32,19 @@ let _ =
   let argc = Array.length Sys.argv in
   if argc >= 2 then
     let ic =
-    try
-      open_in Sys.argv.(1)
-    with
-      Sys_error msg -> (eprintf "I/O error: %s" msg); raise End_of_file
+      try
+        open_in Sys.argv.(1)
+      with
+        Sys_error msg -> (eprintf "I/O error: %s" msg); raise End_of_file
     in
     let ofile =
       if argc >= 3 then Sys.argv.(2) else "a.cpp"
     in
     let oc =
-    try
-       open_out ofile
-    with
-      Sys_error msg -> (eprintf "I/O error: %s" msg); raise End_of_file
+      try
+        open_out ofile
+      with
+        Sys_error msg -> (eprintf "I/O error: %s" msg); raise End_of_file
     in
     main (Lexing.from_channel ic) oc
   else
