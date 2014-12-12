@@ -46,6 +46,7 @@ type irstmt =
   | IDisp of iexpr (* cout << e << endl *)
   | IContinue (* continue *)
   | IBreak (* break *)
+  | ICheck of string * iexpr (* run-time checking *)
 
 (* target function declare/definite *)
 type irfun = {

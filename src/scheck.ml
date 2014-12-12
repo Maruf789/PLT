@@ -66,6 +66,7 @@ let find_func eq func_table fnsg =
   try true, (List.find (func_eq fnsg) func_table)
   with Not_found -> false, dummy
 
+
 (* variable default value, 
    return a sexpression *)
 let svar_init_sexpr var = match var with
@@ -221,6 +222,21 @@ and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stm
    return: Sast.sfun_def list *)
 let is_func_dec ff = (ff.sbody=[] && ff.slocals=[])
 
+(* check a new function definition
+   arguments: @eq - the equal operator : can be (=) or eq_t
+              @new_func - the new function definition/declaration
+              @func_table - function table
+   return: (true, sfun_def) on found, (false, _) on not_found 
+let check_fundef eq new_func func_table =
+  let dummy = {sreturn=Void; sfname="_"; sargs=[]; slocals=[]; sbody=[]} in
+  let func_eq f1 fd =
+    let f2 = sig_sfunc fd in
+    f1.fsname = f2.fsname &&
+    try List.for_all2 eq f1.fsargs f2.fsargs
+    with Invalid_argument _ -> false
+  in
+  try true, (List.find (func_eq fnsg) func_table)
+  with Not_found -> false, dummy *)
 
 let check_fundef new_ftbl ftbl new_func_def =
   let sig_func fn = {

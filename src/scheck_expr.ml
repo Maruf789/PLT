@@ -33,6 +33,7 @@ let check_binop bop sexp1 sexp2 =
       | DoubleMat, IntMat -> DoubleMat, ret0
       | IntMat, DoubleMat -> DoubleMat, ret0
       | DoubleMat, DoubleMat -> DoubleMat, ret0
+      | StringMat, StringMat -> StringMat, ret0
       (* matrix-scalar arithmetic binary op *)
       | IntMat, Int -> IntMat, ret0
       | DoubleMat, Int -> DoubleMat, ret0
