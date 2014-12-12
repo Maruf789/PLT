@@ -257,10 +257,11 @@ let check_fundef new_ftbl ftbl new_func_def =
    input: func_def list
    return: sfun_def list *)
 let rec check_fundefs new_ftbl ftbl funsgs = match funsgs with
-    [] -> ftbl
-  | hd::tl -> (let new_ftbl2 = check_fundef new_ftbl ftbl hd in
-               check_fundefs new_ftbl new_ftbl2 tl)
-  
+    [] -> new_ftbl
+  | hd::tl -> let new_ftbl = check_fundef new_ftbl ftbl hd in
+               check_fundefs new_ftbl ftbl tl
+
+
 (* check the whole program
    returns a sprogram *)
 let check prg =
