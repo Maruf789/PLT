@@ -1,6 +1,5 @@
 %{
   open Ast
-  exception Parser_error of string
 %}
 
 %token LPAREN RPAREN LSBRACK RSBRACK LBRACE RBRACE SEMI COMMA ASSIGN

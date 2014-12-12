@@ -1,5 +1,8 @@
 (* Abstract Syntax Tree *)
 
+
+exception Syntax_error of string
+
 (* operators *)
 type binop =  Plus | Minus | Times | Divide 
            | Eq | Neq | Lt | Leq | Gt | Geq | And | Or
