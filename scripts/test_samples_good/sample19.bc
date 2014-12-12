@@ -11,3 +11,4 @@ def callreturn (int b) do
 fed
 int b:4;
 callreturn(b);
+disp returnint(5);

@@ -1,0 +1,5 @@
+#test matrix definition
+double mat dx: {1.1,2.2;3.3,4.4};
+double d;
+dx[1,1]:'a';
+disp dx;
