@@ -37,16 +37,20 @@ let cols s = ICall("cols", [IId s])
 
 let trans_binop e1 e2 b = [], IBinop (e1, b, e2)
 
-let trans_matsub s ie1 ie2 =
+let trans_matsub s isl ie1 ie2 =
+  let r = rows s in
   let c = cols s in
   match ie1, ie2 with
     IIntval x, IIntval y -> (
       let x_ = IBinop ((IIntval x), Minus, int1) in
       let y_ = IBinop ((IIntval y), Minus, int1) in
+      let check_x = IBinop(IBinop(x_, Geq, int0), And, IBinop(x_, Lt, r)) in
+      let check_y = IBinop(IBinop(y_, Geq, int0), And, IBinop(y_, Lt, c)) in
+      let assert_stmt = [ICheck ("Matsub index check", IBinop (check_x, And, check_y))] in
       match x, y with
         0, 0 -> raise (Not_now "Matsub index should be integer only")
       | _, 0 -> raise (Not_now "Matsub index should be integer only")
       | 0, _ -> raise (Not_now "Matsub index should be integer only")
-      | _, _ -> IIndex (s, IBinop(IBinop(x_, Times, c), Plus, y_))
+      | _, _ -> isl@assert_stmt, IIndex (s, IBinop(IBinop(x_, Times, c), Plus, y_))
     )
   | _ -> raise (Not_now "Matsub index should be integer only")
