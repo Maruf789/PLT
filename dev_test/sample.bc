@@ -1,4 +1,4 @@
-#import 'buckcal_lib.bc'
+import 'buckcal_lib.bc'
 #test built-in function rows cols
 
 if (cols({1,2,3})=2) then
@@ -21,3 +21,4 @@ else
 	disp 'end';
 	cols({1,2,3});
 fi
+disp abs(-1);

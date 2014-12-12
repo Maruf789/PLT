@@ -13,7 +13,7 @@ DIF="diff -b -B"
 ## copy C++ header here
 cp ../src/c++/buckcal_mat.cpp $CFILE_DIR
 cp ../src/c++/buckcal_mat.hpp $CFILE_DIR
-cp ../src/c++/buckcal_lib.cpp $CFILE_DIR
+cp ../src/c++/buckcal_core.cpp $CFILE_DIR
 
 
 #g++ -c $CFILE_DIR/buckcal_mat.cpp -o $CFILE_DIR/buckcal_mat.o
@@ -27,7 +27,7 @@ do
 		echo "good sample${i}.bc error"
 	fi
 	if [ -s $CFILE_DIR/sample${i}.cpp ]; then 
-		g++ $CFILE_DIR/sample${i}.cpp $CFILE_DIR/buckcal_mat.cpp $CFILE_DIR/buckcal_lib.cpp -o $BINFILE/goodsample${i}.bin \
+		g++ $CFILE_DIR/sample${i}.cpp $CFILE_DIR/buckcal_mat.cpp $CFILE_DIR/buckcal_core.cpp -o $BINFILE/goodsample${i}.bin \
 		2>>		$OUTPUT_DIR/goodsample${i}out.txt
 	fi
 done
