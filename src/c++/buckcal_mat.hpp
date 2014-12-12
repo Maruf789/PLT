@@ -4,6 +4,8 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <stdexcept>
+#include <sstream>
 
 class int_mat;
 class double_mat;
@@ -139,6 +141,7 @@ int_mat mat_int_of_double(double_mat x) ;
 double_mat mat_double_of_int(int_mat x) ;
 string_mat mat_string_of_int(int_mat x) ;
 string_mat mat_string_of_double(double_mat x) ;
+int strlen(std::string x) ;
 std::string slice(std::string x, int_mat idx) ;
 double abs(double x) ;
 double_mat sum_row(double_mat mx) ;
