@@ -1,6 +1,6 @@
-CPP := clang++
+CPP := g++
 CFLAGS := -g -Wall -Werror
-OBJECTS := buckcal_mat.o buckcal_mat_test.o
+OBJECTS := buckcal_mat.o buckcal_core.o buckcal_mat_test.o
 OUTPUT := buckcal_mat_test
 
 all: $(OBJECTS)
