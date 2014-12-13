@@ -165,7 +165,6 @@ let check_matval_s sexp_list_list =
     List.fold_left helpr Void (List.flatten tll)
   in
   let typ_ll = List.map (List.map fst) sexp_list_list in
-  (* FIXME: Maybe we should also return size of the matrix? *)
   let ncol, nrow = size_check typ_ll in
   let rt = (match (type_check typ_ll) with
         Int -> IntMat

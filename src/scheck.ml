@@ -21,10 +21,10 @@ let find_var var_table name =
 
 (* general type equality - int = double *)
 let eq_t t1 t2 = match t1, t2 with
-    Int, Double | Double, Int | IntMat, DoubleMat | DoubleMat, IntMat -> true
-  | Int, IntMat | Int, DoubleMat | Double, IntMat | Double, DoubleMat -> true
-  | x, y when x==y -> true 
-  | _, _ -> false
+    Int, Double | Double, Int -> true
+  (*| IntMat, DoubleMat | DoubleMat, IntMat -> true*)
+  (*| Int, IntMat | Int, DoubleMat | Double, IntMat | Double, DoubleMat -> true*)
+  | x, y -> if x=y then true else false
 
 
 (* function table *)
@@ -91,14 +91,19 @@ let rec check_lvalue ftbl vtbl lv = match lv with
     if f then t, (SId x)
     else raise (Bad_type ("variable " ^ x ^ " not defined"))
   | MatSub(x, e1, e2) -> let f, t = find_var vtbl x in
-    if f then let new_t = match t with
-                            IntMat -> Int
-                          | DoubleMat -> Double
-                          | StringMat -> String
-                          | _ -> raise (Bad_type ("bad matsub operator"))
-    in new_t, (SMatSub (x,
-              (check_expr ftbl vtbl e1),
-              (check_expr ftbl vtbl e2)))
+    if f then begin
+      let new_t = match t with
+                    IntMat -> Int
+                  | DoubleMat -> Double
+                  | StringMat -> String
+                  | _ -> raise (Bad_type ("bad matsub operator"))
+      in
+      let te1, se1 = check_expr ftbl vtbl e1 in
+      let te2, se2 = check_expr ftbl vtbl e2 in
+      if te1 = Int && te2 = Int then
+        (new_t, SMatSub (x, (te1, se1), (te2, se2)))
+      else raise (Bad_type ("Submat index must be int"))
+    end
     else raise (Bad_type ("variable " ^ x ^ " not defined"))
 and check_matval ftbl vtbl matx =
   let check_exp_list exp_list_list =
