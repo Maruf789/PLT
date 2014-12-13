@@ -122,7 +122,11 @@ double_mat mat_double_of_int(int_mat x)  {
 }
 
 int_mat rowcat(int_mat mx1, int_mat mx2) {
-	if (mx1.rows > 0 && mx1.cols > 0 && mx2.rows > 0 && mx2.cols > 0 && mx1.cols != mx2.cols)
+	if (mx1.rows == 0 || mx1.cols == 0)
+		return mx2;
+	if (mx2.rows == 0 || mx2.cols == 0)
+		return mx1;
+	if (mx1.cols != mx2.cols)
 		throw std::invalid_argument("rowcat: matrix does not have the same number of columns");
 	int *array = new int[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
 	for (int i = 0; i < mx1.rows * mx1.cols; i++)
@@ -132,13 +136,17 @@ int_mat rowcat(int_mat mx1, int_mat mx2) {
 	int_mat mat(array, mx1.rows + mx2.rows, mx1.cols);
 	delete[] array;
 	mat.colnames = mx1.colnames;
-	mat.rownames = mx1.colnames;
+	mat.rownames = mx1.rownames;
 	mat.rownames.insert(mat.rownames.end(), mx2.rownames.begin(), mx2.rownames.end());
 	return mat;
 }
 
 double_mat rowcat(double_mat mx1, double_mat mx2) {
-	if (mx1.rows > 0 && mx1.cols > 0 && mx2.rows > 0 && mx2.cols > 0 && mx1.cols != mx2.cols)
+	if (mx1.rows == 0 || mx1.cols == 0)
+		return mx2;
+	if (mx2.rows == 0 || mx2.cols == 0)
+		return mx1;
+	if (mx1.cols != mx2.cols)
 		throw std::invalid_argument("rowcat: matrix does not have the same number of columns");
 	double *array = new double[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
 	for (int i = 0; i < mx1.rows * mx1.cols; i++)
@@ -148,13 +156,17 @@ double_mat rowcat(double_mat mx1, double_mat mx2) {
 	double_mat mat(array, mx1.rows + mx2.rows, mx1.cols);
 	delete[] array;
 	mat.colnames = mx1.colnames;
-	mat.rownames = mx1.colnames;
+	mat.rownames = mx1.rownames;
 	mat.rownames.insert(mat.rownames.end(), mx2.rownames.begin(), mx2.rownames.end());
 	return mat;
 }
 
 string_mat rowcat(string_mat mx1, string_mat mx2) {
-	if (mx1.rows > 0 && mx1.cols > 0 && mx2.rows > 0 && mx2.cols > 0 && mx1.cols != mx2.cols)
+	if (mx1.rows == 0 || mx1.cols == 0)
+		return mx2;
+	if (mx2.rows == 0 || mx2.cols == 0)
+		return mx1;
+	if (mx1.cols != mx2.cols)
 		throw std::invalid_argument("rowcat: matrix does not have the same number of columns");
 	string *array = new string[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
 	for (int i = 0; i < mx1.rows * mx1.cols; i++)
@@ -164,13 +176,17 @@ string_mat rowcat(string_mat mx1, string_mat mx2) {
 	string_mat mat(array, mx1.rows + mx2.rows, mx1.cols);
 	delete[] array;
 	mat.colnames = mx1.colnames;
-	mat.rownames = mx1.colnames;
+	mat.rownames = mx1.rownames;
 	mat.rownames.insert(mat.rownames.end(), mx2.rownames.begin(), mx2.rownames.end());
 	return mat;
 }
 
 int_mat colcat(int_mat mx1, int_mat mx2) {
-	if (mx1.rows > 0 && mx1.cols > 0 && mx2.rows > 0 && mx2.cols > 0 && mx1.rows != mx2.rows)
+	if (mx1.rows == 0 || mx1.cols == 0)
+		return mx2;
+	if (mx2.rows == 0 || mx2.cols == 0)
+		return mx1;
+	if (mx1.cols != mx2.cols)
 		throw std::invalid_argument("colcat: matrix does not have the same number of rows");
 	int *array = new int[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
 	for (int i = 0; i < mx1.rows; i++) {
@@ -188,7 +204,11 @@ int_mat colcat(int_mat mx1, int_mat mx2) {
 }
 
 double_mat colcat(double_mat mx1, double_mat mx2) {
-	if (mx1.rows > 0 && mx1.cols > 0 && mx2.rows > 0 && mx2.cols > 0 && mx1.cols != mx2.cols)
+	if (mx1.rows == 0 || mx1.cols == 0)
+		return mx2;
+	if (mx2.rows == 0 || mx2.cols == 0)
+		return mx1;
+	if (mx1.cols != mx2.cols)
 		throw std::invalid_argument("colcat: matrix does not have the same number of rows");
 	double *array = new double[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
 	for (int i = 0; i < mx1.rows; i++) {
@@ -206,7 +226,11 @@ double_mat colcat(double_mat mx1, double_mat mx2) {
 }
 
 string_mat colcat(string_mat mx1, string_mat mx2) {
-	if (mx1.rows > 0 && mx1.cols > 0 && mx2.rows > 0 && mx2.cols > 0 && mx1.cols != mx2.cols)
+	if (mx1.rows == 0 || mx1.cols == 0)
+		return mx2;
+	if (mx2.rows == 0 || mx2.cols == 0)
+		return mx1;
+	if (mx1.cols != mx2.cols)
 		throw std::invalid_argument("colcat: matrix does not have the same number of rows");
 	string *array = new string[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
 	for (int i = 0; i < mx1.rows; i++) {

@@ -1,0 +1,23 @@
+# and or, not
+
+bool t: true;
+bool f: false;
+
+disp (t and f);
+disp (f and t);
+disp (t and t);
+disp (f and f);
+
+disp (t or f);
+disp (f or t);
+disp (t or t);
+disp (f or f);
+
+disp (not t);
+disp (not f);
+
+disp (f and t or f);
+disp (f and (t or f));
+disp (not f and t);
+disp (not f or t);
+
