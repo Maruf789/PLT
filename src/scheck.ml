@@ -91,9 +91,14 @@ let rec check_lvalue ftbl vtbl lv = match lv with
     if f then t, (SId x)
     else raise (Bad_type ("variable " ^ x ^ " not defined"))
   | MatSub(x, e1, e2) -> let f, t = find_var vtbl x in
-    if f then t, (SMatSub (x,
-                           (check_expr ftbl vtbl e1),
-                           (check_expr ftbl vtbl e2)))
+    if f then let new_t = match t with
+                            IntMat -> Int
+                          | DoubleMat -> Double
+                          | StringMat -> String
+                          | _ -> raise (Bad_type ("bad matsub operator"))
+    in new_t, (SMatSub (x,
+              (check_expr ftbl vtbl e1),
+              (check_expr ftbl vtbl e2)))
     else raise (Bad_type ("variable " ^ x ^ " not defined"))
 and check_matval ftbl vtbl matx =
   let check_exp_list exp_list_list =

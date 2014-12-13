@@ -2,14 +2,6 @@ open Ast
 open Sast
 
 let lib_funs = [
-  { sreturn=IntMat; sfname="range";
-    sargs=[ {vtype=Int; vname="x"}; {vtype=Int; vname="y"}; ];
-    slocals=[]; sbody=[]
-  };
-  { sreturn=IntMat; sfname="ranger";
-    sargs=[ {vtype=Int; vname="x"}; {vtype=Int; vname="y"}; ];
-    slocals=[]; sbody=[]
-  };
   { sreturn=Int; sfname="rows";
     sargs=[ {vtype=IntMat; vname="mx"}; ];
     slocals=[]; sbody=[]
@@ -110,18 +102,6 @@ let lib_funs = [
     sargs=[ {vtype=StringMat; vname="mx"}; {vtype=Int; vname="nrow"}; {vtype=Int; vname="ncol"}; ];
     slocals=[]; sbody=[]
   };
-  { sreturn=IntMat; sfname="addrows";
-    sargs=[ {vtype=IntMat; vname="mx"}; {vtype=IntMat; vname="dr"}; {vtype=StringMat; vname="drn"}; ];
-    slocals=[]; sbody=[]
-  };
-  { sreturn=DoubleMat; sfname="addrows";
-    sargs=[ {vtype=DoubleMat; vname="mx"}; {vtype=DoubleMat; vname="dr"}; {vtype=StringMat; vname="drn"}; ];
-    slocals=[]; sbody=[]
-  };
-  { sreturn=StringMat; sfname="addrows";
-    sargs=[ {vtype=StringMat; vname="mx"}; {vtype=StringMat; vname="dr"}; {vtype=StringMat; vname="drn"}; ];
-    slocals=[]; sbody=[]
-  };
   { sreturn=String; sfname="string_of_int";
     sargs=[ {vtype=Int; vname="x"}; ];
     slocals=[]; sbody=[]
@@ -168,26 +148,6 @@ let lib_funs = [
   };
   { sreturn=String; sfname="slice";
     sargs=[ {vtype=String; vname="x"}; {vtype=IntMat; vname="idx"}; ];
-    slocals=[]; sbody=[]
-  };
-  { sreturn=Double; sfname="abs";
-    sargs=[ {vtype=Double; vname="x"}; ];
-    slocals=[]; sbody=[]
-  };
-  { sreturn=DoubleMat; sfname="sum_row";
-    sargs=[ {vtype=DoubleMat; vname="mx"}; ];
-    slocals=[]; sbody=[]
-  };
-  { sreturn=DoubleMat; sfname="sum_col";
-    sargs=[ {vtype=DoubleMat; vname="mx"}; ];
-    slocals=[]; sbody=[]
-  };
-  { sreturn=DoubleMat; sfname="avg_row";
-    sargs=[ {vtype=DoubleMat; vname="mx"}; ];
-    slocals=[]; sbody=[]
-  };
-  { sreturn=DoubleMat; sfname="avg_col";
-    sargs=[ {vtype=DoubleMat; vname="mx"}; ];
     slocals=[]; sbody=[]
   };
   { sreturn=DoubleMat; sfname="var_row";

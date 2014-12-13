@@ -38,7 +38,8 @@ let check_binop bop sexp1 sexp2 =
       | IntMat, Int -> IntMat, ret0
       | DoubleMat, Int -> DoubleMat, ret0
       | IntMat, Double -> DoubleMat, ret0
-      | _, _ -> raise (Bad_type "\"+\" bad operand type"))
+      | DoubleMat, DoubleMat -> DoubleMat, ret0
+      | a, b -> raise (Bad_type "\"+\" bad operand type"))
   | Minus -> (match t1, t2 with
       (* scalar arithmetic binary op *)
         Int, Int -> Int, ret0
