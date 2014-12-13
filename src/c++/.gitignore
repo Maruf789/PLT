@@ -1,2 +1,2 @@
-buckcal_mat_test.cpp
-Makefile
+*.o
+buckcal_mat_test
