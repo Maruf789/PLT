@@ -34,7 +34,7 @@ do
 		echo "good sample${i}.bc error"
 	fi
 	if [ -s $CFILE_DIR/sample${i}.cpp ]; then 
-		clang++ $CFILE_DIR/sample${i}.cpp $CFILE_DIR/buckcal_mat.cpp $CFILE_DIR/buckcal_core.cpp -o $BINFILE/goodsample${i}.bin \
+		g++ $CFILE_DIR/sample${i}.cpp $CFILE_DIR/buckcal_mat.cpp $CFILE_DIR/buckcal_core.cpp -o $BINFILE/goodsample${i}.bin \
 		2>>		$OUTPUT_DIR/goodsample${i}out.txt
 	fi
 done
