@@ -186,7 +186,7 @@ int_mat colcat(int_mat mx1, int_mat mx2) {
 		return mx2;
 	if (mx2.rows == 0 || mx2.cols == 0)
 		return mx1;
-	if (mx1.cols != mx2.cols)
+	if (mx1.rows != mx2.rows)
 		throw std::invalid_argument("colcat: matrix does not have the same number of rows");
 	int *array = new int[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
 	for (int i = 0; i < mx1.rows; i++) {
@@ -208,7 +208,7 @@ double_mat colcat(double_mat mx1, double_mat mx2) {
 		return mx2;
 	if (mx2.rows == 0 || mx2.cols == 0)
 		return mx1;
-	if (mx1.cols != mx2.cols)
+	if (mx1.rows != mx2.rows)
 		throw std::invalid_argument("colcat: matrix does not have the same number of rows");
 	double *array = new double[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
 	for (int i = 0; i < mx1.rows; i++) {
@@ -230,7 +230,7 @@ string_mat colcat(string_mat mx1, string_mat mx2) {
 		return mx2;
 	if (mx2.rows == 0 || mx2.cols == 0)
 		return mx1;
-	if (mx1.cols != mx2.cols)
+	if (mx1.rows != mx2.rows)
 		throw std::invalid_argument("colcat: matrix does not have the same number of rows");
 	string *array = new string[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
 	for (int i = 0; i < mx1.rows; i++) {
