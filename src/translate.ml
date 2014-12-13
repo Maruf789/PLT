@@ -11,7 +11,9 @@ open Translate_expr
 open Printf
 
 
-(* translate expr. 
+let gen_fname s = if s = "main" then "B_main" else s
+
+(* translate expr.
    Note that translate an Matval may result in extra irstmt *)
 (* @isl: irstmt list *)
 (* return : irstmt list * irexpr *)
@@ -30,8 +32,9 @@ let rec trans_expr tid isl exp = match exp with
                             (isl, (IAssign (ie1, ie2))))
   | _, SUnaop (u, e) -> (let isl, ie = trans_expr tid isl e in
                          (isl, (IUnaop (u, ie))))
-  | _, SCall (s, el) -> (let isl, iesl = trans_arglist tid isl el in
-                         (isl, ICall (s, iesl)))
+  | _, SCall (s, el) -> let s = gen_fname s in
+                        let isl, iesl = trans_arglist tid isl el in
+                        (isl, ICall (s, iesl))
   | _, SMatSub (s, e1, e2) -> let isl, ie1 = trans_expr tid isl e1 in
                               let isl, ie2 = trans_expr tid isl e2 in
                               (trans_matsub s isl ie1 ie2)
@@ -145,7 +148,8 @@ let rec trans_fundefs fundefs = match fundefs with
   | hd::tl -> (
       let _, ss_v = trans_vardecs 0 hd.slocals in
       let _, ss_s = trans_stmts 0 hd.sbody in
-      { ireturn = (ipt hd.sreturn); ifname = hd.sfname;
+      let fname = gen_fname hd.sfname in
+      { ireturn = (ipt hd.sreturn); ifname = fname;
         iargs = (trans_args hd.sargs); ibody = (ss_v@ss_s) }
     )::(trans_fundefs tl)
 
