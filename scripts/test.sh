@@ -40,7 +40,7 @@ do
 done
 
 ## run bad cases
-for (( i =  0; i <= 0; i++))
+for (( i =  48; i <= 50; i++))
 do
 	cd $BAD_DIR
 	$TRANS sample${i}.bc $NU \

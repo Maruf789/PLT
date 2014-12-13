@@ -1,1 +1,0 @@
-Parser error: token double mat, in sample39.bc line 10,1

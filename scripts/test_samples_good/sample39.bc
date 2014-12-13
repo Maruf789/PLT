@@ -4,13 +4,10 @@ import 'buckcal_lib.bc'
 
 double mat mx;
 
-disp range(1,3);
-
-
-double mat mx2 : {1, 2, 3 ; 4, 5, 6; 7, 8, 9; 10, 11, 12} ;
+disp range(1,1);
 disp range(1,4);
-disp ranger(1, 3);
+disp range_col(1, 3);
 
-#output {1,2,3}
-#output {1; 2; 3}
+#output {1}
 #output {1, 2, 3, 4}
+#output {1; 2; 3}

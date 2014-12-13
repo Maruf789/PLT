@@ -4,5 +4,6 @@ import 'buckcal_lib.bc'
 double x : -5;
 double y : 5;
 
+disp x;
 disp abs(x);
 disp abs(y);
