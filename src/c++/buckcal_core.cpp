@@ -400,6 +400,7 @@ int_mat getrow(int_mat mat, int r) {
 	for (int i = 0; i < mat.cols; i++)
 		array[i] = mat.m[(r - 1) * mat.cols + i];
 	int_mat new_mat = int_mat(array, 1, mat.cols);
+	new_mat.rownames[0] = mat.rownames[r - 1];
 	delete[] array;
 	return new_mat;
 }
@@ -411,6 +412,7 @@ double_mat getrow(double_mat mat, int r) {
 	for (int i = 0; i < mat.cols; i++)
 		array[i] = mat.m[(r - 1) * mat.cols + i];
 	double_mat new_mat = double_mat(array, 1, mat.cols);
+	new_mat.rownames[0] = mat.rownames[r - 1];
 	delete[] array;
 	return new_mat;
 }
@@ -422,6 +424,7 @@ string_mat getrow(string_mat mat, int r) {
 	for (int i = 0; i < mat.cols; i++)
 		array[i] = mat.m[(r - 1) * mat.cols + i];
 	string_mat new_mat = string_mat(array, 1, mat.cols);
+	new_mat.rownames[0] = mat.rownames[r - 1];
 	delete[] array;
 	return new_mat;
 }
@@ -435,6 +438,7 @@ void setrow(int_mat mat, int r, int_mat set) {
 		throw std::invalid_argument("setrow: input matrix has more than one row");
 	for (int i = 0; i < mat.cols; i++)
 		mat.m[(r - 1) * mat.cols + i] = set.m[i];
+	mat.rownames[r - 1] = set.rownames[0];
 }
 
 void setrow(double_mat mat, int r, double_mat set) {
@@ -446,6 +450,7 @@ void setrow(double_mat mat, int r, double_mat set) {
 		throw std::invalid_argument("setrow: input matrix has more than one row");
 	for (int i = 0; i < mat.cols; i++)
 		mat.m[(r - 1) * mat.cols + i] = set.m[i];
+	mat.rownames[r - 1] = set.rownames[0];
 }
 
 void setrow(string_mat mat, int r, string_mat set) {
@@ -457,6 +462,79 @@ void setrow(string_mat mat, int r, string_mat set) {
 		throw std::invalid_argument("setrow: input matrix has more than one row");
 	for (int i = 0; i < mat.cols; i++)
 		mat.m[(r - 1) * mat.cols + i] = set.m[i];
+	mat.rownames[r - 1] = set.rownames[0];
+}
+
+int_mat getcol(int_mat mat, int c) {
+	if (c > mat.cols || c < 1)
+		throw std::invalid_argument("getcol: argument not in col range");
+	int *array = new int[mat.rows];
+	for (int i = 0; i < mat.rows; i++)
+		array[i] = mat.m[i * mat.cols + (c - 1)];
+	int_mat new_mat = int_mat(array, mat.rows, 1);
+	new_mat.colnames[0] = mat.colnames[c - 1];
+	delete[] array;
+	return new_mat;
+}
+
+double_mat getcol(double_mat mat, int c) {
+	if (c > mat.cols || c < 1)
+		throw std::invalid_argument("getcol: argument not in col range");
+	double *array = new double[mat.rows];
+	for (int i = 0; i < mat.rows; i++)
+		array[i] = mat.m[i * mat.cols + (c - 1)];
+	double_mat new_mat = double_mat(array, mat.rows, 1);
+	new_mat.colnames[0] = mat.colnames[c - 1];
+	delete[] array;
+	return new_mat;
+}
+
+string_mat getcol(string_mat mat, int c) {
+	if (c > mat.cols || c < 1)
+		throw std::invalid_argument("getcol: argument not in col range");
+	string *array = new string[mat.rows];
+	for (int i = 0; i < mat.rows; i++)
+		array[i] = mat.m[i * mat.cols + (c - 1)];
+	string_mat new_mat = string_mat(array, mat.rows, 1);
+	new_mat.colnames[0] = mat.colnames[c - 1];
+	delete[] array;
+	return new_mat;
+}
+
+void setcol(int_mat mat, int c, int_mat set) {
+	if (c > mat.cols || c < 1)
+		throw std::invalid_argument("setcol: argument row not in column range");	
+	if (mat.rows != set.rows)
+		throw std::invalid_argument("setcol: matrix to be set does not have matching row number");
+	if (set.cols > 1)
+		throw std::invalid_argument("setcol: input matrix has more than one column");
+	for (int i = 0; i < mat.rows; i++)
+		mat.m[i * mat.cols + (c - 1)] = set.m[i];
+	mat.colnames[c - 1] = set.colnames[0];
+}
+
+void setcol(double_mat mat, int c, double_mat set) {
+	if (c > mat.cols || c < 1)
+		throw std::invalid_argument("setcol: argument row not in column range");	
+	if (mat.rows != set.rows)
+		throw std::invalid_argument("setcol: matrix to be set does not have matching row number");
+	if (set.cols > 1)
+		throw std::invalid_argument("setcol: input matrix has more than one column");
+	for (int i = 0; i < mat.rows; i++)
+		mat.m[i * mat.cols + (c - 1)] = set.m[i];
+	mat.colnames[c - 1] = set.colnames[0];
+}
+
+void setcol(string_mat mat, int c, string_mat set) {
+	if (c > mat.cols || c < 1)
+		throw std::invalid_argument("setcol: argument row not in column range");	
+	if (mat.rows != set.rows)
+		throw std::invalid_argument("setcol: matrix to be set does not have matching row number");
+	if (set.cols > 1)
+		throw std::invalid_argument("setcol: input matrix has more than one column");
+	for (int i = 0; i < mat.rows; i++)
+		mat.m[i * mat.cols + (c - 1)] = set.m[i];
+	mat.colnames[c - 1] = set.colnames[0];
 }
 
 /* init matrixes */
