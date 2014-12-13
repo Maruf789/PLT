@@ -275,7 +275,12 @@ let check_fundef new_ftbl ftbl new_func_def =
   match found, foundnew with
     false, false -> new_ftbl @ [new_sfun_def]
   | false, true ->  if (is_func_dec fbodynew) && not (is_func_dec new_sfun_def)
-                    then (list_rep fbodynew new_sfun_def new_ftbl)
+                    then begin
+                      if fbodynew.sreturn = new_sret then 
+                        (list_rep fbodynew new_sfun_def new_ftbl)
+                      else
+                        raise (Bad_type ("Function '" ^ new_sname ^ "' return type different with declaration")) 
+                    end
                     else raise (Bad_type ("Function '" ^ new_sname ^ "' already defined")) 
   | true, _ -> raise (Bad_type ("Function '" ^ new_sname ^ "' already defined"))
 
