@@ -1,1 +1,1 @@
-pushd .. && make && popd && make && ./sample.bin
+pushd .. && make && popd && make clean all && ./sample.bin
