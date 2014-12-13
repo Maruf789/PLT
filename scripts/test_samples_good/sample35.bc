@@ -2,7 +2,7 @@
 int mat ix: {1,2,3;4,5,6};
 double mat dx: {1.1,2.2;3.3,4.4;5.5,6.6};
 string mat sx: {'a','b','c';'d','e','f'};
-string mat ssx: {'John','Josh'};
+string mat ssx: {'John','Josh', 'Jay'};
 rowname(ix, ssx);
 colname(ix, {'foods','clothes','appliances'});
 disp ix;

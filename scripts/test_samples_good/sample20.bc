@@ -1,2 +1,2 @@
 #test using function in other files
-import 'func.bc'
+import 'sample0.bc'

@@ -11,7 +11,7 @@ string mat sx1: {'a','b','c';'d','e','f'};
 string mat sx2: {'a','b','c';'d','e','f';'g','h','i'};
 string mat sx3: {'a','b';'c','d'};
 string mat sx4;
-ix4: rowcat(ix1,ix2);
+ix4: rowcat(ix1,ix3);
 disp ix4;
 ix4: colcat(ix1,ix3);
 disp ix4;
