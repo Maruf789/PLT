@@ -145,7 +145,7 @@ void colname(string_mat &mx, string_mat n);
 
 /* string operations */
 int strlen(std::string x);
-std::string slice(std::string x, int_mat idx);
+std::string slice(std::string x, int l, int r);
 
 /* get or set row/col */
 int_mat getrow(int_mat mat, int r);
