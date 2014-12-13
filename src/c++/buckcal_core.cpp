@@ -273,7 +273,7 @@ void rowname(string_mat &mx, string_mat n) {
 	
 void colname(int_mat &mx, string_mat n) {
 	if (mx.cols != n.cols)
-		throw std::invalid_argument("rowname: name matrix does not have enough entries");
+		throw std::invalid_argument("rowname: name matrix does not have matching entries");
 	if (n.rows > 1)
 		throw std::invalid_argument("rowname: name matrix should have only one row");
 	mx.colnames = n.m;
@@ -281,7 +281,7 @@ void colname(int_mat &mx, string_mat n) {
 
 void colname(double_mat &mx, string_mat n) {
 	if (mx.cols != n.cols)
-		throw std::invalid_argument("rowname: name matrix does not have enough entries");
+		throw std::invalid_argument("rowname: name matrix does not have matching entries");
 	if (n.rows > 1)
 		throw std::invalid_argument("rowname: name matrix should have only one row");
 	mx.colnames = n.m;
@@ -289,7 +289,7 @@ void colname(double_mat &mx, string_mat n) {
 	
 void colname(string_mat &mx, string_mat n) {
 	if (mx.cols != n.cols)
-		throw std::invalid_argument("rowname: name matrix does not have enough entries");
+		throw std::invalid_argument("rowname: name matrix does not have matching entries");
 	if (n.rows > 1)
 		throw std::invalid_argument("rowname: name matrix should have only one row");
 	mx.colnames = n.m;
