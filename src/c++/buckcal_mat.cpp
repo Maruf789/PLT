@@ -5,12 +5,12 @@ using namespace std;
 void init_names(vector<string> &rownames, vector<string> &colnames, int r, int c) {
 	for (int i = 0; i < r; i++) {
 		ostringstream ss;
-		ss << "row" << (i + 1);
+		ss << "r" << (i + 1);
 		rownames.push_back(ss.str());
 	}
 	for (int i = 0; i < c; i++) {
 		ostringstream ss;
-		ss << "col" << (i + 1);
+		ss << "c" << (i + 1);
 		colnames.push_back(ss.str());
 	}
 }
