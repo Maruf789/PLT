@@ -1,4 +1,5 @@
 *.cpp
+*.hpp
 *.bc
 *.o
 sample.bin
