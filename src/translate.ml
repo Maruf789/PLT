@@ -30,8 +30,8 @@ let rec trans_expr tid isl exp = match exp with
   | _, SAssign (e1, e2) -> (let isl, ie1 = trans_expr tid isl e1 in
                             let isl, ie2 = trans_expr tid isl e2 in
                             (isl, (IAssign (ie1, ie2))))
-  | _, SUnaop (u, e) -> (let isl, ie = trans_expr tid isl e in
-                         (isl, (IUnaop (u, ie))))
+  | _, SUnaop (u, e) -> let isl, ie = trans_expr tid isl e in
+                        (isl, (IUnaop (u, ie)))
   | _, SCall (s, el) -> let s = gen_fname s in
                         let isl, iesl = trans_arglist tid isl el in
                         (isl, ICall (s, iesl))

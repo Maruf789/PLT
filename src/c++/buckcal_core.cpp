@@ -386,10 +386,10 @@ int strlen(string x) {
 	return x.length();
 }
 
-string slice(string x, int_mat idx) {
-	if (idx.rows > 1 || idx.cols != 2)
-		throw std::invalid_argument("slice: two elements are required for string range");
-	return x.substr(idx.m[0] + 1, idx.m[1] + 1);
+string slice(string x, int l, int r) {
+	if (r <= l || l <= 0 || r <= 0 || l > x.length() || r > x.length() + 1)
+		throw std::invalid_argument("slice: invalid range");
+	return x.substr(l + 1, r + 1);
 }
 
 /* get or set row/col */
