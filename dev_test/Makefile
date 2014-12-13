@@ -13,7 +13,6 @@ copy:
 	cp ../src/libraryFiles/buckcal_lib.bc .
 
 buckcal:
-	#../src/main.bin buckcal_lib.bc buckcal_lib.cpp
 	../src/main.bin sample.bc sample.cpp
 
 %.o: %.cpp
