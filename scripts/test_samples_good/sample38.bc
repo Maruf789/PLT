@@ -1,4 +1,8 @@
-#test range(int x, int y) function and ranger(int x, int y)
+#test abs()
+import 'buckcal_lib.bc'
 
-double mat mx;
+double x : -5;
+double y : 5;
 
+disp abs(x);
+disp abs(y);

@@ -1,0 +1,11 @@
+#test double mat avg_row(double mat mx) and double mat avg_col(double mat mx)
+
+import 'buckcal_lib.bc'
+
+double mat mx : {1, 2, 3 ; 4, 5, 6};
+
+disp "avg of rows:"
+disp sum_row(mx);
+
+disp "avg of cols:"
+disp sum_col(mx);
