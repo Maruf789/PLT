@@ -1,9 +1,9 @@
 #Functions to be implemented:
 	# double abs(double x);
 	# int mat range(int x, int y);
-	#	Return a column vector {x; x+1; … ; y}. If  y < x, return {}
-	# int mat ranger(int x, int y);
-	#	Similar to range(), except that it returns a row vector.
+	#	Return a column vector {x, x+1, ..., y}. If  y < x, return {}
+	# int mat range_col(int x, int y);
+	#	Similar to range(), except that it returns a vector with one column.
 	# double mat sum_row(double mat mx);
 	# double mat sum_col(double mat mx);
 	#	Return a vector, as the sum of rows/columns in mat mx.
@@ -32,19 +32,25 @@ fed
 def int mat range(int x, int y) do
 	int mat v;
 	int i : x;
+	int mat tmp;
 	for (y >= i) do
-		v : rowcat(v, {i});
+		tmp: {i};
+		colname(tmp, 'col' + string_of_int(i))
+		v : colcat(v, tmp);
 		i: i + 1;
 	rof
 	return v;
 fed
 
 #function: Return the number of rows in matrix mx;
-def int mat ranger(int x, int y) do
+def int mat range_col(int x, int y) do
 	int mat v;
 	int i : x;
+	int mat tmp;
 	for (y >= i) do
-		v : colcat(v, {i});
+		tmp: {i};
+		rowname(tmp, 'row' + string_of_int(i))
+		v : rowcat(v, tmp);
 		i: i + 1;
 	rof
 	return v;
@@ -85,6 +91,7 @@ def double mat avg_col(double mat mx) do
 	double avg : 0;
 	double mat v;
 	for c in range(1, cols(mx)) do
+		sum: 0;
 		for r in range(1, rows(mx)) do
 			sum : sum + mx[r,c];
 		rof
@@ -101,6 +108,7 @@ def double mat avg_row(double mat mx) do
 	double avg : 0;
 	double mat v;
 	for r in range(1, rows(mx)) do
+		sum: 0;
 		for c in range(1, cols(mx)) do
 			sum : sum + mx[r,c];
 		rof
