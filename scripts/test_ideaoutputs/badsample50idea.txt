@@ -1,0 +1,59 @@
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:53:34: error: use of undeclared identifier 'cols'
+double_mat s = ( ( range( 1  , ( cols( mx ) )) ) * 0.000000 );
+                                 ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:54:32: error: use of undeclared identifier 'rows'
+int_mat TT_0 = ( range( 1  , ( rows( mx ) )) );
+                               ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:55:35: error: use of undeclared identifier 'rows'
+for (int F_x =  0 ; (  F_x  < ( ( rows( TT_0 ) ) * ( cols( TT_0 ) ) ) ); (  F_x  = (  F_x  +  1  ) )) {
+                                  ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:55:54: error: use of undeclared identifier 'cols'
+for (int F_x =  0 ; (  F_x  < ( ( rows( TT_0 ) ) * ( cols( TT_0 ) ) ) ); (  F_x  = (  F_x  +  1  ) )) {
+                                                     ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:57:32: error: use of undeclared identifier 'cols'
+int_mat TT_1 = ( range( 1  , ( cols( mx ) )) );
+                               ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:58:35: error: use of undeclared identifier 'rows'
+for (int F_y =  0 ; (  F_y  < ( ( rows( TT_1 ) ) * ( cols( TT_1 ) ) ) ); (  F_y  = (  F_y  +  1  ) )) {
+                                  ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:58:54: error: use of undeclared identifier 'cols'
+for (int F_y =  0 ; (  F_y  < ( ( rows( TT_1 ) ) * ( cols( TT_1 ) ) ) ); (  F_y  = (  F_y  +  1  ) )) {
+                                                     ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:60:59: error: use of undeclared identifier 'rows'
+if (!(( ( ( (  1  -  1  ) >=  0  ) && ( (  1  -  1  ) < ( rows( s ) ) ) ) && ( ( (  y  -  1  ) >=  0  ) && ( (  y  -  1  ) < ( cols( s ) ) ) ) ))) throw invalid_argument("Matsub index check");
+                                                          ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:60:128: error: use of undeclared identifier 'cols'
+if (!(( ( ( (  1  -  1  ) >=  0  ) && ( (  1  -  1  ) < ( rows( s ) ) ) ) && ( ( (  y  -  1  ) >=  0  ) && ( (  y  -  1  ) < ( cols( s ) ) ) ) ))) throw invalid_argument("Matsub index check");
+                                                                                                                               ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:61:59: error: use of undeclared identifier 'rows'
+if (!(( ( ( (  1  -  1  ) >=  0  ) && ( (  1  -  1  ) < ( rows( s ) ) ) ) && ( ( (  y  -  1  ) >=  0  ) && ( (  y  -  1  ) < ( cols( s ) ) ) ) ))) throw invalid_argument("Matsub index check");
+                                                          ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:61:128: error: use of undeclared identifier 'cols'
+if (!(( ( ( (  1  -  1  ) >=  0  ) && ( (  1  -  1  ) < ( rows( s ) ) ) ) && ( ( (  y  -  1  ) >=  0  ) && ( (  y  -  1  ) < ( cols( s ) ) ) ) ))) throw invalid_argument("Matsub index check");
+                                                                                                                               ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:62:59: error: use of undeclared identifier 'rows'
+if (!(( ( ( (  x  -  1  ) >=  0  ) && ( (  x  -  1  ) < ( rows( mx ) ) ) ) && ( ( (  y  -  1  ) >=  0  ) && ( (  y  -  1  ) < ( cols( mx ) ) ) ) ))) throw invalid_argument("Matsub index check");
+                                                          ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:62:129: error: use of undeclared identifier 'cols'
+if (!(( ( ( (  x  -  1  ) >=  0  ) && ( (  x  -  1  ) < ( rows( mx ) ) ) ) && ( ( (  y  -  1  ) >=  0  ) && ( (  y  -  1  ) < ( cols( mx ) ) ) ) ))) throw invalid_argument("Matsub index check");
+                                                                                                                                ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:63:29: error: use of undeclared identifier 'cols'
+(  (s[( ( (  1  -  1  ) * ( cols( s ) ) ) + (  y  -  1  ) )])  = (  (s[( ( (  1  -  1  ) * ( cols( s ) ) ) + (  y  -  1  ) )])  +  (mx[( ( (  x  -  1  ) * ( cols( mx ) ) ) + (  y  -  1  ) )])  ) ) ;
+                            ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:63:94: error: use of undeclared identifier 'cols'
+(  (s[( ( (  1  -  1  ) * ( cols( s ) ) ) + (  y  -  1  ) )])  = (  (s[( ( (  1  -  1  ) * ( cols( s ) ) ) + (  y  -  1  ) )])  +  (mx[( ( (  x  -  1  ) * ( cols( mx ) ) ) + (  y  -  1  ) )])  ) ) ;
+                                                                                             ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:63:158: error: use of undeclared identifier 'cols'
+(  (s[( ( (  1  -  1  ) * ( cols( s ) ) ) + (  y  -  1  ) )])  = (  (s[( ( (  1  -  1  ) * ( cols( s ) ) ) + (  y  -  1  ) )])  +  (mx[( ( (  x  -  1  ) * ( cols( mx ) ) ) + (  y  -  1  ) )])  ) ) ;
+                                                                                                                                                             ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:71:34: error: use of undeclared identifier 'rows'
+double_mat s = ( ( range( 1  , ( rows( mx ) )) ) * 0.000000 );
+                                 ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:72:32: error: use of undeclared identifier 'cols'
+int_mat TT_0 = ( range( 1  , ( cols( mx ) )) );
+                               ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample50.cpp:73:35: error: use of undeclared identifier 'rows'
+for (int F_x =  0 ; (  F_x  < ( ( rows( TT_0 ) ) * ( cols( TT_0 ) ) ) ); (  F_x  = (  F_x  +  1  ) )) {
+                                  ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.

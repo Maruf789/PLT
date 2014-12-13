@@ -1,0 +1,10 @@
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample43.cpp:8:59: error: use of undeclared identifier 'rows'
+if (!(( ( ( (  2  -  1  ) >=  0  ) && ( (  2  -  1  ) < ( rows( ax ) ) ) ) && ( ( (  4  -  1  ) >=  0  ) && ( (  4  -  1  ) < ( cols( ax ) ) ) ) ))) throw invalid_argument("Matsub index check");
+                                                          ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample43.cpp:8:129: error: use of undeclared identifier 'cols'
+if (!(( ( ( (  2  -  1  ) >=  0  ) && ( (  2  -  1  ) < ( rows( ax ) ) ) ) && ( ( (  4  -  1  ) >=  0  ) && ( (  4  -  1  ) < ( cols( ax ) ) ) ) ))) throw invalid_argument("Matsub index check");
+                                                                                                                                ^
+/Users/lanyang/Documents/PLT/scripts/cfiles/badsample43.cpp:9:36: error: use of undeclared identifier 'cols'
+(  a  =  (ax[( ( (  2  -  1  ) * ( cols( ax ) ) ) + (  4  -  1  ) )])  ) ;
+                                   ^
+3 errors generated.
