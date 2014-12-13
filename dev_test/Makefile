@@ -1,6 +1,6 @@
 CPP := g++
 CFLAGS := -g -Wall -Werror
-OBJECTS := buckcal_mat.o buckcal_core.o buckcal_lib.o sample.o
+OBJECTS := buckcal_mat.o buckcal_core.o sample.o
 OUTPUT := sample.bin
 
 all: copy buckcal $(OBJECTS)
