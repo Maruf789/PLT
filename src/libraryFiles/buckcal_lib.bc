@@ -4,7 +4,6 @@
 	#	Return a column vector {x; x+1; … ; y}. If  y < x, return {}
 	# int mat ranger(int x, int y);
 	#	Similar to range(), except that it returns a row vector.
-	#	Return the number of rows/columns  in matrix mx;
 	# double mat sum_row(double mat mx);
 	# double mat sum_col(double mat mx);
 	#	Return a vector, as the sum of rows/columns in mat mx.
@@ -31,16 +30,24 @@ fed
 
 #function: Return the number of columns in matrix mx;
 def int mat range(int x, int y) do
-
-	#yet to implement it
- 
+	int mat v : {};
+	int i : x;
+	for (y >= i) do
+		v : rowcat(v, {i});
+		i = i + 1;
+	rof
+	return v;
 fed
 
 #function: Return the number of rows in matrix mx;
 def int mat ranger(int x, int y) do
-
-	#yet to implement it
-
+	int mat v : {};
+	int i : x;
+	for (y >= i) do
+		v : colcat(v, {i});
+		i = i + 1;
+	rof
+	return v;
 fed
 
 #function: sum the rows of a matrix
@@ -102,5 +109,6 @@ def double mat avg_row(double mat mx) do
 	rof
 	return v;
 fed
+
 #function: average of the all rows of a matrix
 

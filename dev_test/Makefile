@@ -1,4 +1,4 @@
-CPP := g++
+CPP := clang++
 CFLAGS := -g -Wall -Werror
 OBJECTS := buckcal_mat.o buckcal_core.o sample.o
 OUTPUT := sample.bin
