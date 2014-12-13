@@ -30,22 +30,22 @@ fed
 
 #function: Return the number of columns in matrix mx;
 def int mat range(int x, int y) do
-	int mat v : {};
+	int mat v;
 	int i : x;
 	for (y >= i) do
 		v : rowcat(v, {i});
-		i = i + 1;
+		i: i + 1;
 	rof
 	return v;
 fed
 
 #function: Return the number of rows in matrix mx;
 def int mat ranger(int x, int y) do
-	int mat v : {};
+	int mat v;
 	int i : x;
 	for (y >= i) do
 		v : colcat(v, {i});
-		i = i + 1;
+		i: i + 1;
 	rof
 	return v;
 fed

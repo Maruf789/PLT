@@ -38,8 +38,7 @@ let check_binop bop sexp1 sexp2 =
       | IntMat, Int -> IntMat, ret0
       | DoubleMat, Int -> DoubleMat, ret0
       | IntMat, Double -> DoubleMat, ret0
-      | DoubleMat, DoubleMat -> DoubleMat, ret0
-      | a, b -> raise (Bad_type "\"+\" bad operand type"))
+      | _, _ -> raise (Bad_type "\"+\" bad operand type"))
   | Minus -> (match t1, t2 with
       (* scalar arithmetic binary op *)
         Int, Int -> Int, ret0
@@ -165,7 +164,6 @@ let check_matval_s sexp_list_list =
     List.fold_left helpr Void (List.flatten tll)
   in
   let typ_ll = List.map (List.map fst) sexp_list_list in
-  (* FIXME: Maybe we should also return size of the matrix? *)
   let ncol, nrow = size_check typ_ll in
   let rt = (match (type_check typ_ll) with
         Int -> IntMat

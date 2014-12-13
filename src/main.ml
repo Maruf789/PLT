@@ -1,7 +1,7 @@
 open Printf
 open Ast
 
-let return_failure = () (*exit 1*)
+let return_failure = if true then () else (exit 1)
 
 (* error reporting functions *)
 let loc_err lex_buf =
