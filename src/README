@@ -4,8 +4,11 @@ scanner.mll - lexical analyser
 parser.mly - parser
 ast.ml - AST types
 sast.ml - SAST types
-scheck.ml - AST -> SAST conversion
-translate.ml - SAST -> target code
+scheck.ml - AST -> SAST
+tast.ml - TAST types
+translate.ml - SAST -> TAST
+codegen.ml - TAST -> C++ code
+main.ml - interface
 
 Target Language helper
 ======================
