@@ -401,6 +401,7 @@ int_mat getrow(int_mat mat, int r) {
 		array[i] = mat.m[(r - 1) * mat.cols + i];
 	int_mat new_mat = int_mat(array, 1, mat.cols);
 	new_mat.rownames[0] = mat.rownames[r - 1];
+	new_mat.colnames = mat.colnames;
 	delete[] array;
 	return new_mat;
 }
@@ -413,6 +414,7 @@ double_mat getrow(double_mat mat, int r) {
 		array[i] = mat.m[(r - 1) * mat.cols + i];
 	double_mat new_mat = double_mat(array, 1, mat.cols);
 	new_mat.rownames[0] = mat.rownames[r - 1];
+	new_mat.colnames = mat.colnames;
 	delete[] array;
 	return new_mat;
 }
@@ -425,6 +427,7 @@ string_mat getrow(string_mat mat, int r) {
 		array[i] = mat.m[(r - 1) * mat.cols + i];
 	string_mat new_mat = string_mat(array, 1, mat.cols);
 	new_mat.rownames[0] = mat.rownames[r - 1];
+	new_mat.colnames = mat.colnames;
 	delete[] array;
 	return new_mat;
 }
@@ -473,6 +476,7 @@ int_mat getcol(int_mat mat, int c) {
 		array[i] = mat.m[i * mat.cols + (c - 1)];
 	int_mat new_mat = int_mat(array, mat.rows, 1);
 	new_mat.colnames[0] = mat.colnames[c - 1];
+	new_mat.rownames = mat.rownames;
 	delete[] array;
 	return new_mat;
 }
@@ -485,6 +489,7 @@ double_mat getcol(double_mat mat, int c) {
 		array[i] = mat.m[i * mat.cols + (c - 1)];
 	double_mat new_mat = double_mat(array, mat.rows, 1);
 	new_mat.colnames[0] = mat.colnames[c - 1];
+	new_mat.rownames = mat.rownames;
 	delete[] array;
 	return new_mat;
 }
@@ -497,6 +502,7 @@ string_mat getcol(string_mat mat, int c) {
 		array[i] = mat.m[i * mat.cols + (c - 1)];
 	string_mat new_mat = string_mat(array, mat.rows, 1);
 	new_mat.colnames[0] = mat.colnames[c - 1];
+	new_mat.rownames = mat.rownames;
 	delete[] array;
 	return new_mat;
 }
