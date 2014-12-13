@@ -58,9 +58,8 @@ do
 	if [ -s $CFILE_DIR/badsample${i}.cpp ]; then 
 		g++ $CFILE_DIR/badsample${i}.cpp $CFILE_DIR/buckcal_mat.cpp $CFILE_DIR/buckcal_core.cpp -o $BINFILE/badsample${i}.bin \
 		2>>		$OUTPUT_DIR/badsample${i}out.txt
-		$BINFILE/badsample${i}.bin 1 >> $OUTPUT_DIR/badsample${i}out.txt
+		$BINFILE/badsample${i}.bin 2 >> $OUTPUT_DIR/badsample${i}out.txt
 	fi
-
 	$DIF $IDEAL_DIR/badsample${i}idea.txt $OUTPUT_DIR/badsample${i}out.txt > $NU
 	if [ $? -eq 1 ]; then
 		echo "bad sample${i}.bc error"
