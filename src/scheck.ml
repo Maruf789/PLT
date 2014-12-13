@@ -183,8 +183,8 @@ let rec check_local_var_def ftbl vtbl local_var_list = match local_var_list with
    return: sstmt list *)
 let rec check_condstmts ftbl vtbl ret_type loop_flag cs = match cs with(* translate a list of elif *)
     [] -> [] 
-  | hd::tl -> let tmp,sstmts = (check_stmts ftbl vtbl ret_type false false loop_flag hd.stmts) in
-    { scond=(check_expr ftbl vtbl hd.cond) ; 
+  | hd::tl -> let _, sstmts = (check_stmts ftbl vtbl ret_type false false loop_flag hd.stmts) in
+    { scond = (check_expr ftbl vtbl hd.cond) ;
       sstmts
     } :: (check_condstmts ftbl vtbl ret_type loop_flag tl )
 and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stmts with
@@ -199,7 +199,7 @@ and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stm
           if fst ret == ret_type 
           then (if (main_flag) then true,SReturn ret else false,SReturn ret)
           else raise (Bad_type "mismatch with function's return type")
-        | If (c, cl, ss) -> let tmp, check_ss = check_stmts ftbl vtbl ret_type false ret_flag loop_flag ss  in
+        | If (c, cl, ss) -> let _, check_ss = check_stmts ftbl vtbl ret_type false ret_flag loop_flag ss  in
           ret_flag, SIf ((List.hd (check_condstmts ftbl vtbl ret_type loop_flag [c] )), 
                          (check_condstmts ftbl vtbl ret_type loop_flag cl),
                          check_ss
@@ -207,7 +207,7 @@ and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stm
         | CntFor (s, e, ss) -> (
             let f, st = find_var vtbl s in
             let et, e = check_expr ftbl vtbl e in
-            let dummy, sss = check_stmts ftbl vtbl ret_type false ret_flag true ss  in
+            let _, sss = check_stmts ftbl vtbl ret_type false ret_flag true ss  in
             let _ = if f then () else raise (Bad_type (s ^ "undefined")) in
             let et_t = match et with
                 IntMat -> Int
@@ -274,7 +274,7 @@ let check_fundef new_ftbl ftbl new_func_def =
     then raise (Bad_type ("Function '" ^ new_sname ^ "' return statement missing"))
     else ()
   in
-  let found, fbody = find_func (=) (ftbl) new_fnsg in
+  let found, _ = find_func (=) (ftbl) new_fnsg in
   let foundnew, fbodynew = find_func (=) (new_ftbl) new_fnsg in
   (*let _ = eprintf "%s: %s" new_sname (if found then "found" else "not found") in*)
   match found, foundnew with
