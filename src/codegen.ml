@@ -19,7 +19,8 @@ let tpt t = match t with
   | Istring_mat -> "string_mat"
   | Ivoid -> "void"
 
-let gen_uop op = match op with Neg -> "-" | Not -> "!"
+let gen_uop op = match op with Neg -> "-"
+                             | Not -> "!"
 
 let gen_bop op = match op with
     Plus -> "+" | Minus -> "-" | Times -> "*" | Divide -> "/"

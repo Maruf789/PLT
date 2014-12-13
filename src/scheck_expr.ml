@@ -5,7 +5,7 @@ open Printf
 
 
 let check_uniop uop sexp =
-  let ret = SUnaop(Not, sexp) in
+  let ret = SUnaop(uop, sexp) in
   match uop with
     Not -> (match sexp with
         Bool, _ -> Bool, ret
