@@ -1,3 +1,2 @@
 #test using function in other files
-import func.bc;
-import returnint;
+import 'func.bc'
