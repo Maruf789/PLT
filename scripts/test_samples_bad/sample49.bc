@@ -1,0 +1,14 @@
+#test abs()
+import 'buckcal_lib.bc'
+
+double bad_int : -0;
+
+disp abs(bad_int);
+
+double bad_int2: -1;
+
+disp "the integer:"
+disp bad_int2;
+
+disp "avg of the integer:"
+disp abs(bad_int2); 

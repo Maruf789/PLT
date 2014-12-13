@@ -1,0 +1,5 @@
+#test range(int x, int y) function and ranger(int x, int y)
+
+import 'buckcal_lib.bc'
+
+range(1,-3);
