@@ -1,0 +1,9 @@
+#test built-in function range
+int i;
+for i in range(1,4.5) do
+	disp 'hello';
+rof
+
+for i in range(1,'a') do
+	disp 'hello';
+rof
