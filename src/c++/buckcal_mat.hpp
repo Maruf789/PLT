@@ -100,6 +100,15 @@ std::ostream & operator << (std::ostream &sys, const int_mat &in);
 std::ostream & operator << (std::ostream &sys, const double_mat &in);
 std::ostream & operator << (std::ostream &sys, const string_mat &in);
 
+/* get rows and columns */
+int rows(int_mat mx);
+int rows(double_mat mx);
+int rows(string_mat mx);
+
+int cols(int_mat mx);
+int cols(double_mat mx);
+int cols(string_mat mx);
+
 /* data conversion */
 std::string string_of_int(int x);
 std::string string_of_double(double x);
@@ -146,6 +155,14 @@ string_mat getrow(string_mat mat, int r);
 void setrow(int_mat mat, int r, int_mat set);
 void setrow(double_mat mat, int r, double_mat set);
 void setrow(string_mat mat, int r, string_mat set);
+
+int_mat getcol(int_mat mat, int c);
+double_mat getcol(double_mat mat, int c);
+string_mat getcol(string_mat mat, int c);
+
+void setcol(int_mat mat, int c, string_mat set);
+void setcol(double_mat mat, int c, string_mat set);
+void setcol(string_mat mat, int c, string_mat set);
 
 /* init matrixes */
 int_mat init_mat(int r, int c, int init);

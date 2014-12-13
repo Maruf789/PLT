@@ -30,11 +30,14 @@ let eq_t t1 t2 = match t1, t2 with
 (* function table *)
 (* type func_table = sfun_def list *)
 
-(* generate Sast.funsg of Sast.sfun_def *)
+(* helper: generate Sast.funsg of Sast.sfun_def *)
 let sig_sfunc sfn = {
   fsname = sfn.sfname;
   fsargs = List.map (fun v -> v.vtype) sfn.sargs
 }
+
+(* helper: check if a sfun_def is declaration only *)
+let is_func_dec ff = (ff.sbody=[] && ff.slocals=[])
 
 (* helper: print function signature *)
 let print_func_sig sfn =
@@ -114,7 +117,7 @@ and check_call ftbl vtbl fn exp_list =
   let sexp_list = List.map (check_expr ftbl vtbl) exp_list in
   let typ_list = List.map (fst) sexp_list in
   let found, fnsg = find_func eq_t ftbl {fsname=fn; fsargs=typ_list} in
-  if found then fnsg.sreturn, SCall(fn, sexp_list)
+  if found && not (is_func_dec fnsg) then fnsg.sreturn, SCall(fn, sexp_list)
   else raise (Bad_type ("function " ^ fn ^ " not defined"))
 and check_expr ftbl vtbl exp = match exp with
     Intval x -> Int, SIntval x
@@ -230,24 +233,6 @@ and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stm
      check function definition
    arguments: Sast.sfun_def list, Ast.func_def
    return: Sast.sfun_def list *)
-let is_func_dec ff = (ff.sbody=[] && ff.slocals=[])
-
-(* check a new function definition
-   arguments: @eq - the equal operator : can be (=) or eq_t
-              @new_func - the new function definition/declaration
-              @func_table - function table
-   return: (true, sfun_def) on found, (false, _) on not_found 
-let check_fundef eq new_func func_table =
-  let dummy = {sreturn=Void; sfname="_"; sargs=[]; slocals=[]; sbody=[]} in
-  let func_eq f1 fd =
-    let f2 = sig_sfunc fd in
-    f1.fsname = f2.fsname &&
-    try List.for_all2 eq f1.fsargs f2.fsargs
-    with Invalid_argument _ -> false
-  in
-  try true, (List.find (func_eq fnsg) func_table)
-  with Not_found -> false, dummy *)
-
 let check_fundef new_ftbl ftbl new_func_def =
   let sig_func fn = {
     fsname = fn.fname;
