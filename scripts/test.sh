@@ -24,7 +24,7 @@ cp $PWD/../src/libraryFiles/buckcal_lib.bc $BAD_DIR
 
 
 ## run good cases
-for (( i =  0; i <= 45; i++))
+for (( i =  0; i <= 48; i++))
 do
 	cd $GOOD_DIR
 	#echo $TRANS
@@ -48,7 +48,7 @@ do
 done
 
 ## run bad cases
-for (( i =  0; i <= 52; i++))
+for (( i =  0; i <= 64; i++))
 do
 	cd $BAD_DIR
 	$TRANS sample${i}.bc $CFILE_DIR/badsample${i}.cpp \

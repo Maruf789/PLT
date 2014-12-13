@@ -1,0 +1,6 @@
+#test built-in function abs
+import 'buckcal_lib.bc'
+double x:1.1;
+disp abs(x);
+x:-1.1;
+disp abs(x);

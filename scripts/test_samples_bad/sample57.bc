@@ -1,0 +1,3 @@
+#test built-in function sum_row
+double mat result:sum_row({1,2,3 ; 4,5,6 ; 7,8});
+disp mat;

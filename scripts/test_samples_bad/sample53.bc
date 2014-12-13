@@ -1,0 +1,2 @@
+#test built-in function abs
+disp abs('a');
