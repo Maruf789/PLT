@@ -21,10 +21,10 @@ let find_var var_table name =
 
 (* general type equality - int = double *)
 let eq_t t1 t2 = match t1, t2 with
-    Int, Double | Double, Int | IntMat, DoubleMat | DoubleMat, IntMat -> true
-  | Int, IntMat | Int, DoubleMat | Double, IntMat | Double, DoubleMat -> true
-  | x, y when x==y -> true 
-  | _, _ -> false
+    Int, Double | Double, Int -> true
+  (*| IntMat, DoubleMat | DoubleMat, IntMat -> true*)
+  (*| Int, IntMat | Int, DoubleMat | Double, IntMat | Double, DoubleMat -> true*)
+  | x, y -> if x=y then true else false
 
 
 (* function table *)
@@ -91,14 +91,19 @@ let rec check_lvalue ftbl vtbl lv = match lv with
     if f then t, (SId x)
     else raise (Bad_type ("variable " ^ x ^ " not defined"))
   | MatSub(x, e1, e2) -> let f, t = find_var vtbl x in
-    if f then let new_t = match t with
-                            IntMat -> Int
-                          | DoubleMat -> Double
-                          | StringMat -> String
-                          | _ -> raise (Bad_type ("bad matsub operator"))
-    in new_t, (SMatSub (x,
-              (check_expr ftbl vtbl e1),
-              (check_expr ftbl vtbl e2)))
+    if f then begin
+      let new_t = match t with
+                    IntMat -> Int
+                  | DoubleMat -> Double
+                  | StringMat -> String
+                  | _ -> raise (Bad_type ("bad matsub operator"))
+      in
+      let te1, se1 = check_expr ftbl vtbl e1 in
+      let te2, se2 = check_expr ftbl vtbl e2 in
+      if te1 = Int && te2 = Int then
+        (new_t, SMatSub (x, (te1, se1), (te2, se2)))
+      else raise (Bad_type ("Submat index must be int"))
+    end
     else raise (Bad_type ("variable " ^ x ^ " not defined"))
 and check_matval ftbl vtbl matx =
   let check_exp_list exp_list_list =
@@ -178,8 +183,8 @@ let rec check_local_var_def ftbl vtbl local_var_list = match local_var_list with
    return: sstmt list *)
 let rec check_condstmts ftbl vtbl ret_type loop_flag cs = match cs with(* translate a list of elif *)
     [] -> [] 
-  | hd::tl -> let tmp,sstmts = (check_stmts ftbl vtbl ret_type false false loop_flag hd.stmts) in
-    { scond=(check_expr ftbl vtbl hd.cond) ; 
+  | hd::tl -> let _, sstmts = (check_stmts ftbl vtbl ret_type false false loop_flag hd.stmts) in
+    { scond = (check_expr ftbl vtbl hd.cond) ;
       sstmts
     } :: (check_condstmts ftbl vtbl ret_type loop_flag tl )
 and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stmts with
@@ -194,7 +199,7 @@ and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stm
           if fst ret == ret_type 
           then (if (main_flag) then true,SReturn ret else false,SReturn ret)
           else raise (Bad_type "mismatch with function's return type")
-        | If (c, cl, ss) -> let tmp, check_ss = check_stmts ftbl vtbl ret_type false ret_flag loop_flag ss  in
+        | If (c, cl, ss) -> let _, check_ss = check_stmts ftbl vtbl ret_type false ret_flag loop_flag ss  in
           ret_flag, SIf ((List.hd (check_condstmts ftbl vtbl ret_type loop_flag [c] )), 
                          (check_condstmts ftbl vtbl ret_type loop_flag cl),
                          check_ss
@@ -202,7 +207,7 @@ and check_stmts ftbl vtbl ret_type main_flag ret_flag loop_flag stmts= match stm
         | CntFor (s, e, ss) -> (
             let f, st = find_var vtbl s in
             let et, e = check_expr ftbl vtbl e in
-            let dummy, sss = check_stmts ftbl vtbl ret_type false ret_flag true ss  in
+            let _, sss = check_stmts ftbl vtbl ret_type false ret_flag true ss  in
             let _ = if f then () else raise (Bad_type (s ^ "undefined")) in
             let et_t = match et with
                 IntMat -> Int
@@ -269,7 +274,7 @@ let check_fundef new_ftbl ftbl new_func_def =
     then raise (Bad_type ("Function '" ^ new_sname ^ "' return statement missing"))
     else ()
   in
-  let found, fbody = find_func (=) (ftbl) new_fnsg in
+  let found, _ = find_func (=) (ftbl) new_fnsg in
   let foundnew, fbodynew = find_func (=) (new_ftbl) new_fnsg in
   (*let _ = eprintf "%s: %s" new_sname (if found then "found" else "not found") in*)
   match found, foundnew with

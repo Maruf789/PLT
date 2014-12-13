@@ -1,7 +1,6 @@
 open Printf
 open Ast
 
-let return_failure = () (*exit 1*)
 
 (* error reporting functions *)
 let loc_err lex_buf =
@@ -56,31 +55,34 @@ let front_end file =
     pvars = prog.pvars; pstms = prog.pstms }
 
 
-(* main function *)
+(* main function. return 0 on success, 1 on failure *)
 let main in_file oc =
   try
     (*let prog = Parser.program Scanner.token lex_buf in*)
     let ast = front_end in_file in
     let sast = Scheck.check ast in
     let tast = Translate.translate sast in
-    Codegen.compile oc tast
+    (Codegen.compile oc tast; 0)
   with
-    Scanner.Scanner_error x -> perror "Scanner error" x; return_failure
-  | Ast.Syntax_error x -> perror "Parser error" x; return_failure
-  | Sast.Bad_type x -> perror "Sast error" x; return_failure
-  | Tast.Not_now x -> perror "Translate error" x; return_failure
-  | Codegen.Not_done x -> perror "Codegen error" x; return_failure
+    Scanner.Scanner_error x -> perror "Scanner error" x; 1
+  | Ast.Syntax_error x -> perror "Parser error" x; 1
+  | Sast.Bad_type x -> perror "Sast error" x; 1
+  | Tast.Not_now x -> perror "Translate error" x; 1
+  | Codegen.Not_done x -> perror "Codegen error" x; 1
 
 (* Shell interface *)
 let _ =
   let argc = Array.length Sys.argv in
-  if argc >= 2 then
-    let oc =
-      let ofile =
-        if argc >= 3 then Sys.argv.(2) else "buckcal_out.cpp"
+  let exit_code =
+    if argc >= 2 then
+      let oc =
+        let ofile =
+          if argc >= 3 then Sys.argv.(2) else "buckcal_out.cpp"
+        in
+        open_out ofile
       in
-      open_out ofile
-    in
-    main Sys.argv.(1) oc
-  else
-    eprintf "Usage: main.bin <input file>\n"; return_failure
+      main Sys.argv.(1) oc
+    else
+      (eprintf "Usage: main.bin <input file>\n"; 1)
+  in
+  exit exit_code

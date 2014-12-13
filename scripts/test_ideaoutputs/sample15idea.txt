@@ -1,1 +1,0 @@
-Parser error: token [, in ./test_samples_bad/sample15.bc line 4,10

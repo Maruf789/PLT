@@ -1,0 +1,1 @@
+Parser error: token [, in sample15.bc line 4,10

@@ -1,2 +1,3 @@
 #test using function in other files
-import 'sample0.bc'
+import 'sample33.bc'
+disp cal(0);

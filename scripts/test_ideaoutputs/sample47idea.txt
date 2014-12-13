@@ -1,1 +1,0 @@
-Sast error: IntMat : String operand types invalid

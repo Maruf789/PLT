@@ -132,7 +132,7 @@ let trans_main_func tid stmts =
   let _, main_stmts = trans_stmts tid stmts in
   match (List.rev main_stmts) with
     [] -> [IReturn (IIntval 0)]
-  | hd::tl -> match hd with IReturn _ -> main_stmts
+  | hd::_ -> match hd with IReturn _ -> main_stmts
                           | _ -> main_stmts @ [IReturn int0]
 
 (* translate function declaration/definition *)

@@ -1,0 +1,6 @@
+/Users/lanyang/Documents/PLT/scripts/cfiles/goodsample6.cpp:4:9: warning: implicit conversion from 'double' to 'int' changes value from 6.6 to 6 [-Wliteral-conversion]
+int a = 6.600000;
+    ~   ^~~~~~~~
+1 warning generated.
+6
+6
