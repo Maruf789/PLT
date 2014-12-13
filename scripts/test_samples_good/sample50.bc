@@ -1,0 +1,10 @@
+# test built-in function slice
+string sx:"helloworld";
+int ix;
+ix:strlen(sx);
+disp sx;
+disp ix;
+sx:slice(sx,2,5);
+ix:strlen(sx);
+disp sx;
+disp ix;

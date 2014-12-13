@@ -1,0 +1,4 @@
+# test built-in function slice
+string sx:"helloworld";
+sx:slice(sx,2,20);
+disp sx;
