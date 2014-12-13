@@ -1,1 +1,4 @@
-Parser error: import sample43.bc: No such file or directory
+hello
+hello
+hello
+hello
