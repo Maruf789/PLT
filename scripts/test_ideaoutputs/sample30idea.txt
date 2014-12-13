@@ -1,1 +1,1 @@
-error
+Sast error: Function 'hello' return type different with declaration
