@@ -43,7 +43,7 @@ let front_end file =
                     let prog = Parser.program Scanner.token lex_buf in
                     let newfiles = prog.pimps in
                     let newq = List.fold_left (add_queue visited) tl newfiles in
-                    let funlist = funlist @ prog.pfuns in
+                    let funlist = prog.pfuns @ funlist in
                     bfs newq visited funlist
                   with
                     Parsing.Parse_error -> raise (Syntax_error (loc_err lex_buf))
