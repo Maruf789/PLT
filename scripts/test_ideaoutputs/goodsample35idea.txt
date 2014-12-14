@@ -1,0 +1,11 @@
+	foods clothes appliances		
+John	[1,		2,	 	3]
+Jay		[4,		5,	 	6]
+
+	John Josh Jay		
+a	[1.1, 2.2, 3.3]
+b	[4.4, 5.5, 6.6]
+
+		a 	b	c		
+John	[a, b, c]
+Jay		[d, e, f] 

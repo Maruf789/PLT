@@ -1,1 +1,16 @@
-Sast error: "+" bad operand type
+4
+15
+6
+		col1 col2 col3
+row1	[100,	2,	3]
+row2	[4,		5,	6]
+row3	[7,		8,	9]
+2.1
+6.1
+		col1 	col2
+row1	[100.1,	2.2]
+row2	[3.3,	4.4]
+cd3.3
+		col1 	col2
+row1	[zzz,	cd]
+row2	[ef,	gh]
