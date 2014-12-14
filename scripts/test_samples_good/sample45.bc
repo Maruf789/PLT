@@ -20,4 +20,3 @@ disp (f and t or f);
 disp (f and (t or f));
 disp (not f and t);
 disp (not f or t);
-
