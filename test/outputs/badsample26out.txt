@@ -1,1 +1,0 @@
-Sast error: Int : Void operand types invalid

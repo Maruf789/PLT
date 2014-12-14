@@ -1,4 +1,0 @@
-helloworld
-10
-loworl
-6

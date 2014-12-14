@@ -1,1 +1,0 @@
-setcol: matrix to be set does not have matching row number

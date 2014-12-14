@@ -1,1 +1,0 @@
-Sast error: Continue should only be used inside a loop

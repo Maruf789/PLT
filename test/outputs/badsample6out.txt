@@ -1,1 +1,0 @@
-Parser error: token not, in sample6.bc line 5,5

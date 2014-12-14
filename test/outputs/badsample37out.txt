@@ -1,1 +1,0 @@
-rowname: name matrix does not have enough entries

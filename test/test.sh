@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# this scripts run all the test samples
+# this script run all the test samples
 # ./test.sh <path to compiler>
 
 # command shorthand

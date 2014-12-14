@@ -1,1 +1,0 @@
-Parser error: token import, in sample3.bc line 2,5

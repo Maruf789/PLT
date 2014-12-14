@@ -1,1 +1,0 @@
-Sast error: function avg_row not defined

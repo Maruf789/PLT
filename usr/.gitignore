@@ -1,6 +1,6 @@
-*.hpp
-*.cpp
-*.hpp
-*.bc
-*.o
-sample.bin
+**/*.hpp
+**/*.cpp
+**/*.o
+**/*.bin
+**/*.bc
+

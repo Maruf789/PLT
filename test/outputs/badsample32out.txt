@@ -1,1 +1,0 @@
-Parser error: token , in sample32.bc line 22,1

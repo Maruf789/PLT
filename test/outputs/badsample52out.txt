@@ -1,1 +1,0 @@
-Scanner error: illegal character ", in sample52.bc line 7,6

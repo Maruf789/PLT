@@ -1,0 +1,10 @@
+BuckCal User Test Folder
+
+This is the folder for the convenience of user to compile and run BuckCal program.
+
+./compile.sh <main buckcal source file> <output executable name>
+
+Note:
+Only the main executable buckcal file should be provided to the script, imported files should present, but their names are not required for compile.sh.
+buckcal_lib.bc has to be present when used, but it does not have to be copied by user, the script will do that
+
