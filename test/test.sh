@@ -3,6 +3,13 @@
 # this scripts run all the test samples
 # ./test.sh <path to compiler>
 
+# command shorthand
+PWD=`pwd`
+TRANS=$PWD/$1
+NU=/dev/null
+DIF="diff -b -B"
+CPPC=g++
+
 # path setting
 GOOD_DIR=$PWD/test_samples_good
 BAD_DIR=$PWD/test_samples_bad
@@ -11,13 +18,7 @@ OUTPUT_DIR=$PWD/outputs
 CFILE_DIR=$PWD/cfiles
 BINFILE=$PWD/binfiles
 
-# command shorthand
-PWD=`pwd`
-TRANS=$PWD/$1
-NU=/dev/null
-DIF="diff -b -B"
-CPPC=g++
-
+# object files
 CLIBOBJ="$CFILE_DIR/buckcal_mat.o $CFILE_DIR/buckcal_core.o"
 
 # checking argument
