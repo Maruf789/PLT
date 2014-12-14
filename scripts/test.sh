@@ -24,7 +24,7 @@ cp $PWD/../src/libraryFiles/buckcal_lib.bc $BAD_DIR
 
 
 ## run good cases
-for (( i =  0; i <= 48; i++))
+for (( i =  46; i <= 55; i++))
 do
 	cd $GOOD_DIR
 	#echo $TRANS
