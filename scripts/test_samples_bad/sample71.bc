@@ -1,5 +1,5 @@
 # test built-in function setcol
 int mat ix1:{1,2,3;4,5,6;6,7,8};
 int mat ix2:{1,2,3,4};
-ix1:setcol(ix1, 2, ix2);
+setcol(ix1, 2, ix2);
 disp ix1;

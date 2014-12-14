@@ -1,0 +1,2 @@
+libc++abi.dylib: terminating with uncaught exception of type std::invalid_argument: getcol: argument not in col range
+Abort trap: 6

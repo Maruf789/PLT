@@ -1,0 +1,2 @@
+libc++abi.dylib: terminating with uncaught exception of type std::invalid_argument: getrow: argument not in row range
+Abort trap: 6

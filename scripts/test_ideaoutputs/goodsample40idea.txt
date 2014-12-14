@@ -1,9 +1,8 @@
 sum of rows:
-		col1
-row1	[6]
-row2	[15]
-row3	[24]
-row4	[33]
+	col1	col2	col3	
+r1	[22,	26,	30]
+
 sum of cols:
-		col1 col2 col3
-row1	 [12,  15,  18]   
+	col1	col2	col3	col4	
+r1	[6,	15,	24,	33]
+

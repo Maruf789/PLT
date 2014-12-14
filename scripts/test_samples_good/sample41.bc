@@ -6,5 +6,5 @@ double mat mx : {1, 2, 3 ; 4, 5, 6};
 
 disp 'sum of rows:';
 disp sum_row(mx);
-disp 'sum of cols:'
+disp 'sum of cols:';
 disp sum_col(mx);
