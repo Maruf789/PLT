@@ -1,0 +1,1 @@
+Parser error: token int, in sample2.bc line 2,5

@@ -1,0 +1,1 @@
+Sast error: Function 'helper' return statement missing

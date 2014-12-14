@@ -1,0 +1,23 @@
+BuckCal Automated Test Folder
+
+= Contents =
+
+- test.sh: test commands
+
+- /test_samples_good: store good test cases that will compile and execute normally
+
+- /test_samples_bad: store bad test cases that will not compile or will throw an runtime error when executed
+
+- /test_ideal_outputs: store expected output for each test sample
+
+- /cfiles /binfiles /outputs: store compiled c++ files, executables and test case output, created when running test.sh
+
+= Usage =
+
+In main folder:
+$ make
+$ make test
+
+Or in test:
+$ ./test.sh ../src/main.bin
+

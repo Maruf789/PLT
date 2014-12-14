@@ -1,0 +1,8 @@
+sum of rows:
+	col1	col2	col3	
+r1	[5,	7,	9]
+
+sum of cols:
+	col1	col2	
+r1	[6,	15]
+

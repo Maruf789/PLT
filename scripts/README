@@ -1,9 +1,0 @@
-test.sh: test commands
-/test_samples: store test cases, like sample0.bc
-/test_outputs: store stderr output when compiling test samples, like 
-sample0out.txt
-/test_ideaoutputs: store correct stderr output for each test samples, like
-sample0idea.txt
-
-run ./make test
-check /test_outputs

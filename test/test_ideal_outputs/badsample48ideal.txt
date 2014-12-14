@@ -1,0 +1,1 @@
+Sast error: Double : String operand types invalid

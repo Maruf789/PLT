@@ -1,0 +1,1 @@
+Sast error: Function 'hello' return statement missing
