@@ -10,11 +10,10 @@ CFILE_DIR=$PWD/cfiles
 BINFILE=$PWD/binfiles
 TRANS=$PWD/$1
 
-mkdir -f OUTPUT_DIR CFILE_DIR BINFILE
-
 NU=/dev/null
 DIF="diff -b -B"
 
+mkdir $OUTPUT_DIR $CFILE_DIR $BINFILE > NU
 ## copy C++ header here
 
 #g++ -c $CFILE_DIR/buckcal_mat.cpp -o $CFILE_DIR/buckcal_mat.o
