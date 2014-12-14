@@ -1,10 +1,10 @@
 # test built-in function setcol
 int mat ix1:{1,2,3;4,5,6;6,7,8};
-int mat ix2:{1,2,3};
+int mat ix2:{1;2;3};
 double mat dx1:{1.1,2.2,3.3;4.4,5.5,6.6;7.7,8.8,9.9};
-double mat dx2:{1.1,2.2,3.3};
+double mat dx2:{1.1;2.2;3.3};
 string mat sx1:{'a','b','c';'d','e','f';'i','j','k'};
-string mat sx2:{'a','b','c'};
+string mat sx2:{'a';'b';'c'};
 setcol(ix1, 2, ix2);
 setcol(dx1, 2, dx2);
 setcol(sx1, 2, sx2);
