@@ -4,3 +4,4 @@ def double cal(double) do
 fed
 int i:0;
 i: cal(1.1);
+disp i;

@@ -4,8 +4,8 @@ import 'buckcal_lib.bc'
 
 double mat mx : {1, 2, 3 ; 4, 5, 6};
 
-disp "avg of rows:"
+disp "sum of rows:"
 disp sum_row(mx);
 
-disp "avg of cols:"
+disp "sum of cols:"
 disp sum_col(mx);
