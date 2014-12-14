@@ -1,5 +1,5 @@
 # test built-in function slice
-string sx:"helloworld";
+string sx:'helloworld';
 int ix;
 ix:strlen(sx);
 disp sx;

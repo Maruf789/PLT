@@ -19,7 +19,5 @@ d: dx[1,1]+ax[2,2];
 disp d;
 dx[1,1]:100.1;
 disp dx;
-s: sx[1,2]+dx[2,1];
-disp s; 
 sx[1,1]:'zzz';
 disp sx;
