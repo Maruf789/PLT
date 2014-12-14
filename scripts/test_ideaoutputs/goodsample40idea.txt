@@ -1,1 +1,9 @@
-Scanner error: illegal character ", in sample40.bc line 7,6
+sum of rows:
+		col1
+row1	[6]
+row2	[15]
+row3	[24]
+row4	[33]
+sum of cols:
+		col1 col2 col3
+row1	 [12,  15,  18]   

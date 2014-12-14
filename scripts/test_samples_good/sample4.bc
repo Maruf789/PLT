@@ -1,3 +1,5 @@
 #test seperator
 int mat ax: {1, 2; 3, 4};
 int i: (2 + 3) * 4;
+disp ax;
+disp i;

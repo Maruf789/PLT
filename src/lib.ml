@@ -78,28 +78,16 @@ let lib_funs = [
     sargs=[ {vtype=StringMat; vname="mx"}; {vtype=StringMat; vname="n"}; ];
     slocals=[]; sbody=[SEmpty]
   };
-  { sreturn=Void; sfname="init_mat_col";
-    sargs=[ {vtype=IntMat; vname="mx"}; {vtype=StringMat; vname="nc"}; ];
+  { sreturn=IntMat; sfname="init_mat";
+    sargs=[ {vtype=Int; vname="r"}; {vtype=Int; vname="c"}; {vtype=Int; vname="init"}; ];
     slocals=[]; sbody=[SEmpty]
   };
-  { sreturn=Void; sfname="init_mat_col";
-    sargs=[ {vtype=DoubleMat; vname="mx"}; {vtype=StringMat; vname="nc"}; ];
+  { sreturn=DoubleMat; sfname="init_mat";
+    sargs=[ {vtype=Int; vname="r"}; {vtype=Int; vname="c"}; {vtype=Double; vname="init"}; ];
     slocals=[]; sbody=[SEmpty]
   };
-  { sreturn=Void; sfname="init_mat_col";
-    sargs=[ {vtype=StringMat; vname="mx"}; {vtype=StringMat; vname="nc"}; ];
-    slocals=[]; sbody=[SEmpty]
-  };
-  { sreturn=Void; sfname="init_mat_size";
-    sargs=[ {vtype=IntMat; vname="mx"}; {vtype=Int; vname="nrow"}; {vtype=Int; vname="ncol"}; ];
-    slocals=[]; sbody=[SEmpty]
-  };
-  { sreturn=Void; sfname="init_mat_size";
-    sargs=[ {vtype=DoubleMat; vname="mx"}; {vtype=Int; vname="nrow"}; {vtype=Int; vname="ncol"}; ];
-    slocals=[]; sbody=[SEmpty]
-  };
-  { sreturn=Void; sfname="init_mat_size";
-    sargs=[ {vtype=StringMat; vname="mx"}; {vtype=Int; vname="nrow"}; {vtype=Int; vname="ncol"}; ];
+  { sreturn=StringMat; sfname="init_mat";
+    sargs=[ {vtype=Int; vname="r"}; {vtype=Int; vname="c"}; {vtype=String; vname="init"}; ];
     slocals=[]; sbody=[SEmpty]
   };
   { sreturn=String; sfname="string_of_int";
@@ -147,15 +135,59 @@ let lib_funs = [
     slocals=[]; sbody=[SEmpty]
   };
   { sreturn=String; sfname="slice";
-    sargs=[ {vtype=String; vname="x"}; {vtype=IntMat; vname="idx"}; ];
+    sargs=[ {vtype=String; vname="x"}; {vtype=Int; vname="l"}; {vtype=Int; vname="r"}; ];
     slocals=[]; sbody=[SEmpty]
   };
-  { sreturn=DoubleMat; sfname="var_row";
-    sargs=[ {vtype=DoubleMat; vname="mx"}; ];
+  { sreturn=IntMat; sfname="getrow";
+    sargs=[ {vtype=IntMat; vname="mat"}; {vtype=Int; vname="r"}; ];
     slocals=[]; sbody=[SEmpty]
   };
-  { sreturn=DoubleMat; sfname="var_col";
-    sargs=[ {vtype=DoubleMat; vname="mx"}; ];
+  { sreturn=DoubleMat; sfname="getrow";
+    sargs=[ {vtype=DoubleMat; vname="mat"}; {vtype=Int; vname="r"}; ];
+    slocals=[]; sbody=[SEmpty]
+  };
+  { sreturn=StringMat; sfname="getrow";
+    sargs=[ {vtype=StringMat; vname="mat"}; {vtype=Int; vname="r"}; ];
+    slocals=[]; sbody=[SEmpty]
+  };
+  { sreturn=IntMat; sfname="getcol";
+    sargs=[ {vtype=IntMat; vname="mat"}; {vtype=Int; vname="c"}; ];
+    slocals=[]; sbody=[SEmpty]
+  };
+  { sreturn=DoubleMat; sfname="getcol";
+    sargs=[ {vtype=DoubleMat; vname="mat"}; {vtype=Int; vname="c"}; ];
+    slocals=[]; sbody=[SEmpty]
+  };
+  { sreturn=StringMat; sfname="getcol";
+    sargs=[ {vtype=StringMat; vname="mat"}; {vtype=Int; vname="c"}; ];
+    slocals=[]; sbody=[SEmpty]
+  };
+  { sreturn=IntMat; sfname="setrow";
+    sargs=[ {vtype=IntMat; vname="mat"}; {vtype=Int; vname="r"}; {vtype=IntMat; vname="set"}; ];
+    slocals=[]; sbody=[SEmpty]
+  };
+  { sreturn=DoubleMat; sfname="setrow";
+    sargs=[ {vtype=DoubleMat; vname="mat"}; {vtype=Int; vname="r"}; {vtype=DoubleMat; vname="set"}; ];
+    slocals=[]; sbody=[SEmpty]
+  };
+  { sreturn=StringMat; sfname="setrow";
+    sargs=[ {vtype=StringMat; vname="mat"}; {vtype=Int; vname="r"}; {vtype=StringMat; vname="set"}; ];
+    slocals=[]; sbody=[SEmpty]
+  };
+   { sreturn=IntMat; sfname="setcol";
+    sargs=[ {vtype=IntMat; vname="mat"}; {vtype=Int; vname="c"}; {vtype=IntMat; vname="set"}; ];
+    slocals=[]; sbody=[SEmpty]
+  };
+  { sreturn=DoubleMat; sfname="setcol";
+    sargs=[ {vtype=DoubleMat; vname="mat"}; {vtype=Int; vname="c"}; {vtype=DoubleMat; vname="set"}; ];
+    slocals=[]; sbody=[SEmpty]
+  };
+  { sreturn=StringMat; sfname="setcol";
+    sargs=[ {vtype=StringMat; vname="mat"}; {vtype=Int; vname="c"}; {vtype=StringMat; vname="set"}; ];
+    slocals=[]; sbody=[SEmpty]
+  };
+  { sreturn=StringMat; sfname="init_mat";
+    sargs=[ {vtype=StringMat; vname="mat"}; {vtype=Int; vname="c"}; {vtype=StringMat; vname="set"}; ];
     slocals=[]; sbody=[SEmpty]
   };
 ]
