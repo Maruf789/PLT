@@ -163,43 +163,11 @@ double_mat rowcat(double_mat mx1, double_mat mx2) {
 }
 
 int_mat rowcat(int_mat mx1, double_mat mx2) {
-	if (mx1.rows == 0 || mx1.cols == 0)
-		return mx2;
-	if (mx2.rows == 0 || mx2.cols == 0)
-		return mx1;
-	if (mx1.cols != mx2.cols)
-		throw std::invalid_argument("rowcat: matrix does not have the same number of columns");
-	int *array = new int[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
-	for (int i = 0; i < mx1.rows * mx1.cols; i++)
-		array[i] = mx1.m[i];
-	for (int i = 0; i < mx2.rows * mx2.cols; i++)
-		array[i + mx1.rows * mx1.cols] = (int) mx2.m[i];
-	int_mat mat(array, mx1.rows + mx2.rows, mx1.cols);
-	delete[] array;
-	mat.colnames = mx1.colnames;
-	mat.rownames = mx1.rownames;
-	mat.rownames.insert(mat.rownames.end(), mx2.rownames.begin(), mx2.rownames.end());
-	return mat;
+	return rowcat(mx1, (int_mat) mx2);
 }
 
 double_mat rowcat(double_mat mx1, int_mat mx2) {
-	if (mx1.rows == 0 || mx1.cols == 0)
-		return mx2;
-	if (mx2.rows == 0 || mx2.cols == 0)
-		return mx1;
-	if (mx1.cols != mx2.cols)
-		throw std::invalid_argument("rowcat: matrix does not have the same number of columns");
-	double *array = new double[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
-	for (int i = 0; i < mx1.rows * mx1.cols; i++)
-		array[i] = mx1.m[i];
-	for (int i = 0; i < mx2.rows * mx2.cols; i++)
-		array[i + mx1.rows * mx1.cols] = mx2.m[i];
-	double_mat mat(array, mx1.rows + mx2.rows, mx1.cols);
-	delete[] array;
-	mat.colnames = mx1.colnames;
-	mat.rownames = mx1.rownames;
-	mat.rownames.insert(mat.rownames.end(), mx2.rownames.begin(), mx2.rownames.end());
-	return mat;
+	return rowcat(mx1, (double_mat) mx2);
 }
 
 string_mat rowcat(string_mat mx1, string_mat mx2) {
@@ -267,47 +235,11 @@ double_mat colcat(double_mat mx1, double_mat mx2) {
 }
 
 int_mat colcat(int_mat mx1, double_mat mx2) {
-	if (mx1.rows == 0 || mx1.cols == 0)
-		return mx2;
-	if (mx2.rows == 0 || mx2.cols == 0)
-		return mx1;
-	if (mx1.rows != mx2.rows)
-		throw std::invalid_argument("colcat: matrix does not have the same number of rows");
-	int *array = new int[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
-	for (int i = 0; i < mx1.rows; i++) {
-		for (int j = 0; j < mx1.cols; j++)
-			array[i * (mx1.cols + mx2.cols) + j] = mx1.m[i * mx1.cols + j];
-		for (int j = 0; j < mx2.cols; j++)
-			array[i * (mx1.cols + mx2.cols) + mx1.cols + j] = (int) mx2.m[i * mx2.cols + j];
-	}
-	int_mat mat(array, mx1.rows, mx1.cols + mx2.cols);
-	delete[] array;
-	mat.rownames = mx1.rownames;
-	mat.colnames = mx1.colnames;
-	mat.colnames.insert(mat.colnames.end(), mx2.colnames.begin(), mx2.colnames.end());
-	return mat;
+	return colcat(mx1, (int_mat) mx2);
 }
 
 double_mat colcat(double_mat mx1, int_mat mx2) {
-	if (mx1.rows == 0 || mx1.cols == 0)
-		return mx2;
-	if (mx2.rows == 0 || mx2.cols == 0)
-		return mx1;
-	if (mx1.rows != mx2.rows)
-		throw std::invalid_argument("colcat: matrix does not have the same number of rows");
-	double *array = new double[mx1.rows * mx1.cols + mx2.rows * mx2.cols];
-	for (int i = 0; i < mx1.rows; i++) {
-		for (int j = 0; j < mx1.cols; j++)
-			array[i * (mx1.cols + mx2.cols) + j] = mx1.m[i * mx1.cols + j];
-		for (int j = 0; j < mx2.cols; j++)
-			array[i * (mx1.cols + mx2.cols) + mx1.cols + j] = mx2.m[i * mx2.cols + j];
-	}
-	double_mat mat(array, mx1.rows, mx1.cols + mx2.cols);
-	delete[] array;
-	mat.rownames = mx1.rownames;
-	mat.colnames = mx1.colnames;
-	mat.colnames.insert(mat.colnames.end(), mx2.colnames.begin(), mx2.colnames.end());
-	return mat;
+	return colcat(mx1, (double_mat) mx2);
 }
 
 string_mat colcat(string_mat mx1, string_mat mx2) {
@@ -386,10 +318,10 @@ int strlen(string x) {
 	return x.length();
 }
 
-string slice(string x, int_mat idx) {
-	if (idx.rows > 1 || idx.cols != 2)
-		throw std::invalid_argument("slice: two elements are required for string range");
-	return x.substr(idx.m[0] + 1, idx.m[1] + 1);
+string slice(string x, int l, int r) {
+	if (r <= l || l <= 0 || r <= 0 || l > (int) x.length() || r > (int) x.length() + 1)
+		throw std::invalid_argument("slice: invalid range");
+	return x.substr(l + 1, r + 1);
 }
 
 /* get or set row/col */
@@ -432,7 +364,7 @@ string_mat getrow(string_mat mat, int r) {
 	return new_mat;
 }
 
-void setrow(int_mat mat, int r, int_mat set) {
+void setrow(int_mat &mat, int r, int_mat set) {
 	if (r > mat.rows || r < 1)
 		throw std::invalid_argument("setrow: argument row not in row range");	
 	if (mat.cols != set.cols)
@@ -444,7 +376,7 @@ void setrow(int_mat mat, int r, int_mat set) {
 	mat.rownames[r - 1] = set.rownames[0];
 }
 
-void setrow(double_mat mat, int r, double_mat set) {
+void setrow(double_mat &mat, int r, double_mat set) {
 	if (r > mat.rows || r < 1)
 		throw std::invalid_argument("setrow: argument row not in row range");	
 	if (mat.cols != set.cols)
@@ -456,7 +388,7 @@ void setrow(double_mat mat, int r, double_mat set) {
 	mat.rownames[r - 1] = set.rownames[0];
 }
 
-void setrow(string_mat mat, int r, string_mat set) {
+void setrow(string_mat &mat, int r, string_mat set) {
 	if (r > mat.rows || r < 1)
 		throw std::invalid_argument("setrow: argument row not in row range");	
 	if (mat.cols != set.cols)
@@ -466,6 +398,14 @@ void setrow(string_mat mat, int r, string_mat set) {
 	for (int i = 0; i < mat.cols; i++)
 		mat.m[(r - 1) * mat.cols + i] = set.m[i];
 	mat.rownames[r - 1] = set.rownames[0];
+}
+
+void setrow(int_mat &mat, int r, double_mat set) {
+	setrow(mat, r, (int_mat) set);
+}
+
+void setrow(double_mat &mat, int r, int_mat set) {
+	setrow(mat, r, (double_mat) set);
 }
 
 int_mat getcol(int_mat mat, int c) {
@@ -507,7 +447,7 @@ string_mat getcol(string_mat mat, int c) {
 	return new_mat;
 }
 
-void setcol(int_mat mat, int c, int_mat set) {
+void setcol(int_mat &mat, int c, int_mat set) {
 	if (c > mat.cols || c < 1)
 		throw std::invalid_argument("setcol: argument row not in column range");	
 	if (mat.rows != set.rows)
@@ -519,7 +459,7 @@ void setcol(int_mat mat, int c, int_mat set) {
 	mat.colnames[c - 1] = set.colnames[0];
 }
 
-void setcol(double_mat mat, int c, double_mat set) {
+void setcol(double_mat &mat, int c, double_mat set) {
 	if (c > mat.cols || c < 1)
 		throw std::invalid_argument("setcol: argument row not in column range");	
 	if (mat.rows != set.rows)
@@ -531,7 +471,7 @@ void setcol(double_mat mat, int c, double_mat set) {
 	mat.colnames[c - 1] = set.colnames[0];
 }
 
-void setcol(string_mat mat, int c, string_mat set) {
+void setcol(string_mat &mat, int c, string_mat set) {
 	if (c > mat.cols || c < 1)
 		throw std::invalid_argument("setcol: argument row not in column range");	
 	if (mat.rows != set.rows)
@@ -541,6 +481,14 @@ void setcol(string_mat mat, int c, string_mat set) {
 	for (int i = 0; i < mat.rows; i++)
 		mat.m[i * mat.cols + (c - 1)] = set.m[i];
 	mat.colnames[c - 1] = set.colnames[0];
+}
+
+void setcol(int_mat &mat, int c, double_mat set) {
+	setcol(mat, c, (int_mat) set);
+}
+
+void setcol(double_mat &mat, int c, int_mat set) {
+	setcol(mat, c, (double_mat) set);
 }
 
 /* init matrixes */

@@ -145,24 +145,28 @@ void colname(string_mat &mx, string_mat n);
 
 /* string operations */
 int strlen(std::string x);
-std::string slice(std::string x, int_mat idx);
+std::string slice(std::string x, int l, int r);
 
 /* get or set row/col */
 int_mat getrow(int_mat mat, int r);
 double_mat getrow(double_mat mat, int r);
 string_mat getrow(string_mat mat, int r);
 
-void setrow(int_mat mat, int r, int_mat set);
-void setrow(double_mat mat, int r, double_mat set);
-void setrow(string_mat mat, int r, string_mat set);
+void setrow(int_mat &mat, int r, int_mat set);
+void setrow(double_mat &mat, int r, double_mat set);
+void setrow(string_mat &mat, int r, string_mat set);
+void setrow(int_mat &mat, int r, double_mat set);
+void setrow(double_mat &mat, int r, int_mat set);
 
 int_mat getcol(int_mat mat, int c);
 double_mat getcol(double_mat mat, int c);
 string_mat getcol(string_mat mat, int c);
 
-void setcol(int_mat mat, int c, string_mat set);
-void setcol(double_mat mat, int c, string_mat set);
-void setcol(string_mat mat, int c, string_mat set);
+void setcol(int_mat &mat, int c, int_mat set);
+void setcol(double_mat &mat, int c, double_mat set);
+void setcol(string_mat &mat, int c, string_mat set);
+void setcol(int_mat &mat, int c, double_mat set);
+void setcol(double_mat &mat, int c, int_mat set);
 
 /* init matrixes */
 int_mat init_mat(int r, int c, int init);
