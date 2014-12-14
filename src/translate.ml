@@ -171,7 +171,7 @@ let translate prg =
     ireturn = Iint;
     ifname = "main";
     iargs = [];
-    ibody = var_lines @ stmt_lines
+    ibody = [Itry] @ var_lines @ stmt_lines @ [ICatch]
   } in
   { ivars = []; ifuns = func_lines @ [main_func] }
 

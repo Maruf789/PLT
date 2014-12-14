@@ -162,31 +162,27 @@ let lib_funs = [
     sargs=[ {vtype=StringMat; vname="mat"}; {vtype=Int; vname="c"}; ];
     slocals=[]; sbody=[SEmpty]
   };
-  { sreturn=IntMat; sfname="setrow";
+  { sreturn=Void; sfname="setrow";
     sargs=[ {vtype=IntMat; vname="mat"}; {vtype=Int; vname="r"}; {vtype=IntMat; vname="set"}; ];
     slocals=[]; sbody=[SEmpty]
   };
-  { sreturn=DoubleMat; sfname="setrow";
+  { sreturn=Void; sfname="setrow";
     sargs=[ {vtype=DoubleMat; vname="mat"}; {vtype=Int; vname="r"}; {vtype=DoubleMat; vname="set"}; ];
     slocals=[]; sbody=[SEmpty]
   };
-  { sreturn=StringMat; sfname="setrow";
+  { sreturn=Void; sfname="setrow";
     sargs=[ {vtype=StringMat; vname="mat"}; {vtype=Int; vname="r"}; {vtype=StringMat; vname="set"}; ];
     slocals=[]; sbody=[SEmpty]
   };
-   { sreturn=IntMat; sfname="setcol";
+   { sreturn=Void; sfname="setcol";
     sargs=[ {vtype=IntMat; vname="mat"}; {vtype=Int; vname="c"}; {vtype=IntMat; vname="set"}; ];
     slocals=[]; sbody=[SEmpty]
   };
-  { sreturn=DoubleMat; sfname="setcol";
+  { sreturn=Void; sfname="setcol";
     sargs=[ {vtype=DoubleMat; vname="mat"}; {vtype=Int; vname="c"}; {vtype=DoubleMat; vname="set"}; ];
     slocals=[]; sbody=[SEmpty]
   };
-  { sreturn=StringMat; sfname="setcol";
-    sargs=[ {vtype=StringMat; vname="mat"}; {vtype=Int; vname="c"}; {vtype=StringMat; vname="set"}; ];
-    slocals=[]; sbody=[SEmpty]
-  };
-  { sreturn=StringMat; sfname="init_mat";
+  { sreturn=Void; sfname="setcol";
     sargs=[ {vtype=StringMat; vname="mat"}; {vtype=Int; vname="c"}; {vtype=StringMat; vname="set"}; ];
     slocals=[]; sbody=[SEmpty]
   };

@@ -72,9 +72,11 @@ let rec gen_stmt stmt = match stmt with
   | IWhileHead e -> (sprintf "while (%s) {"  (gen_expr e))
   | IBlockEnd -> "}"
   | IDisp e -> (sprintf "cout << %s << endl;" (gen_expr e))
-  | IContinue -> (sprintf "continue;")
-  | IBreak -> (sprintf "break;")
+  | IContinue -> "continue;"
+  | IBreak -> "break;"
   | ICheck (s, e) -> (sprintf "if (!(%s)) throw invalid_argument(\"%s\");" (gen_expr e) s)
+  | Itry -> "try {"
+  | ICatch -> "} catch (exception & e) { cerr << e.what() << endl; }"
 and gen_stmts stmts = match stmts with
     [] -> []
   | hd::tl -> (gen_stmt hd) :: (gen_stmts tl)
@@ -94,7 +96,7 @@ let rec gen_fundefs fundefs = match fundefs with
 
 let compile oc prg =
   let head_lines =
-    ["#include \"buckcal_mat.hpp\""; "using namespace std;"] 
+    ["#include \"buckcal_mat.hpp\""; "using namespace std;"]
   in
   let var_lines =
     let vars = prg.ivars in

@@ -18,7 +18,6 @@ void init_names(vector<string> &rownames, vector<string> &colnames, int r, int c
 int_mat::int_mat(int *array, int r, int c) {
 	rows = r;
 	cols = c;
-	/* initialize vector of vectors */
 	for (int i = 0; i < r * c; i++)
 		m.push_back(array[i]);
 	init_names(rownames, colnames, rows, cols);
@@ -29,7 +28,6 @@ int_mat::int_mat(const int_mat &in) {
 		return;
 	rows = in.rows;
 	cols = in.cols;
-	/* copy array */
 	m = in.m;
 	rownames = in.rownames;
 	colnames = in.colnames;
@@ -39,7 +37,6 @@ int_mat::int_mat(const double_mat &in) {
 	rows = in.rows;
 	cols = in.cols;
 	m.resize(rows*cols);
-	/* copy array */
 	for (int i = 0; i < rows * cols; i++)
 		m[i] = in.m[i];
 	rownames = in.rownames;
@@ -55,7 +52,6 @@ int_mat & int_mat::operator = (const int_mat &in) {
 		return *this;
 	rows = in.rows;
 	cols = in.cols;
-	/* copy array */
 	m = in.m;
 	rownames = in.rownames;
 	colnames = in.colnames;
@@ -63,182 +59,117 @@ int_mat & int_mat::operator = (const int_mat &in) {
 }
 
 int_mat & int_mat::operator = (const double_mat &in) {
-	rows = in.rows;
-	cols = in.cols;
-	m.resize(rows*cols);
-	/* copy array */
-	for (int i = 0; i < rows * cols; i++)
-		m[i] = in.m[i];
-	rownames = in.rownames;
-	colnames = in.colnames;
-	return *this;
+	return operator = ((int_mat) in);
 }
 
 int_mat int_mat::operator + (const int_mat &in) {
 	int_mat result = *this;
-
 	if (rows != in.rows || cols != in.cols)
 		throw std::invalid_argument("operator '+': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] += in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 int_mat int_mat::operator + (const int &in) {
 	int_mat result = *this;
-
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] += in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 int_mat int_mat::operator - (const int_mat &in) {
 	int_mat result = *this;
-
 	if (rows != in.rows || cols != in.cols)
 		throw std::invalid_argument("operator '-': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] -= in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 int_mat int_mat::operator - (const int &in) {
 	int_mat result = *this;
-
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] -= in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 int_mat int_mat::operator * (const int_mat &in) {
 	int_mat result = *this;
-
 	if (rows != in.rows || cols != in.cols)
 		throw std::invalid_argument("operator '*': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] *= in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 int_mat int_mat::operator * (const int &in) {
 	int_mat result = *this;
-
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] *= in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 int_mat int_mat::operator / (const int_mat &in) {
 	int_mat result = *this;
-
 	if (rows != in.rows || cols != in.cols)
 		throw std::invalid_argument("operator '/': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] /= in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 int_mat int_mat::operator / (const int &in) {
 	int_mat result = *this;
-
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] /= in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 double_mat int_mat::operator + (const double_mat &in) {
-	double_mat result = *this;
-
-	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("operator '+': matrixes dimensions do not match");
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] = double(this->m[i]) + in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	double_mat result = (double_mat) *this;
+	return result.operator + (in);
 }
 
 double_mat int_mat::operator + (const double &in) {
-	double_mat result = *this;
-
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] += in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	double_mat result = (double_mat) *this;
+	return result.operator + (in);
 }
 
 double_mat int_mat::operator - (const double_mat &in) {
-	double_mat result = *this;
-
-	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("operator '-': matrixes dimensions do not match");
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] -= in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	double_mat result = (double_mat) *this;
+	return result.operator - (in);
 }
 
 double_mat int_mat::operator - (const double &in) {
-	double_mat result = *this;
-
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] -= in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	double_mat result = (double_mat) *this;
+	return result.operator - (in);
 }
 
 double_mat int_mat::operator * (const double_mat &in) {
-	double_mat result = *this;
-
-	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("operator '*': matrixes dimensions do not match");
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] *= in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	double_mat result = (double_mat) *this;
+	return result.operator * (in);
 }
 
 double_mat int_mat::operator * (const double &in) {
-	double_mat result = *this;
-
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] *= in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	double_mat result = (double_mat) *this;
+	return result.operator * (in);
 }
 
 double_mat int_mat::operator / (const double_mat &in) {
-	double_mat result = *this;
-
-	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("operator '/': matrixes dimensions do not match");
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] /= in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	double_mat result = (double_mat) *this;
+	return result.operator / (in);
 }
 
 double_mat int_mat::operator / (const double &in) {
-	double_mat result = *this;
-
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] /= in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	double_mat result = (double_mat) *this;
+	return result.operator / (in);
 }
 
 ostream & operator << (ostream &sys, const int_mat &in) {
 	sys << "\t";
-	for (int i = 0; i < in.cols; i++) {
+	for (int i = 0; i < in.cols; i++)
 		sys << in.colnames[i] << "\t";
-	}
 	sys << endl;
 	for (int i = 0; i < in.rows; i++) {
 		sys << in.rownames[i] << "\t[";
@@ -255,7 +186,6 @@ ostream & operator << (ostream &sys, const int_mat &in) {
 double_mat::double_mat(double *array, int r, int c) {
 	rows = r;
 	cols = c;
-	/* initialize vector of vectors */
 	for (int i = 0; i < r * c; i++)
 		m.push_back(array[i]);
 	init_names(rownames, colnames, rows, cols);
@@ -266,7 +196,6 @@ double_mat::double_mat(const double_mat &in) {
 		return;
 	rows = in.rows;
 	cols = in.cols;
-	/* copy array */
 	m = in.m;
 	rownames = in.rownames;
 	colnames = in.colnames;
@@ -275,7 +204,6 @@ double_mat::double_mat(const int_mat &in) {
 	rows = in.rows;
 	cols = in.cols; 
 	m.resize(rows*cols);
-	/* copy array */
 	for (int i = 0; i < rows * cols; i++)
 		m[i] = in.m[i];
 	rownames = in.rownames;
@@ -296,181 +224,108 @@ double_mat & double_mat::operator = (const double_mat &in) {
 	return *this;
 }
 double_mat & double_mat::operator = (const int_mat &in) {
-	rows = in.rows;
-	cols = in.cols;
-	m.resize(rows*cols);
-	/* copy array */
-	for (int i = 0; i < rows * cols; i++)
-		m[i] = in.m[i];
-	rownames = in.rownames;
-	colnames = in.colnames;
-	return *this;
+	return operator = ((double_mat) in);
 }
 double_mat double_mat::operator + (const double_mat &in) {
 	double_mat result = *this;
-
 	if (rows != in.rows || cols != in.cols)
 		throw std::invalid_argument("operator '+': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] += in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 double_mat double_mat::operator + (const double &in) {
 	double_mat result = *this;
-
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] += in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 double_mat double_mat::operator - (const double_mat &in) {
 	double_mat result = *this;
-
 	if (rows != in.rows || cols != in.cols)
 		throw std::invalid_argument("operator '-': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] -= in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 double_mat double_mat::operator - (const double &in) {
 	double_mat result = *this;
-
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] -= in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 double_mat double_mat::operator * (const double_mat &in) {
 	double_mat result = *this;
-
 	if (rows != in.rows || cols != in.cols)
 		throw std::invalid_argument("operator '*': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] *= in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 double_mat double_mat::operator * (const double &in) {
 	double_mat result = *this;
-
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] *= in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 double_mat double_mat::operator / (const double_mat &in) {
 	double_mat result = *this;
-
 	if (rows != in.rows || cols != in.cols)
 		throw std::invalid_argument("operator '/': matrixes dimensions do not match");
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] /= in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 double_mat double_mat::operator / (const double &in) {
 	double_mat result = *this;
-
 	for (int i = 0; i < rows*cols; i++)
 		result.m[i] /= in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
 	return result;
 }
 
 double_mat double_mat::operator + (const int_mat &in) {
-	double_mat result = *this;
-
-	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("operator '+': matrixes dimensions do not match");
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] += in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	return operator + ((double_mat) in);
 }
 
 double_mat double_mat::operator + (const int &in) {
-	double_mat result = *this;
-
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] += in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	return operator + ((double) in);
 }
 
 double_mat double_mat::operator - (const int_mat &in) {
-	double_mat result = *this;
-
-	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("operator '-': matrixes dimensions do not match");
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] -= in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	return operator - ((double_mat) in);
 }
 
 double_mat double_mat::operator - (const int &in) {
-	double_mat result = *this;
-
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] -= in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	return operator - ((double) in);
 }
 
 double_mat double_mat::operator * (const int_mat &in) {
-	double_mat result = *this;
-
-	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("operator '*': matrixes dimensions do not match");
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] *= in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	return operator * ((double_mat) in);
 }
 
 double_mat double_mat::operator * (const int &in) {
-	double_mat result = *this;
-
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] *= in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	return operator * ((double) in);
 }
 
 double_mat double_mat::operator / (const int_mat &in) {
-	double_mat result = *this;
-
-	if (rows != in.rows || cols != in.cols)
-		throw std::invalid_argument("operator '/': matrixes dimensions do not match");
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] /= in.m[i];
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	return operator / ((double_mat) in);
 }
 
 double_mat double_mat::operator / (const int &in) {
-	double_mat result = *this;
-
-	for (int i = 0; i < rows*cols; i++)
-		result.m[i] /= in;
-	init_names(result.rownames, result.colnames, result.rows, result.cols);
-	return result;
+	return operator / ((double) in);
 }
 
 ostream & operator << (ostream &sys, const double_mat &in) {
 	sys << "\t";
-	for (int i = 0; i < in.cols; i++) {
+	for (int i = 0; i < in.cols; i++)
 		sys << in.colnames[i] << "\t";
-	}
 	sys << endl;
 	for (int i = 0; i < in.rows; i++) {
 		sys << in.rownames[i] << "\t[";
@@ -487,7 +342,6 @@ ostream & operator << (ostream &sys, const double_mat &in) {
 string_mat::string_mat(string *array, int r, int c) {
 	rows = r;
 	cols = c;
-	/* initialize vector of vectors */
 	for (int i = 0; i < r * c; i++)
 		m.push_back(array[i]);
 	init_names(rownames, colnames, rows, cols);
@@ -498,7 +352,6 @@ string_mat::string_mat(const string_mat &in) {
 		return;
 	rows = in.rows;
 	cols = in.cols;
-	/* copy array */
 	m = in.m;
 	rownames = in.rownames;
 	colnames = in.colnames;
@@ -511,9 +364,7 @@ string_mat & string_mat::operator = (const string_mat &in) {
 		return *this;
 	rows = in.rows;
 	cols = in.cols;
-	/* copy array */
 	m.resize(rows*cols);
-	/* copy array */
 	for (int i = 0; i < rows * cols; i++)
 		m[i] = in.m[i];
 	rownames = in.rownames;
@@ -523,9 +374,8 @@ string_mat & string_mat::operator = (const string_mat &in) {
 
 ostream & operator << (ostream &sys, const string_mat &in) {
 	sys << "\t";
-	for (int i = 0; i < in.cols; i++) {
+	for (int i = 0; i < in.cols; i++)
 		sys << in.colnames[i] << "\t";
-	}
 	sys << endl;
 	for (int i = 0; i < in.rows; i++) {
 		sys << in.rownames[i] << "\t[";

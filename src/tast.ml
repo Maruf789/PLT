@@ -47,6 +47,8 @@ type irstmt =
   | IContinue (* continue *)
   | IBreak (* break *)
   | ICheck of string * iexpr (* run-time checking *)
+  | Itry   (* try { *)
+  | ICatch (* } catch (exception & e) { cerr << e.what() << endl; } *)
 
 (* target function declare/definite *)
 type irfun = {
