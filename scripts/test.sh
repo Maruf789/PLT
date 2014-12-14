@@ -12,7 +12,7 @@ TRANS=$PWD/$1
 NU=/dev/null
 DIF="diff -b -B"
 
-mkdir $OUTPUT_DIR $CFILE_DIR $BINFILE 2> NU
+mkdir $OUTPUT_DIR $CFILE_DIR $BINFILE 2> $NU
 
 ## copy C++ library here
 cp $PWD/../src/c++/buckcal_mat.cpp $CFILE_DIR
