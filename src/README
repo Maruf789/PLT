@@ -3,14 +3,10 @@ Source code
 scanner.mll - lexical analyser
 parser.mly - parser
 ast.ml - AST types
+lib.ml - built-in function table
 sast.ml - SAST types
-scheck.ml - AST -> SAST
+scheck.ml, scheck_expr.ml - AST -> SAST
 tast.ml - TAST types
-translate.ml - SAST -> TAST
+translate.ml, translate_expr.ml - SAST -> TAST
 codegen.ml - TAST -> C++ code
 main.ml - interface
-
-Target Language helper
-======================
-buckcal_types.h - BuckCal type definition
-
