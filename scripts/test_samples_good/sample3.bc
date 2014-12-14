@@ -1,2 +1,4 @@
 #test identifier whether valid
 int str_0;
+disp str_0;
+disp 'str_0 = '+ string_of_int(str_0);
