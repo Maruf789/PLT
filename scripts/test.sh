@@ -10,6 +10,8 @@ CFILE_DIR=$PWD/cfiles
 BINFILE=$PWD/binfiles
 TRANS=$PWD/$1
 
+mkdir -f OUTPUT_DIR CFILE_DIR BINFILE
+
 NU=/dev/null
 DIF="diff -b -B"
 
