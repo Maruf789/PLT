@@ -15,7 +15,7 @@ def int mat range(int x, int y) do
 	int mat tmp;
 	for (y >= i) do
 		tmp: {i};
-		colname(tmp, {'col' + string_of_int(i)});
+		colname(tmp, {'c' + string_of_int(i)});
 		v : colcat(v, tmp);
 		i: i + 1;
 	rof
@@ -29,7 +29,7 @@ def int mat range_col(int x, int y) do
 	int mat tmp;
 	for (y >= i) do
 		tmp: {i};
-		rowname(tmp, {'row' + string_of_int(i)});
+		rowname(tmp, {'r' + string_of_int(i)});
 		v : rowcat(v, tmp);
 		i: i + 1;
 	rof
