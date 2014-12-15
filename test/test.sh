@@ -72,8 +72,8 @@ for (( i =  0; i <= 72; i++ )) do
 	$TRANS sample${i}.bc $CFILE_DIR/badsample${i}.cpp 2> $OUTPUT_DIR/badsample${i}out.txt
 	cd $PWD
 	if [ -s $CFILE_DIR/badsample${i}.cpp ]; then
-		$CPPC -w $CFILE_DIR/badsample${i}.cpp $CLIBOBJ -o $BINFILE/badsample${i}.bin \
-		2>>	$OUTPUT_DIR/badsample${i}out.txt
+		$CPPC -w $CLIBOBJ $CFILE_DIR/badsample${i}.cpp -o $BINFILE/badsample${i}.bin \
+		2>> $OUTPUT_DIR/badsample${i}out.txt
 		$BINFILE/badsample${i}.bin 2>> $OUTPUT_DIR/badsample${i}out.txt
 	fi
 	$DIF $IDEAL_DIR/badsample${i}ideal.txt $OUTPUT_DIR/badsample${i}out.txt > $NU
