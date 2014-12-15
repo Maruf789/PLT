@@ -1,0 +1,40 @@
+import 'buckcal_lib.bc'
+import 'imp.bc'
+
+def double mat addrow(double mat a, double mat b, string mat s) do
+	double mat tmp : b;
+	rowname(tmp, s);
+	tmp: rowcat(a, tmp);
+	return tmp;
+fed
+
+
+# declare top variable
+double mat budget;
+double mat sbudget;
+double mat tmp;
+
+# initialize
+budget: {1+1, 3.3};
+colname(budget, {'Food', 'Cola'});
+rowname(budget, {'John'});
+# add one column and naming
+tmp : {0.1};
+colname(tmp, {'Paper'});
+budget: colcat(budget, tmp);
+# add one row with naming
+budget: addrow(budget, {1*2, 0.7, 5.10}, {'Tom'});
+# add sum row
+budget: addrow(budget, sum_row(budget), {'sum'});
+# element access by sub matrix expression
+budget[3, 2]: gcd(15, 20);
+# display
+disp budget;
+sbudget: {5; 8; 14};
+rowname(sbudget, {'John', 'Tom', 'sum'});
+colname(sbudget, {'Balance'});
+disp sbudget;
+tmp: gauss_elim(budget, sbudget);
+rowname(tmp, {'Food', 'Cola', 'Paper'});
+colname(tmp, {'Price'});
+disp tmp;
