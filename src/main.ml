@@ -29,27 +29,27 @@ let get_lex_buf in_file =
                      raise (Ast.Syntax_error msg)
 
 let front_end file =
-  let rec bfs queue visited funlist =
-    let add_queue visited oldq newfile =
-      if List.mem newfile visited then oldq else oldq@[newfile]
+  let rec dfs stack visited funlist =
+    let add_stack visited olds newfile =
+      if List.mem newfile visited then olds else newfile::olds
     in
-    match queue with
+    match stack with
       [] -> [], visited, funlist
-    | hd::tl -> if List.mem hd visited then bfs tl visited funlist
+    | hd::tl -> if List.mem hd visited then dfs tl visited funlist
                 else begin
                   let lex_buf = get_lex_buf hd in
                   try
                     let visited = hd::visited in
                     let prog = Parser.program Scanner.token lex_buf in
                     let newfiles = prog.pimps in
-                    let newq = List.fold_left (add_queue visited) tl newfiles in
+                    let news = List.fold_left (add_stack visited) tl newfiles in
                     let funlist = prog.pfuns @ funlist in
-                    bfs newq visited funlist
+                    dfs news visited funlist
                   with
                     Parsing.Parse_error -> raise (Syntax_error (loc_err lex_buf))
                 end
   in
-  let _, _, funlist = bfs [file] [] [] in
+  let _, _, funlist = dfs [file] [] [] in
   let prog = Parser.program Scanner.token (get_lex_buf file) in
   { pimps = []; pfuns = funlist;
     pvars = prog.pvars; pstms = prog.pstms }
