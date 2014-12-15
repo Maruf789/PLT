@@ -3,7 +3,6 @@
 open Ast
 open Sast
 open Scheck_expr
-open Lib
 open Printf
 
 (* variable table *)
@@ -286,13 +285,13 @@ let rec check_fundefs new_ftbl ftbl funsgs = match funsgs with
 
 (* check the whole program
    returns a sprogram *)
-let check prg =
+let check extern_funs prg =
   let func_table =
-    let func_table_0 = lib_funs in (* init function table (should be built-in functions) 
+    let func_table_0 = extern_funs in (* init function table (should be built-in functions) 
                                       and init new function table (user-defined & empty) *)
     check_fundefs [] func_table_0 prg.pfuns
   in
-  let full_ftbl = lib_funs @ func_table in
+  let full_ftbl =  extern_funs @ func_table in
   let var_table =
     let var_table_0 = [] in    (* init variable table as empty *)  
     check_vardecs full_ftbl var_table_0 prg.pvars
@@ -300,4 +299,4 @@ let check prg =
   let _, stm_lines =            (* statements *)
     check_stmts full_ftbl var_table Int true true false prg.pstms
   in
-  { spfuns = func_table;  spvars = var_table; spstms = stm_lines }
+  { spfuns = func_table; spvars = var_table; spstms = stm_lines }

@@ -1,5 +1,7 @@
+open Lib
 open Printf
 open Ast
+open Sast
 
 
 (* error reporting functions *)
@@ -28,31 +30,17 @@ let get_lex_buf in_file =
       Sys_error x -> let msg = sprintf "import %s" x in
                      raise (Ast.Syntax_error msg)
 
-let front_end file =
-  let rec dfs stack visited funlist =
-    let add_stack visited olds newfile =
-      if List.mem newfile visited then olds else newfile::olds
-    in
-    match stack with
-      [] -> [], visited, funlist
-    | hd::tl -> if List.mem hd visited then dfs tl visited funlist
-                else begin
-                  let lex_buf = get_lex_buf hd in
-                  try
-                    let visited = hd::visited in
-                    let prog = Parser.program Scanner.token lex_buf in
-                    let newfiles = prog.pimps in
-                    let news = List.fold_left (add_stack visited) tl newfiles in
-                    let funlist = prog.pfuns @ funlist in
-                    dfs news visited funlist
-                  with
-                    Parsing.Parse_error -> raise (Syntax_error (loc_err lex_buf))
-                end
+let rec get_sast file =
+  let append_new_sast_funs olds newfile =
+    let new_sast = get_sast newfile in
+    let new_sfuns = new_sast.spfuns in
+    (olds @ new_sfuns)
   in
-  let _, _, funlist = dfs [file] [] [] in
-  let prog = Parser.program Scanner.token (get_lex_buf file) in
-  { pimps = []; pfuns = funlist;
-    pvars = prog.pvars; pstms = prog.pstms }
+  let ast = Parser.program Scanner.token (get_lex_buf file) in
+  let newfiles = ast.pimps in
+  let extern_funs = List.fold_left append_new_sast_funs [] newfiles in
+  let full_funs = lib_funs @ extern_funs in
+  (Scheck.check full_funs ast)
 
 
 (* main function. return 0 on success, 1 on failure *)
@@ -60,7 +48,8 @@ let main in_file oc =
   try
     (*let prog = Parser.program Scanner.token lex_buf in*)
     let ast = front_end in_file in
-    let sast = Scheck.check ast in
+    let sast = Scheck.check lib_funs ast
+    (*let sast = get_sast in_file in*)
     let tast = Translate.translate sast in
     (Codegen.compile oc tast; 0)
   with
