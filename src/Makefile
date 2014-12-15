@@ -4,7 +4,7 @@ OBJS = ast.cmo parser.cmo scanner.cmo \
 MAIN = main.bin
 OCAMLC = ocamlc
 
-OCFLAG = -w A
+OCFLAG = -w -4
 
 build : clean $(MAIN)
 
