@@ -44,6 +44,6 @@ let trans_matsub s isl ie1 ie2 =
   let y_ = IBinop (ie2, Minus, int1) in
   let check_x = IBinop(IBinop(x_, Geq, int0), And, IBinop(x_, Lt, r)) in
   let check_y = IBinop(IBinop(y_, Geq, int0), And, IBinop(y_, Lt, c)) in
-  let assert_stmt = [ICheck ("Matsub index check", IBinop (check_x, And, check_y))] in
+  let assert_stmt = [ICheck ("matsub: index check failed, bad index", IBinop (check_x, And, check_y))] in
   isl@assert_stmt, IIndex (s, IBinop(IBinop(x_, Times, c), Plus, y_))
 

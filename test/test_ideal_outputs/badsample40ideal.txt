@@ -1,2 +1,1 @@
-libc++abi.dylib: terminating with uncaught exception of type std::invalid_argument: rowcat: matrix does not have the same number of columns
-Abort trap: 6
+rowcat: matrix does not have the same number of columns
