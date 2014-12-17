@@ -29,6 +29,14 @@ let get_lex_buf in_file =
       Sys_error x -> let msg = sprintf "import %s" x in
                      raise (Ast.Syntax_error msg)
 
+let scanner_parser main_file =
+  let lex_buf = get_lex_buf main_file in
+  try
+    Parser.program Scanner.token lex_buf
+  with
+    Parsing.Parse_error -> raise (Ast.Syntax_error (loc_err lex_buf))
+
+(* Compile all, main file and imported ones *)
 let rec compile_all flag main_file main_oc =
   let append_new_sast_funs olds newfile =
     let ofname = (newfile ^ ".cpp") in
@@ -37,7 +45,7 @@ let rec compile_all flag main_file main_oc =
     let new_sfuns = new_sast.spfuns in
     (olds @ new_sfuns)
   in
-  let ast = Parser.program Scanner.token (get_lex_buf main_file) in
+  let ast = scanner_parser main_file in
   let newfiles = ast.pimps in
   let extern_funs = List.fold_left append_new_sast_funs [] newfiles in
   let extern_func_table =
