@@ -3,6 +3,7 @@
 open Ast
 open Sast
 open Scheck_expr
+open Lib
 open Printf
 
 (* variable table *)
@@ -178,7 +179,7 @@ let rec check_local_var_def ftbl vtbl local_var_list = match local_var_list with
     in
     [(new_type, new_name, init_e)] )
     in
-    (new_vardec@(check_local_var_def ftbl (new_vardec@vtbl) tl))
+    (new_vardec @ (check_local_var_def ftbl (new_vardec@vtbl) tl))
 
 
 (* check statement list.
@@ -284,14 +285,16 @@ let rec check_fundefs new_ftbl ftbl funsgs = match funsgs with
 
 
 (* check the whole program
-   returns a sprogram *)
+   returns: sprogram
+   note: lib_funs is imported by default
+ *)
 let check extern_funs prg =
   let func_table =
-    let func_table_0 = extern_funs in (* init function table (should be built-in functions) 
+    let func_table_0 = lib_funs @ extern_funs in (* init function table (should be built-in functions) 
                                       and init new function table (user-defined & empty) *)
     check_fundefs [] func_table_0 prg.pfuns
   in
-  let full_ftbl =  extern_funs @ func_table in
+  let full_ftbl =  lib_funs @ extern_funs @ func_table in
   let var_table =
     let var_table_0 = [] in    (* init variable table as empty *)  
     check_vardecs full_ftbl var_table_0 prg.pvars
