@@ -1,0 +1,15 @@
+	Food	Cola	Paper	
+John	[2,	3.3,	0.1]
+Tom	[2,	0.7,	5.1]
+sum	[4,	5,	5.2]
+
+	Balance	
+John	[5]
+Tom	[8]
+sum	[14]
+
+	Price	
+Food	[0.794]
+Cola	[1]
+Paper	[1.12]
+

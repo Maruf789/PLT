@@ -9,8 +9,7 @@ NU=/dev/null
 CPPC=g++
 
 # path setting
-COMPILER=$PWD/../src/main.bin
-WORK_DIR=$PWD/work
+COMPILER=../src/main.bin
 
 # checking and file
 
@@ -34,28 +33,23 @@ if [ "$2" == "" ]; then
 	exit 1
 fi
 
-# mkdir for testing
-mkdir $WORK_DIR 2> $NU
-
 # copy files to work folder
-cp $PWD/../lib/buckcal_mat.cpp $WORK_DIR
-cp $PWD/../lib/buckcal_mat.hpp $WORK_DIR
-cp $PWD/../lib/buckcal_core.cpp $WORK_DIR
-cp $PWD/../lib/buckcal_lib.bc $PWD
+cp ../lib/buckcal_mat.cpp ./
+cp ../lib/buckcal_mat.hpp ./
+cp ../lib/buckcal_core.cpp ./
+cp ../lib/buckcal_lib.bc ./
 
 # compile
-$COMPILER $1 $WORK_DIR/$1.cpp
-
-cd $WORK_DIR
+$COMPILER $1 $1.cpp
 
 if [ ! -s $1.cpp ]; then
 	echo "Error: cannot compile $1"
 	exit 1
 fi
 
-$CPPC -w buckcal_core.cpp buckcal_mat.cpp $1.cpp -o ../$2
+$CPPC -w *.cpp -o $2
 
-if [ ! -f ../$2 ]; then
+if [ ! -f $2 ]; then
 	echo "Error: cannot generate executable"
 	exit 1
 fi
