@@ -4,7 +4,6 @@
 # ./compile.sh <main buckcal source file> <output executable name>
 
 # command shorthand
-PWD=`pwd`
 NU=/dev/null
 CPPC=g++
 

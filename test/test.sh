@@ -4,7 +4,7 @@
 # ./test.sh <path to compiler>
 
 # command shorthand
-TRANS=$PWD/$1
+TRANS=$1
 NU=/dev/null
 DIF="diff -b -B"
 CPPC=g++
