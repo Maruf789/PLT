@@ -53,7 +53,7 @@ for (( i =  0; i <= 55; i++ )) do
 	cp ../buckcal_mat.o ./
 	cp ../buckcal_mat.hpp ./
 	cp ../../../lib/buckcal_lib.bc ./
-	$TRANS sample${i}.bc goodsample${i}.cpp 2> ../../$OUTPUT_DIR/goodsample${i}out.txt
+	../../$TRANS sample${i}.bc goodsample${i}.cpp 2> ../../$OUTPUT_DIR/goodsample${i}out.txt
 	if [ -s ../../$OUTPUT_DIR/goodsample${i}out.txt ]; then
 		echo "Good sample${i}.bc error: compiler should not output any message"
 	fi
@@ -78,7 +78,7 @@ cp ../buckcal_core.o ./
 cp ../buckcal_mat.o ./
 cp ../buckcal_mat.hpp ./
 cp ../../../lib/buckcal_lib.bc ./
-$TRANS sample56.bc goodsample56.cpp 2> ../../$OUTPUT_DIR/goodsample56out.txt
+../../$TRANS sample56.bc goodsample56.cpp 2> ../../$OUTPUT_DIR/goodsample56out.txt
 if [ -s ../../$OUTPUT_DIR/goodsample56out.txt ]; then
 	echo "Good sample56.bc error: compiler should not output any message"
 fi
@@ -105,7 +105,7 @@ for (( i =  0; i <= 72; i++ )) do
 	cp ../buckcal_mat.o ./
 	cp ../buckcal_mat.hpp ./
 	cp ../../../lib/buckcal_lib.bc ./
-	$TRANS sample${i}.bc badsample${i}.cpp 2> ../../$OUTPUT_DIR/badsample${i}out.txt
+	../../$TRANS sample${i}.bc badsample${i}.cpp 2> ../../$OUTPUT_DIR/badsample${i}out.txt
 	if [ -s badsample${i}.cpp ]; then
 		$CPPC -w $CLIBOBJ *.cpp -o ../../$BINFILE/badsample${i}.bin \
 		2>> ../../$OUTPUT_DIR/badsample${i}out.txt
