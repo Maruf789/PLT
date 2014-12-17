@@ -1,0 +1,9 @@
+import 'import11.bc'
+import 'import12.bc'
+import 'import_common.bc'
+
+def a() do
+	a1();
+	a2();
+	common();
+fed

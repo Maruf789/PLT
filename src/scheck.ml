@@ -179,7 +179,7 @@ let rec check_local_var_def ftbl vtbl local_var_list = match local_var_list with
     in
     [(new_type, new_name, init_e)] )
     in
-    (new_vardec@(check_local_var_def ftbl (new_vardec@vtbl) tl))
+    (new_vardec @ (check_local_var_def ftbl (new_vardec@vtbl) tl))
 
 
 (* check statement list.
@@ -285,14 +285,16 @@ let rec check_fundefs new_ftbl ftbl funsgs = match funsgs with
 
 
 (* check the whole program
-   returns a sprogram *)
-let check prg =
+   returns: sprogram
+   note: lib_funs is imported by default
+ *)
+let check need_dec_extern extern_funs prg =
   let func_table =
-    let func_table_0 = lib_funs in (* init function table (should be built-in functions) 
+    let func_table_0 = lib_funs @ extern_funs in (* init function table (should be built-in functions) 
                                       and init new function table (user-defined & empty) *)
     check_fundefs [] func_table_0 prg.pfuns
   in
-  let full_ftbl = lib_funs @ func_table in
+  let full_ftbl =  lib_funs @ extern_funs @ func_table in
   let var_table =
     let var_table_0 = [] in    (* init variable table as empty *)  
     check_vardecs full_ftbl var_table_0 prg.pvars
@@ -300,4 +302,6 @@ let check prg =
   let _, stm_lines =            (* statements *)
     check_stmts full_ftbl var_table Int true true false prg.pstms
   in
-  { spfuns = func_table;  spvars = var_table; spstms = stm_lines }
+  match need_dec_extern with
+    IMP -> { spfuns = func_table; spvars = []; spstms = [] } 
+  | _ -> { spfuns = func_table; spvars = var_table; spstms = stm_lines }

@@ -90,7 +90,7 @@ let rec gen_fundefs fundefs = match fundefs with
   | hd::tl -> (if hd.ibody != [] then
                  ([sprintf "%s %s(%s) {" (tpt hd.ireturn) hd.ifname (gen_args "," hd.iargs)]
                   @(gen_stmts hd.ibody)@ ["}"])
-               else ([sprintf "%s %s(%s) ;" (tpt hd.ireturn) hd.ifname (gen_args "," hd.iargs)])
+               else ([sprintf "extern %s %s(%s);" (tpt hd.ireturn) hd.ifname (gen_args "," hd.iargs)])
               )@(gen_fundefs tl)
 
 

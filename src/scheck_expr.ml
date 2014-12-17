@@ -93,6 +93,7 @@ let check_binop bop sexp1 sexp2 =
       | Int, Double -> Bool, ret0
       | Double, Int -> Bool, ret0
       | String, String -> Bool, ret0
+      | Bool, Bool -> Bool, ret0
       | _, _ -> raise (Bad_type "\"=\" bad operand type"))
   | Neq -> (match t1, t2 with
         Int, Int -> Bool, ret0

@@ -1,3 +1,9 @@
-#test using function in other files
-import 'sample33.bc'
-disp cal(0);
+#test string and boolean compare
+
+disp 'h' = 'h';
+
+disp 'a' = 'h';
+
+disp false = false;
+
+disp true = false;

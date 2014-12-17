@@ -1,0 +1,5 @@
+import 'import1.bc'
+import 'import2.bc'
+
+a();
+b();

@@ -153,8 +153,9 @@ let rec trans_fundefs fundefs = match fundefs with
         iargs = (trans_args hd.sargs); ibody = (ss_v@ss_s) }
     )::(trans_fundefs tl)
 
+
 (* translate whole program *)
-let translate prg =
+let translate need_main prg =
   let func_lines =
     let funs = prg.spfuns in
     trans_fundefs funs
@@ -173,5 +174,7 @@ let translate prg =
     iargs = [];
     ibody = [Itry] @ var_lines @ stmt_lines @ [ICatch]
   } in
-  { ivars = []; ifuns = func_lines @ [main_func] }
+  match need_main with
+    TOP -> { ivars = []; ifuns = func_lines @ [main_func] }
+  | _ -> { ivars = []; ifuns = func_lines }
 
