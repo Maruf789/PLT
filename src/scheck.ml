@@ -288,7 +288,7 @@ let rec check_fundefs new_ftbl ftbl funsgs = match funsgs with
    returns: sprogram
    note: lib_funs is imported by default
  *)
-let check extern_funs prg =
+let check need_dec_extern extern_funs prg =
   let func_table =
     let func_table_0 = lib_funs @ extern_funs in (* init function table (should be built-in functions) 
                                       and init new function table (user-defined & empty) *)
@@ -302,4 +302,6 @@ let check extern_funs prg =
   let _, stm_lines =            (* statements *)
     check_stmts full_ftbl var_table Int true true false prg.pstms
   in
-  { spfuns = func_table; spvars = var_table; spstms = stm_lines }
+  match need_dec_extern with
+    IMP -> { spfuns = func_table; spvars = []; spstms = [] } 
+  | _ -> { spfuns = func_table; spvars = var_table; spstms = stm_lines }

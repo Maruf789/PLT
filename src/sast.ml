@@ -1,6 +1,10 @@
 (* Semantic checked Abstract Syntax Tree - Safe Abstract Syntax Tree *)
 open Ast
 
+(* Is this top level file ? Or
+   Is main() needed ? *)
+type top_level = TOP | IMP
+
 exception Bad_type of string
 
 (* variable *)
