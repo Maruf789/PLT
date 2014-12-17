@@ -1,3 +1,6 @@
+import 'import_common.bc'
+
 def b() do
-  disp 'b';
+	disp 'b';
+	common();
 fed

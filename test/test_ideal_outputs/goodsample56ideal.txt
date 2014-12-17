@@ -1,3 +1,5 @@
 a1
 a2
+common
 b
+common
