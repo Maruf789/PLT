@@ -71,7 +71,7 @@ let main in_file oc =
   | Codegen.Not_done x -> perror "Codegen error" x; 1
 
 (* Shell interface *)
-let _ =
+let () =
   let argc = Array.length Sys.argv in
   let exit_code =
     if argc >= 2 then
