@@ -3,7 +3,12 @@ open Ast
 open Sast
 
 
-(* error reporting functions *)
+(* helper of error message print *)
+let perror head err_msg =
+  eprintf "%s: %s\n" head err_msg
+
+
+(* Paser error reporting functions *)
 let loc_err lex_buf =
   let p = lex_buf.Lexing.lex_curr_p in
   let tok = Lexing.lexeme lex_buf in
@@ -13,11 +18,7 @@ let loc_err lex_buf =
              - String.length tok in
   sprintf "token %s, in %s line %d,%d" tok fname line cnum
 
-let perror head err_msg =
-  eprintf "%s: %s\n" head err_msg
-
-
-(* Front end: scanner and parser *)
+(* open input file *)
 let get_lex_buf in_file =
     try
       let lexbuf = Lexing.from_channel (open_in in_file) in
@@ -29,6 +30,8 @@ let get_lex_buf in_file =
       Sys_error x -> let msg = sprintf "import %s" x in
                      raise (Ast.Syntax_error msg)
 
+(* Front end - scanner and parser
+   return: ast of @main_file *)
 let scanner_parser main_file =
   let lex_buf = get_lex_buf main_file in
   try
@@ -36,7 +39,12 @@ let scanner_parser main_file =
   with
     Parsing.Parse_error -> raise (Ast.Syntax_error (loc_err lex_buf))
 
-(* Compile all, main file and imported ones *)
+
+(* Compile all, main file and imported ones
+   @flag : TOP | IMP - main file or imported file
+   @main_file : name of file to be compiled
+   @ main_oc : out_channel of main file output
+*)
 let rec compile_all flag main_file main_oc =
   let append_new_sast_funs olds newfile =
     let ofname = (newfile ^ ".cpp") in
@@ -76,7 +84,7 @@ let main in_file oc =
 
 
 (* Shell interface *)
-let _ =
+let () =
   let argc = Array.length Sys.argv in
   let exit_code =
     if argc >= 2 then
