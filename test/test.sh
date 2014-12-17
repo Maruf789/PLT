@@ -68,6 +68,31 @@ for (( i =  0; i <= 55; i++ )) do
 	fi
 	cd ../../
 done
+
+# import test case
+rm -rf $CFILE_DIR/goodsample56
+cp -r $GOOD_DIR/sample56 $CFILE_DIR
+mv $CFILE_DIR/sample56 $CFILE_DIR/goodsample56
+cd $CFILE_DIR/goodsample56
+cp ../buckcal_core.o ./
+cp ../buckcal_mat.o ./
+cp ../buckcal_mat.hpp ./
+cp ../../../lib/buckcal_lib.bc ./
+$TRANS sample56.bc goodsample56.cpp 2> ../../$OUTPUT_DIR/goodsample56out.txt
+if [ -s ../../$OUTPUT_DIR/goodsample56out.txt ]; then
+	echo "Good sample56.bc error: compiler should not output any message"
+fi
+if [ -s goodsample56.cpp ]; then
+	$CPPC -w $CLIBOBJ *.cpp -o ../../$BINFILE/goodsample56.bin \
+	2>> ../../$OUTPUT_DIR/goodsample56out.txt
+	../../$BINFILE/goodsample56.bin 1>> ../../$OUTPUT_DIR/goodsample56out.txt
+fi
+$DIF ../../$IDEAL_DIR/goodsample56ideal.txt ../../$OUTPUT_DIR/goodsample56out.txt > $NU
+if [ $? -eq 1 ]; then
+	echo "Good sample56.bc error: program output does not match ideal one"
+fi
+cd ../../
+
 echo "Good sample test done"
 
 # run bad cases

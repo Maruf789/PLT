@@ -1,0 +1,3 @@
+def b() do
+  disp 'b';
+fed

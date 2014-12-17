@@ -1,0 +1,3 @@
+def a2() do
+  disp 'a2';
+fed

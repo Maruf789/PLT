@@ -1,0 +1,7 @@
+import 'import11.bc'
+import 'import12.bc'
+
+def a() do
+a1();
+a2();
+fed
