@@ -4,6 +4,10 @@ This is the folder for the convenience of user to compile and run BuckCal progra
 
 ./compile.sh <main buckcal source file> <output executable name>
 
+For example, for to compile and then run the sample.bc file, type these following two commands:
+./compile.sh sample.bc sample.bin
+./sample.bin
+
 Note:
 Only the main executable buckcal file should be provided to the script, imported files should present, but their names are not required for compile.sh.
 buckcal_lib.bc has to be present when used, but it does not have to be copied by user, the script will do that
