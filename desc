@@ -1,0 +1,16 @@
+As platform component
+
+Given:
+data search query
+
+I want to
+export matching data into H5 file stored on HDFS and notify (if provided) on exporting finish.
+
+As a labeling manager, I want to have a platform capability that will export data to H5 format for data selected for manual labeling
+
+H5 format spec is attached
+
+Definition of done:
+Data selected for labeling is exported to H5 format, max file size 1GB (request for bigger files exist as well)
+Exported data is stored on the platform
+Once export is finished, H5 data is accessible using labeling tool data download API
